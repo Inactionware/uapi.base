@@ -47,6 +47,10 @@ subprojects {
         exclude('**/*.java')
     }
 
+    jacoco {
+        toolVersion = "${jacoco_version}"
+    }
+
     build.dependsOn jacocoTestReport
 }
 
