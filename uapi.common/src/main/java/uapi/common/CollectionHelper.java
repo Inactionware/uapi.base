@@ -12,7 +12,6 @@ package uapi.common;
 import uapi.rx.Looper;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Some useful function for collection
