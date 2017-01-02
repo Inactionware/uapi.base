@@ -9,6 +9,8 @@
 
 package uapi;
 
+import uapi.common.StringHelper;
+
 /**
  * A general exception, all customized exception should extends it
  */
@@ -45,6 +47,6 @@ public class GeneralException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return null;
+        return StringHelper.makeString(this._msg, this._args);
     }
 }
