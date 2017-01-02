@@ -6,7 +6,7 @@ buildscript {
 
 apply plugin: 'jacoco'
 
-ext.projectVer = getProjectVersion()
+ext.project_version = getProjectVersion()
 
 allprojects {
     repositories {
@@ -23,7 +23,8 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
-    version = projectVer
+    group = "${project_group}"
+    version = "${project_version}"
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
@@ -32,19 +33,13 @@ subprojects {
     }
 
     dependencies {
-//        compile (
-//                "com.google.guava:guava:${guava_version}",
-//                "io.reactivex:rxjava:${rxjava_version}"
-//        )
         testCompile (
-//                "junit:junit:${junit_vesion}",
                 "org.spockframework:spock-core:${spock_version}"
         )
         testRuntime (
                 "cglib:cglib-nodep:${cglib_version}",           // allows mocking of classes (in addition to interfaces)
                 "org.objenesis:objenesis:${objenesis_version}"  // allows mocking of classes without default constructor (together with CGLIB)
         )
-//        codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
     }
 
     jar {
@@ -52,27 +47,27 @@ subprojects {
         exclude('**/*.java')
     }
 
-    def generatedSources = ['**/*_Generated.*']
+//    def generatedSources = ['**/*_Generated.*']
 
-    test {
-        jacoco {
-            excludes = generatedSources
-        }
-    }
+//    test {
+//        jacoco {
+//            excludes = generatedSources
+//        }
+//    }
 
-    jacocoTestReport {
-        afterEvaluate {
-            classDirectories = files(classDirectories.files.collect {
-                fileTree(dir: it, exclude: generatedSources)
-            })
-        }
-        reports {
-            xml.enabled = true
-            html.enabled = true
-        }
-    }
+//    jacocoTestReport {
+//        afterEvaluate {
+//            classDirectories = files(classDirectories.files.collect {
+//                fileTree(dir: it, exclude: generatedSources)
+//            })
+//        }
+//        reports {
+//            xml.enabled = true
+//            html.enabled = true
+//        }
+//    }
 
-    check.dependsOn jacocoTestReport
+    build.dependsOn jacocoTestReport
 }
 
 task wrapper(type: Wrapper) {
