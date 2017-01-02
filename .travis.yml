@@ -4,7 +4,7 @@ jdk:
 script: ./gradlew jacocoRootReport --stacktrace
 after_success:
 #    - ./gradlew bintrayUpload
-#    - ./gradlew coveralls uploadCoverageToCodacy
+    - ./gradlew coveralls uploadCoverageToCodacy
 #    - bash <(curl -s https://codecov.io/bash)
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
