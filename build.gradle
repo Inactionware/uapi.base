@@ -45,7 +45,7 @@ subprojects {
 //    check.dependsOn jacocoTestReport
 }
 
-def publishedProjects = subprojects.findAll { it.path != ':uapi.sample' }
+def publishedProjects = subprojects.findAll
 
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
