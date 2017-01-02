@@ -35,14 +35,54 @@ subprojects {
         )
     }
 
-    jacocoTestReport {
-        reports {
-            xml.enabled = true
-            html.enabled = true
-        }
+//    jacocoTestReport {
+//        reports {
+//            xml.enabled = true
+//            html.enabled = true
+//        }
+//    }
+//
+//    check.dependsOn jacocoTestReport
+}
+
+def publishedProjects = subprojects.findAll { it.path != ':uapi.sample' }
+
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn(publishedProjects.test)
+
+    additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(publishedProjects.sourceSets.main.output)
+    executionData = files(publishedProjects.jacocoTestReport.executionData)
+
+    reports {
+        html.enabled = true // human readable
+        xml.enabled = true // required by coveralls
     }
 
-    check.dependsOn jacocoTestReport
+    doFirst {
+        executionData = files(executionData.findAll { it.exists() })
+    }
+}
+
+configurations {
+    codacy
+}
+
+dependencies {
+    codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
+}
+
+task uploadCoverageToCodacy(type: JavaExec) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    ]
 }
 
 task wrapper(type: Wrapper) {
