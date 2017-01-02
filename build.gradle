@@ -44,7 +44,7 @@ subprojects {
                 "cglib:cglib-nodep:${cglib_version}",           // allows mocking of classes (in addition to interfaces)
                 "org.objenesis:objenesis:${objenesis_version}"  // allows mocking of classes without default constructor (together with CGLIB)
         )
-        codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
+//        codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
     }
 
     jar {
