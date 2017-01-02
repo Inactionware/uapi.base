@@ -1,4 +1,12 @@
-ext.project_version = getProjectVersion()
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'jacoco'
+
+ext.projectVer = getProjectVersion()
 
 allprojects {
     repositories {
@@ -15,37 +23,63 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
-    group = "${project_group}"
-    version = "${project_version}"
+    version = projectVer
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    jar {
-        manifest.attributes
-        exclude('**/*.java')
+    configurations {
+        codacy
     }
 
     dependencies {
+//        compile (
+//                "com.google.guava:guava:${guava_version}",
+//                "io.reactivex:rxjava:${rxjava_version}"
+//        )
         testCompile (
+//                "junit:junit:${junit_vesion}",
                 "org.spockframework:spock-core:${spock_version}"
         )
         testRuntime (
                 "cglib:cglib-nodep:${cglib_version}",           // allows mocking of classes (in addition to interfaces)
                 "org.objenesis:objenesis:${objenesis_version}"  // allows mocking of classes without default constructor (together with CGLIB)
         )
+        codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
     }
 
-//    jacocoTestReport {
-//        reports {
-//            xml.enabled = true
-//            html.enabled = true
-//        }
-//    }
-//
-//    check.dependsOn jacocoTestReport
+    jar {
+        manifest.attributes
+        exclude('**/*.java')
+    }
+
+    def generatedSources = ['**/*_Generated.*']
+
+    test {
+        jacoco {
+            excludes = generatedSources
+        }
+    }
+
+    jacocoTestReport {
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: generatedSources)
+            })
+        }
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
 }
 
-def publishedProjects = subprojects.findAll
+task wrapper(type: Wrapper) {
+    gradleVersion = "${gradle_version}"
+}
+
+def publishedProjects = subprojects.findAll { it.path != ':uapi.sample' }
 
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
@@ -83,10 +117,6 @@ task uploadCoverageToCodacy(type: JavaExec) {
             "-r",
             "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
     ]
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "${gradle_version}"
 }
 
 def getProjectVersion() {
