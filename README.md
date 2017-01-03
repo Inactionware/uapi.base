@@ -1,2 +1,3 @@
 # uapi.base
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4daefd51d8be456382d351d508b4be1c)](https://www.codacy.com/app/Inactionware/uapi-base?utm_source=github.com&utm_medium=referral&utm_content=Inactionware/uapi.base&utm_campaign=badger)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4daefd51d8be456382d351d508b4be1c)](https://www.codacy.com/app/Inactionware/uapi-base?utm_source=github.com&utm_medium=referral&utm_content=Inactionware/uapi.base&utm_campaign=Badge_Coverage)

@@ -13,4 +13,24 @@ import spock.lang.Specification
 
 class GeneralExceptionTest extends Specification {
 
+    def 'Test create instance from throwable'() {
+        given:
+        def instance = new GeneralException(Mock(Throwable))
+
+        expect:
+        instance != null
+    }
+
+    def 'Test create instance from throwable and string'() {
+        given:
+        def instance = new GeneralException(Mock(Throwable), msg, args)
+
+        expect:
+        instance != null
+        instance.message == strMsg
+
+        where:
+        msg         | args      | strMsg
+        'ab {}'     | 'cd'      | 'ab cd'
+    }
 }

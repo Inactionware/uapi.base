@@ -17,10 +17,72 @@ import spock.lang.Specification
  */
 class LooperTest extends Specification {
 
-    def 'test iterator from array'() {
+    def 'Test iterator from one item'() {
         when:
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>()
+        Looper.from("1").map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+
+        then:
+        list.size() == size
+        list.get(0) == first
+
+        where:
+        size    | first
+        1       | 1
+    }
+
+    def 'Test iterator from array'() {
+        when:
+        List<Integer> list = new ArrayList<>()
         Looper.from("1", "2", "3").map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+
+        then:
+        list.size() == size
+        list.get(0) == first
+        list.get(1) == second
+        list.get(2) == third
+
+        where:
+        size    | first     | second    | third
+        3       | 1         | 2         | 3
+    }
+
+    def 'Test iterator from collection'() {
+        when:
+        List<Integer> list = new ArrayList<>()
+        Looper.from(["1", "2", "3"] as Collection).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+
+        then:
+        list.size() == size
+        list.get(0) == first
+        list.get(1) == second
+        list.get(2) == third
+
+        where:
+        size    | first     | second    | third
+        3       | 1         | 2         | 3
+    }
+
+    def 'Test iterator from iterator'() {
+        when:
+        List<Integer> list = new ArrayList<>()
+        Looper.from(["1", "2", "3"].iterator()).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+
+        then:
+        list.size() == size
+        list.get(0) == first
+        list.get(1) == second
+        list.get(2) == third
+
+        where:
+        size    | first     | second    | third
+        3       | 1         | 2         | 3
+    }
+
+    def 'Test iterator from iterable'() {
+        when:
+        List<Integer> list = new ArrayList<>()
+        Looper.from(["1", "2", "3"] as Iterable).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
 
         then:
         list.size() == size
