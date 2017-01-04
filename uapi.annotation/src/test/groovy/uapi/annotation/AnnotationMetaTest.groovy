@@ -37,6 +37,23 @@ class AnnotationMetaTest extends Specification {
         'Test'          | 1
     }
 
+    def 'Test toString'() {
+        given:
+        def MockArgumentMetaBuilder mockParamBuild = new MockArgumentMetaBuilder()
+
+        when:
+        AnnotationMeta.Builder builder = AnnotationMeta.builder()
+                .setName(annotationName)
+                .addArgument(mockParamBuild)
+
+        then:
+        builder.toString() == string
+
+        where:
+        annotationName  | string
+        'Test'          | 'AnnotationMeta[name=Test, arguments=[]]'
+    }
+
     def mockArgMeta = Mock(ArgumentMeta)
 
     private class MockArgumentMetaBuilder extends ArgumentMeta.Builder {

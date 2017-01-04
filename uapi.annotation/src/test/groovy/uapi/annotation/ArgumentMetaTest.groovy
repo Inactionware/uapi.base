@@ -34,4 +34,20 @@ class ArgumentMetaTest extends Specification {
         'name'  | 'abc' | true
         'name'  | 'abc' | false
     }
+
+    def 'Test toString'() {
+        when:
+        ArgumentMeta.Builder builder = ArgumentMeta.builder()
+                .setName(name)
+                .setValue(value)
+                .setIsString(isString)
+
+        then:
+        builder.toString() == string
+
+        where:
+        name    | value | isString  | string
+        'name'  | 'abc' | true      | 'ArgumentMeta[name=name, value=abc, isString=true]'
+        'name'  | 'abc' | false     | 'ArgumentMeta[name=name, value=abc, isString=false]'
+    }
 }
