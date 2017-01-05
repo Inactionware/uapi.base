@@ -9,7 +9,6 @@
 
 package uapi.annotation
 
-
 import spock.lang.Specification
 
 /**

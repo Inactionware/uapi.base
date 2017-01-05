@@ -32,6 +32,7 @@ class StringHelperTest extends Specification{
         "Test {0} is {1}"                           | ["test", "uapi.kernel.Class"] as Object[]     | "Test test is uapi.kernel.Class"
         "{0} is test"                               | ["a"] as Object[]                             | "a is test"
         "{1} index is not start from {}"            | ["test", "un-index", "0"] as Object[]         | "un-index index is not start from 0"
+        "abc {} tt {}"                              | [null, "dd"] as Object[]                      | "abc  tt dd"
     }
 
     def 'Test get first line'() {

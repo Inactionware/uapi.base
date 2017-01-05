@@ -54,9 +54,12 @@ public final class StringHelper {
                         idxVar = tmpIdx;
                     }
                     if (args.length <= idxVar) {
-                        throw new IllegalArgumentException("The argument index is more than argument count - " + str + "," + CollectionHelper.asString(args));
+                        throw new IllegalArgumentException(
+                                "The argument index is more than argument count - " + str + "," + CollectionHelper.asString(args));
                     }
-                    buffer.append(args[idxVar]);
+                    if (args[idxVar] != null) {
+                        buffer.append(args[idxVar]);
+                    }
                     foundVarStart = false;
                     idxVar++;
                     tmpIdx = -1;
