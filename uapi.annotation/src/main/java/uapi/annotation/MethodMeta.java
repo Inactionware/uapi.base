@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
  */
 public class MethodMeta {
 
-    protected final Builder _builder;
+    private final Builder _builder;
 
-    protected MethodMeta(
+    private MethodMeta(
             final Builder builder
     ) {
         this._builder = builder;
@@ -200,17 +200,6 @@ public class MethodMeta {
             return this;
         }
 
-//        public ParameterMeta.Builder getParameterBuilder(
-//                final String parameterName
-//        ) {
-//            for (ParameterMeta.Builder paramBuilder : this._paramBuilders) {
-//                if (parameterName.equals(paramBuilder.getName())) {
-//                    return paramBuilder;
-//                }
-//            }
-//            return null;
-//        }
-
         public int getParameterCount() {
             return this._paramBuilders.size();
         }
@@ -231,24 +220,6 @@ public class MethodMeta {
             this._codeBuilders.add(codeBuilder);
             return this;
         }
-
-//        public CodeMeta.Builder addCodeBuilderIfAbsent(
-//                final CodeMeta.Builder codeBuilder
-//        ) throws InvalidArgumentException {
-//            checkStatus();
-//            ArgumentChecker.notNull(codeBuilder, "codeBuilder");
-//            List<CodeMeta.Builder> matchedBuilders = this._codeBuilders.parallelStream()
-//                    .filter(existing -> existing.equals(codeBuilder))
-//                    .collect(Collectors.toList());
-//            if (matchedBuilders.size() == 0) {
-//                addCodeBuilder(codeBuilder);
-//                return codeBuilder;
-//            }
-//            if (matchedBuilders.size() == 1) {
-//                return matchedBuilders.get(0);
-//            }
-//            throw new KernelException("Found not only one code builder - {}" + matchedBuilders);
-//        }
 
         public CodeMeta.Builder findCodeBuilder(
                 final String templateSourceName

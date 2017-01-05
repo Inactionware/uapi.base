@@ -254,7 +254,8 @@ public class ClassMeta {
 
         public List<MethodMeta.Builder> findMethodBuilder(final String methodName) {
             ArgumentChecker.required(methodName, "methodName");
-            return Looper.from(this._methodBuilders).filter(builder -> builder.getName().equals(methodName)).toList();
+            return Looper.from(this._methodBuilders)
+                    .filter(builder -> builder.getName().equals(methodName)).toList();
         }
 
         public List<MethodMeta.Builder> findSetterBuilders() {
@@ -356,8 +357,7 @@ public class ClassMeta {
         @Override
         public String toString() {
             return StringHelper.makeString(
-                    "ClassMeta[" +
-                            "packageName={}, " +
+                    "ClassMeta[packageName={}, " +
                             "className={}, " +
                             "generatedClassName={}, " +
                             "implements={}, " +
