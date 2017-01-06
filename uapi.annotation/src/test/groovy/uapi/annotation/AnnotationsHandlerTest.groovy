@@ -87,43 +87,152 @@ class AnnotationsHandlerTest extends Specification {
         thrown(GeneralException)
     }
 
-//    def 'Test get type in annotation'() {
-//        def mockAnno = Mock(AnnotationMirror) {
-//            getElementValues() >> Mock(Map) {
-//                entrySet() >> Mock(Set) {
-//                    iterator() >> Mock(Iterator) {
-//                        hasNext() >>> [true, false]
-//                        next() >> Mock(Map.Entry) {
-//                            getKey() >> Mock(ExecutableElement) {
-//                                getSimpleName() >> Mock(Name) {
-//                                    toString() >> fieldName
-//                                }
-//                            }
-//                            getValue() >> Mock(AnnotationValue) {
-//                                getValue() >> Mock(DeclaredType) {
-//                                    asElement() >> Mock(TypeElement) {
-//                                        getQualifiedName() >> Mock(Name) {
-//                                            toString() >> fieldType
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        when:
-//        def types = handler.getTypesInAnnotation(mockAnno, fieldName, Mock(LogSupport))
-//
-//        then:
-//        types == [ fieldType ]
-//
-//        where:
-//        fieldName   | fieldType
-//        'AAA'       | 'String'
-//    }
+    def 'Test get type in annotation without field definition'() {
+        given:
+        def anno = Mock(AnnotationMirror) {
+            getElementValues() >> new HashMap<>()
+        }
+
+        when:
+        def type = handler.getTypeInAnnotation(anno, fieldName)
+
+        then:
+        type == null
+
+        where:
+        fieldName   | typeName
+        'AAA'       | 'String'
+    }
+
+    def 'Test get type in annotation'() {
+        given:
+        def exeElem = Mock(ExecutableElement) {
+            getSimpleName() >> Mock(Name) {
+                toString() >> fieldName
+            }
+        }
+        def annoValue = Mock(AnnotationValue) {
+            getValue() >> Mock(DeclaredType) {
+                asElement() >> Mock(TypeElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> typeName
+                    }
+                }
+            }
+        }
+        def annoMap = new HashMap()
+        annoMap.put(exeElem, annoValue)
+        def anno = Mock(AnnotationMirror) {
+            getElementValues() >> annoMap
+        }
+
+        when:
+        def type = handler.getTypeInAnnotation(anno, fieldName)
+
+        then:
+        type == typeName
+
+        where:
+        fieldName   | typeName
+        'AAA'       | 'String'
+    }
+
+    def 'Test get type in annotation with more type'() {
+        given:
+        def exeElem = Mock(ExecutableElement) {
+            getSimpleName() >> Mock(Name) {
+                toString() >> fieldName
+            }
+        }
+        def annoValue = Mock(AnnotationValue) {
+            getValue() >> Mock(DeclaredType) {
+                asElement() >> Mock(TypeElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> typeName
+                    }
+                }
+            }
+        }
+        def exeElem2 = Mock(ExecutableElement) {
+            getSimpleName() >> Mock(Name) {
+                toString() >> fieldName
+            }
+        }
+        def annoValue2 = Mock(AnnotationValue) {
+            getValue() >> Mock(DeclaredType) {
+                asElement() >> Mock(TypeElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> typeName2
+                    }
+                }
+            }
+        }
+        def annoMap = new HashMap()
+        annoMap.put(exeElem, annoValue)
+        annoMap.put(exeElem2, annoValue2)
+        def anno = Mock(AnnotationMirror) {
+            getElementValues() >> annoMap
+            getAnnotationType() >> Mock(DeclaredType) {
+                toString() >> 'Mock Annotation'
+            }
+        }
+
+        when:
+        handler.getTypeInAnnotation(anno, fieldName)
+
+        then:
+        thrown(GeneralException)
+
+        where:
+        fieldName   | typeName  | typeName2
+        'AAA'       | 'String'  | 'Int'
+    }
+
+    def 'Test get types in annotation'() {
+        given:
+        def exeElem = Mock(ExecutableElement) {
+            getSimpleName() >> Mock(Name) {
+                toString() >> fieldName
+            }
+        }
+        def annoValue1 = Mock(AnnotationValue) {
+            getValue() >> Mock(DeclaredType) {
+                asElement() >> Mock(TypeElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> typeName
+                    }
+                }
+            }
+        }
+        def annoValue2 = Mock(AnnotationValue) {
+            getValue() >> Mock(DeclaredType) {
+                asElement() >> Mock(TypeElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> typeName2
+                    }
+                }
+            }
+        }
+        def annoValue = Mock(AnnotationValue) {
+            getValue() >> [annoValue1, annoValue2]
+        }
+
+        def annoMap = new HashMap()
+        annoMap.put(exeElem, annoValue)
+        def anno = Mock(AnnotationMirror) {
+            getElementValues() >> annoMap
+        }
+
+        when:
+        def types = handler.getTypesInAnnotation(anno, fieldName)
+
+        then:
+        types.size() == 2
+
+        where:
+        fieldName   | typeName  | typeName2
+        'AAA'       | 'String'  | 'Int'
+    }
 
     def 'Test handle'() {
         def budrCtx = Mock(IBuilderContext) {
@@ -135,5 +244,15 @@ class AnnotationsHandlerTest extends Specification {
 
         then:
         handler.handleCount == 1
+    }
+
+    def 'Test get helper'() {
+        expect:
+        handler.getHelper() == null
+    }
+
+    def 'Test to string'() {
+        expect:
+        handler.toString() == 'AnnotationsHandler[supportedAnnotations=interface uapi.annotation.NotNull]'
     }
 }

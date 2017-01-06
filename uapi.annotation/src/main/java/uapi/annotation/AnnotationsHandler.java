@@ -73,9 +73,8 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
 
     protected String getTypeInAnnotation(
             final AnnotationMirror annotation,
-            final String fieldName,
-            final LogSupport logger
-    ) {
+            final String fieldName
+    ) throws GeneralException {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
 //        List<String> types = Observable.from(annotation.getElementValues().entrySet())
@@ -114,8 +113,8 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
     @SuppressWarnings("unchecked")
     protected List<String> getTypesInAnnotation(
             final AnnotationMirror annotation,
-            final String fieldName,
-            final LogSupport logger) {
+            final String fieldName
+    ) {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
         List<String> types = new ArrayList<>();
@@ -127,7 +126,7 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
 //                .map(declaredType -> (TypeElement) declaredType.asElement())
 //                .map(typeElem -> typeElem.getQualifiedName().toString())
 //                .subscribe(types::add, logger::error);
-        try {
+//        try {
             Looper.from(annotation.getElementValues().entrySet())
                     .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
                     .map(Map.Entry::getValue)
@@ -136,9 +135,9 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
                     .map(declaredType -> (TypeElement) declaredType.asElement())
                     .map(typeElem -> typeElem.getQualifiedName().toString())
                     .foreach(types::add);
-        } catch (Exception ex) {
-            logger.error(ex);
-        }
+//        } catch (Exception ex) {
+//            logger.error(ex);
+//        }
         return types;
     }
 
