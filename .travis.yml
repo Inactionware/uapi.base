@@ -3,7 +3,7 @@ jdk:
     - oraclejdk8
 script: ./gradlew jacocoRootReport --stacktrace
 after_success:
-#    - ./gradlew bintrayUpload
+    - ./gradlew bintrayUpload
     - ./gradlew uploadCoverageToCodacy
 #    - bash <(curl -s https://codecov.io/bash)
 before_cache:

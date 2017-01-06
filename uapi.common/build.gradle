@@ -7,8 +7,44 @@
  * use the project into a commercial product
  */
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.2"
+}
+
 dependencies {
     compile (
             "com.google.guava:guava:${guava_version}"
     )
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            groupId "${project_group}"
+            artifactId "${project.name}"
+            version "${project_version}"
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['mavenPublication']
+    publish = true
+    pkg {
+        repo = "${publish_repo}"
+        vcsUrl = 'https://github.com/Inactionware/uapi.base.git'
+        name = "${project.name}"
+        licenses = ['GPL-3.0']
+        userOrg = System.getenv('BINTRAY_USER_ORG')
+
+        githubRepo = 'Inactionware/uapi.base'
+        githubReleaseNotesFile = 'README.md'
+
+        version {
+            name = "${project_version}"
+        }
+    }
 }

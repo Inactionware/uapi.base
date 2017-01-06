@@ -16,6 +16,7 @@ buildscript {
 apply plugin: 'jacoco'
 
 ext.project_version = getProjectVersion()
+ext.publish_repo    = getMavenRepo()
 
 allprojects {
     repositories {
