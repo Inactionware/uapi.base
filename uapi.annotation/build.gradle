@@ -17,6 +17,17 @@ dependencies {
     compile "org.freemarker:freemarker:${freemarker_version}"
 }
 
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            groupId "${project_group}"
+            artifactId "${project.name}"
+            version "${project_version}"
+        }
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
