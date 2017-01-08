@@ -40,9 +40,8 @@ public class CompileTimeTemplateLoader implements TemplateLoader {
             final String name
     ) throws IOException {
         ArgumentChecker.required(name, "name");
-        FileObject fObj = this._builderCtx.getFiler().getResource(
+        return this._builderCtx.getFiler().getResource(
                 StandardLocation.CLASS_PATH, this._basePkgPath, name);
-        return fObj;
     }
 
     @Override

@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 /**
  * A context for building class builder
  */
-public final class BuilderContext implements IBuilderContext {
+public class BuilderContext implements IBuilderContext {
 
     private final LogSupport _logger;
     private final ProcessingEnvironment _procEnv;
