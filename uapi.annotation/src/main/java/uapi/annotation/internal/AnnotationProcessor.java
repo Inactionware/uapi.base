@@ -147,6 +147,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
+    int getHandlerCount() {
+        return this._handlers.size();
+    }
+
     private void generateSource(BuilderContext builderContext) {
         List<ClassMeta.Builder> classBuilders = builderContext.getBuilders();
 
