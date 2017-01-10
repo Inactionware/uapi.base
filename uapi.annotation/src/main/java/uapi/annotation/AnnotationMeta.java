@@ -60,7 +60,7 @@ public class AnnotationMeta {
         }
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._name, "name");
         }
 

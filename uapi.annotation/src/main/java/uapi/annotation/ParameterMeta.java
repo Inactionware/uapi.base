@@ -109,7 +109,7 @@ public class ParameterMeta {
         }
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._name, "name");
             ArgumentChecker.notEmpty(this._type, "type");
         }

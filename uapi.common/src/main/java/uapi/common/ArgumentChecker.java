@@ -16,7 +16,7 @@ import uapi.InvalidArgumentException.InvalidArgumentType;
 import java.util.Collection;
 
 /**
- * A utility for argument checker
+ * A utility for argument checking
  *
  * @author min
  */
@@ -41,7 +41,12 @@ public class ArgumentChecker {
      * @throws  InvalidArgumentException
      *          The checked argument value is not between min value and max value
      */
-    public static void checkInt(int arg, String argName, int minValue, int maxValue) {
+    public static void checkInt(
+            final int arg,
+            final String argName,
+            final int minValue,
+            final int maxValue
+    ) {
         if (arg < minValue || arg > maxValue) {
             throw new InvalidArgumentException(
                     argName,
@@ -67,7 +72,12 @@ public class ArgumentChecker {
      * @throws  InvalidArgumentException
      *          The checked argument value is not between min value and max value
      */
-    public static void checkLong(long arg, String argName, long minValue, long maxValue) {
+    public static void checkLong(
+            final long arg,
+            final String argName,
+            final long minValue,
+            final long maxValue
+    ) {
         if (arg < minValue || arg > maxValue) {
             throw new InvalidArgumentException(
                     argName,

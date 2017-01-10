@@ -191,7 +191,7 @@ public class ClassMeta {
         public FieldMeta.Builder findFieldBuilder(String fieldName, String fieldType) {
             ArgumentChecker.required(fieldName, "fieldName");
             ArgumentChecker.required(fieldType, "fieldType");
-            return Looper.from(this._fieldBuilders)
+            return Looper.on(this._fieldBuilders)
                     .filter(fieldBuilder -> fieldBuilder.getName().equals(fieldName))
                     .filter(fieldBuilder -> fieldBuilder.getTypeName().equals(fieldType))
                     .single(null);
@@ -254,7 +254,7 @@ public class ClassMeta {
 
         public List<MethodMeta.Builder> findMethodBuilder(final String methodName) {
             ArgumentChecker.required(methodName, "methodName");
-            return Looper.from(this._methodBuilders)
+            return Looper.on(this._methodBuilders)
                     .filter(builder -> builder.getName().equals(methodName)).toList();
         }
 
@@ -324,13 +324,13 @@ public class ClassMeta {
         }
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._pkgName, "packageName");
             ArgumentChecker.notEmpty(this._className, "className");
             ArgumentChecker.notEmpty(this._generatedClassName, "generatedClassName");
-            this._annoBuilders.forEach(AnnotationMeta.Builder::validation);
-            this._fieldBuilders.forEach(FieldMeta.Builder::validation);
-            this._methodBuilders.forEach(MethodMeta.Builder::validation);
+            this._annoBuilders.forEach(AnnotationMeta.Builder::validate);
+            this._fieldBuilders.forEach(FieldMeta.Builder::validate);
+            this._methodBuilders.forEach(MethodMeta.Builder::validate);
         }
 
         @Override

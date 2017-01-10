@@ -8,6 +8,6 @@ import uapi.GeneralException;
 public class NoItemException extends GeneralException {
 
     public NoItemException() {
-        super("There is no item from previously operator");
+        super("There is no item on previously operator");
     }
 }

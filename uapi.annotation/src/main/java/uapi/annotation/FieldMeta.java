@@ -121,7 +121,7 @@ public class FieldMeta {
 
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             ArgumentChecker.required(this._name, "fieldName");
             ArgumentChecker.required(this._typeName, "fieldTypeName");
         }

@@ -12,7 +12,7 @@ package uapi.rx;
 import uapi.common.ArgumentChecker;
 
 /**
- * The FlatMapOperator will generate more then one element from input element
+ * The FlatMapOperator will generate more then one element on input element
  */
 class FlatMapOperator<I, T> extends Operator<T> {
 

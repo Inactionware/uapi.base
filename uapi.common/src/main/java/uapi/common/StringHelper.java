@@ -146,6 +146,6 @@ public final class StringHelper {
 
     public static void clear(StringBuilder... buffers) {
         ArgumentChecker.required(buffers, "buffers");
-        Looper.from(buffers).foreach(buffer -> buffer.delete(0, buffer.length()));
+        Looper.on(buffers).foreach(buffer -> buffer.delete(0, buffer.length()));
     }
 }

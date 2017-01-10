@@ -169,10 +169,10 @@ public class BuilderContext implements IBuilderContext {
             final Class<? extends Annotation>... annotationTypes
     ) throws GeneralException {
         ArgumentChecker.notNull(element, "element");
-//        List<Class<? extends Annotation>> unAnnotateds = Observable.from(annotationTypes)
+//        List<Class<? extends Annotation>> unAnnotateds = Observable.on(annotationTypes)
 //                .filter(annotationType -> element.getAnnotation(annotationType) == null)
 //                .toList().toBlocking().single();
-        List<Class<? extends Annotation>> unAnnotateds = Looper.from(annotationTypes)
+        List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
                 .filter(annotationType -> element.getAnnotation(annotationType) == null)
                 .toList();
         if (unAnnotateds == null || unAnnotateds.size() > 0) {
@@ -192,12 +192,12 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.notNull(classElement, "classElement");
         ArgumentChecker.notNull(fieldType, "fieldType");
         ArgumentChecker.notNull(annotationType, "annotationType");
-//        List<Element> elems = (List<Element>) Observable.from(classElement.getEnclosedElements())
+//        List<Element> elems = (List<Element>) Observable.on(classElement.getEnclosedElements())
 //                .filter(element -> element.getKind() == ElementKind.FIELD)
 //                .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
 //                .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)
 //                .toList().toBlocking().single();
-        List<Element> elems = (List<Element>) Looper.from(classElement.getEnclosedElements())
+        List<Element> elems = (List<Element>) Looper.on(classElement.getEnclosedElements())
                 .filter(element -> element.getKind() == ElementKind.FIELD)
                 .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
                 .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)

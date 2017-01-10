@@ -95,10 +95,10 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private void initForHandler(IAnnotationsHandler handler) {
         this._handlers.add(handler);
-//        Observable.from(handler.getSupportedAnnotations())
+//        Observable.on(handler.getSupportedAnnotations())
 //                .map(Class::getName)
 //                .subscribe(_orderedAnnotations::add);
-        Looper.from(handler.getSupportedAnnotations())
+        Looper.on(handler.getSupportedAnnotations())
                 .map(Class::getName)
                 .foreach(_orderedAnnotations::add);
     }
@@ -123,18 +123,18 @@ public class AnnotationProcessor extends AbstractProcessor {
         //this._logger.info("Start processing annotation for {} " + roundEnv.getRootElements());
         BuilderContext buildCtx = new BuilderContext(this._procEnv, roundEnv);
         // Init for builder context
-//        Observable.from(this._handlers)
+//        Observable.on(this._handlers)
 //                .map(handler -> handler.getHelper())
 //                .filter(helper -> helper != null)
 //                .subscribe(buildCtx::putHelper);
-//        Observable.from(this._handlers)
+//        Observable.on(this._handlers)
 //                .doOnNext(handler -> _logger.info("Invoke annotation handler -> {}", handler))
 //                .subscribe(handler -> handler.handle(buildCtx), _logger::error);
-        Looper.from(this._handlers)
+        Looper.on(this._handlers)
                 .map(IAnnotationsHandler::getHelper)
                 .filter(helper -> helper != null)
                 .foreach(buildCtx::putHelper);
-        Looper.from(this._handlers)
+        Looper.on(this._handlers)
                 .next(handler -> _logger.info("Invoke annotation handler -> {}", handler))
                 .foreach(handler -> handler.handle(buildCtx));
 

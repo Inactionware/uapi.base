@@ -83,7 +83,7 @@ public final class StateTracer<T> implements IStateTracer<T> {
         T oldState = this._state;
         this._state = newState;
         if (! newState.equals(oldState)) {
-            Looper.from(this._listeners).foreach(listener -> listener.stateChanged(oldState, newState));
+            Looper.on(this._listeners).foreach(listener -> listener.stateChanged(oldState, newState));
         }
     }
 }

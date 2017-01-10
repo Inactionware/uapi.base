@@ -240,7 +240,7 @@ class MethodMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 
@@ -274,7 +274,7 @@ class MethodMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 
@@ -307,7 +307,7 @@ class MethodMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 

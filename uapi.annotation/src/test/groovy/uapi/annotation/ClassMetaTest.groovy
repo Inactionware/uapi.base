@@ -351,7 +351,7 @@ class ClassMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 
@@ -370,7 +370,7 @@ class ClassMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 
@@ -393,7 +393,7 @@ class ClassMetaTest extends Specification {
             this._initInvokedCount++
         }
 
-        public void validation() {
+        public void validate() {
             this._validationCount++
         }
 

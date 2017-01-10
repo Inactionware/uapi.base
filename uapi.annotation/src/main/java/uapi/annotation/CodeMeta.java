@@ -99,7 +99,7 @@ public class CodeMeta {
         }
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             if (this._temp != null) {
                 ArgumentChecker.notNull(this._model, "model");
                 ArgumentChecker.notNull(this._temp, "template");

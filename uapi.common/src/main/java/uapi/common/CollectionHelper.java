@@ -325,7 +325,7 @@ public final class CollectionHelper {
         }
         int sepLen = separator == null ? 0 : separator.length();
         StringBuilder sb = new StringBuilder();
-        Looper.from(array).foreach(item -> {
+        Looper.on(array).foreach(item -> {
             if (item != null) {
                 sb.append(item.toString()).append(separator);
             } else {

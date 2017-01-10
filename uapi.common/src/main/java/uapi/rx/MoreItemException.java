@@ -17,6 +17,6 @@ import uapi.GeneralException;
 public class MoreItemException extends GeneralException {
 
     public MoreItemException() {
-        super("There are more items from previously operator");
+        super("There are more items on previously operator");
     }
 }

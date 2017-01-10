@@ -23,7 +23,7 @@ class FlatMapOperatorTest extends Specification {
         }
 
         given:
-        FlatMapOperator opt = new FlatMapOperator(preOpt, {item -> Looper.from(item.split(","))})
+        FlatMapOperator opt = new FlatMapOperator(preOpt, {item -> Looper.on(item.split(","))})
 
         expect:
         opt.getItem() == "1"

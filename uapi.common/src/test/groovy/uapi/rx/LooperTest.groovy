@@ -20,7 +20,7 @@ class LooperTest extends Specification {
     def 'Test iterator from one item'() {
         when:
         List<Integer> list = new ArrayList<>()
-        Looper.from("1").map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+        Looper.on("1").map({ item -> Integer.parseInt(item)}).foreach({ item -> list.add(item)})
 
         then:
         list.size() == size
@@ -34,7 +34,7 @@ class LooperTest extends Specification {
     def 'Test iterator from array'() {
         when:
         List<Integer> list = new ArrayList<>()
-        Looper.from("1", "2", "3").map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+        Looper.on("1", "2", "3").map({ item -> Integer.parseInt(item)}).foreach({ item -> list.add(item)})
 
         then:
         list.size() == size
@@ -50,7 +50,7 @@ class LooperTest extends Specification {
     def 'Test iterator from collection'() {
         when:
         List<Integer> list = new ArrayList<>()
-        Looper.from(["1", "2", "3"] as Collection).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+        Looper.on(["1", "2", "3"] as Collection).map({ item -> Integer.parseInt(item)}).foreach({ item -> list.add(item)})
 
         then:
         list.size() == size
@@ -66,7 +66,7 @@ class LooperTest extends Specification {
     def 'Test iterator from iterator'() {
         when:
         List<Integer> list = new ArrayList<>()
-        Looper.from(["1", "2", "3"].iterator()).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+        Looper.on(["1", "2", "3"].iterator()).map({ item -> Integer.parseInt(item)}).foreach({ item -> list.add(item)})
 
         then:
         list.size() == size
@@ -82,7 +82,7 @@ class LooperTest extends Specification {
     def 'Test iterator from iterable'() {
         when:
         List<Integer> list = new ArrayList<>()
-        Looper.from(["1", "2", "3"] as Iterable).map({ item -> Integer.parseInt(item)}).foreach({item -> list.add(item)})
+        Looper.on(["1", "2", "3"] as Iterable).map({ item -> Integer.parseInt(item)}).foreach({ item -> list.add(item)})
 
         then:
         list.size() == size
@@ -105,13 +105,13 @@ class LooperTest extends Specification {
         given:
         List<String> strList2 = new ArrayList<>()
         long start2 = System.currentTimeMillis()
-        Looper.from(list).map({ item -> String.valueOf(item)}).foreach({ item -> strList2.add(item)})
+        Looper.on(list).map({ item -> String.valueOf(item)}).foreach({ item -> strList2.add(item)})
         long end2 = System.currentTimeMillis()
         System.out.println(end2 - start2)
 
         List<String> strList1 = new ArrayList<>()
         long start1 = System.currentTimeMillis()
-        Looper.from(list).map({ item -> String.valueOf(item)}).foreach({ item -> strList1.add(item)})
+        Looper.on(list).map({ item -> String.valueOf(item)}).foreach({ item -> strList1.add(item)})
         long end1 = System.currentTimeMillis()
         System.out.println(end1 - start1)
 

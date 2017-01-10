@@ -78,7 +78,7 @@ public class ArgumentMeta {
         }
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._name, "name");
             ArgumentChecker.notNull(this._value, "value");
         }

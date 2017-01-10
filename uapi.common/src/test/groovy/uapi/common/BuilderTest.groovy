@@ -82,7 +82,7 @@ class BuilderTest extends Specification {
         boolean doCreateInstance = false;
 
         @Override
-        protected void validation() throws InvalidArgumentException {
+        protected void validate() throws InvalidArgumentException {
             this.doValidation = true;
         }
 

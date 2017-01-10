@@ -91,7 +91,7 @@ public abstract class Builder<T> {
      */
     public T build() throws GeneralException {
         checkStatus();
-        validation();
+        validate();
         initProperties();
         this._transiences.clear();
         T obj = createInstance();
@@ -107,7 +107,7 @@ public abstract class Builder<T> {
         }
     }
 
-    protected abstract void validation() throws InvalidArgumentException;
+    protected abstract void validate() throws InvalidArgumentException;
 
     protected abstract void initProperties();
 

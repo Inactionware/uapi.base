@@ -3,7 +3,7 @@
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at the LICENSE file.
  *
- * You must gained the permission from the authors if you want to
+ * You must gained the permission on the authors if you want to
  * use the project into a commercial product
  */
 
@@ -15,18 +15,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * An Looper will generate IOperator from specified data source.
+ * An Looper will generate IOperator on specified data source.
  * IOperator is a abstract handler for input data, more then one operator can be combined.
  */
 public class Looper {
 
-    public static <T> IOperator<T> from(final T item) {
-        ArgumentChecker.required(item, "item");
-        return new OrderedSource<>(item);
-    }
-
     /**
-     * Construct IOperator from data array.
+     * Construct IOperator on data array.
      *
      * @param   items
      *          The input data array
@@ -34,13 +29,16 @@ public class Looper {
      *          The input data type
      * @return  The operator which can emit data and combine other operator
      */
-    public static <T> IOperator<T> from(final T... items) {
+    @SafeVarargs
+    public static <T> IOperator<T> on(
+            final T... items
+    ) {
         ArgumentChecker.required(items, "items");
         return new OrderedSource<>(items);
     }
 
     /**
-     * Construct IOperator from data collection.
+     * Construct IOperator on data collection.
      *
      * @param   items
      *          The input data collection
@@ -48,17 +46,41 @@ public class Looper {
      *          The input data type
      * @return  The operator which can emit data and combine other operator
      */
-    public static <T> IOperator<T> from(Collection<T> items) {
+    public static <T> IOperator<T> on(
+            final Collection<T> items
+    ) {
         ArgumentChecker.required(items, "items");
         return new CollectionSource<>(items);
     }
 
-    public static <T> IOperator<T> from(Iterator<T> iterator) {
+    /**
+     * Construct IOperator on Iterator object
+     *
+     * @param   iterator
+     *          A object which implement Iterator interface
+     * @param   <T>
+     *          The item type
+     * @return  The operator which can emit data and combine other operator
+     */
+    public static <T> IOperator<T> on(
+            final Iterator<T> iterator
+    ) {
         ArgumentChecker.required(iterator, "iterator");
         return new IteratorSource<>(iterator);
     }
 
-    public static <T> IOperator<T> from(Iterable<T> iterable) {
-        return from(iterable.iterator());
+    /**
+     * Construct IOperator on Iterable object
+     *
+     * @param   iterable
+     *          A object which implement Iterable interface
+     * @param   <T>
+     *          The item type
+     * @return  The operator which can emit data and combine other operator
+     */
+    public static <T> IOperator<T> on(
+            final Iterable<T> iterable
+    ) {
+        return on(iterable.iterator());
     }
 }
