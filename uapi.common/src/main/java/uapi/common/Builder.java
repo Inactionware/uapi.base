@@ -25,7 +25,7 @@ import java.util.Map;
 public abstract class Builder<T> {
 
     private boolean _built = false;
-    private Map<String, Object> _transiences = new HashMap<>();
+    private Map<String, Object> _transience = new HashMap<>();
 
     /**
      * Put a transience object into the builder.
@@ -39,7 +39,7 @@ public abstract class Builder<T> {
      */
     public void putTransience(final String name, final Object object) {
         ArgumentChecker.notEmpty(name, "name");
-        this._transiences.put(name, object);
+        this._transience.put(name, object);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Builder<T> {
     @SuppressWarnings("unchecked")
     public <E> E getTransience(final String name) {
         ArgumentChecker.notEmpty(name, "name");
-        return (E) this._transiences.get(name);
+        return (E) this._transience.get(name);
     }
 
     /**
@@ -72,13 +72,13 @@ public abstract class Builder<T> {
             final String name,
             final Functionals.Creator<E> creator) {
         ArgumentChecker.required(name, "name");
-        E e = (E) this._transiences.get(name);
+        E e = (E) this._transience.get(name);
         if (e != null) {
             return e;
         }
         ArgumentChecker.required(creator, "creator");
         e = creator.accept();
-        this._transiences.put(name, e);
+        this._transience.put(name, e);
         return e;
     }
 
@@ -93,7 +93,7 @@ public abstract class Builder<T> {
         checkStatus();
         validate();
         initProperties();
-        this._transiences.clear();
+        this._transience.clear();
         T obj = createInstance();
         this._built = true;
         return obj;
