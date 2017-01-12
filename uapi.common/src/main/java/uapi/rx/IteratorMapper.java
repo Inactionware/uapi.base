@@ -14,24 +14,24 @@ import uapi.common.ArgumentChecker;
 import java.util.Iterator;
 
 /**
- * Created by xquan on 6/29/2016.
+ * The data source which can iterate item on Iterator
  */
-class IteratorSource<T> extends Operator<T> {
+class IteratorMapper<T> extends Mapper<T> {
 
     private final Iterator<T> _itemsIte;
 
-    IteratorSource(Iterator<T> iterator) {
+    IteratorMapper(Iterator<T> iterator) {
         ArgumentChecker.required(iterator, "iterator");
         this._itemsIte = iterator;
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         return this._itemsIte.hasNext();
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (hasItem()) {
             return this._itemsIte.next();
         }
@@ -39,7 +39,7 @@ class IteratorSource<T> extends Operator<T> {
     }
 
     @Override
-    void done() {
+    public void end() {
         // do nothing
     }
 }

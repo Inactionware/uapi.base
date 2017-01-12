@@ -12,18 +12,18 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test case for ToListOperator
+ * Test case for ToListReducer
  */
-class ToListOperatorTest extends Specification {
+class ToListReducerTest extends Specification {
 
     def 'Test get item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
 
         given:
-        ToListOperator opt = new ToListOperator(preOpt)
+        ToListReducer opt = new ToListReducer(preOpt)
 
         expect:
         opt.getItem() == ["1", null, "2", null]

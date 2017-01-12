@@ -12,14 +12,14 @@ package uapi.rx;
 import uapi.InvalidArgumentException;
 
 /**
- * The LimitOperator will limit data by specific count setting
+ * The LimitMapper will limit data by specific count setting
  */
-class LimitOperator<T> extends Operator<T> {
+class LimitMapper<T> extends Mapper<T> {
 
     private final int _limitCount;
     private int _count = 0;
 
-    LimitOperator(Operator<T> previously, int limitCount) {
+    LimitMapper(Mapper<T> previously, int limitCount) {
         super(previously);
         if (limitCount < 0) {
             throw new InvalidArgumentException("The argument limitCount must not be a negative");
@@ -28,7 +28,7 @@ class LimitOperator<T> extends Operator<T> {
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         if (this._count >= this._limitCount) {
             return false;
         }
@@ -36,7 +36,7 @@ class LimitOperator<T> extends Operator<T> {
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (! hasItem()) {
             return null;
         }
@@ -45,7 +45,7 @@ class LimitOperator<T> extends Operator<T> {
     }
 
     @Override
-    void done() {
+    public void end() {
         this._count = 0;
     }
 }

@@ -4,18 +4,18 @@ import spock.lang.Specification
 import uapi.common.Pair
 
 /**
- * Test case for ToMapOperator
+ * Test case for ToMapReducer
  */
-class ToMapOperatorTest extends Specification {
+class ToMapReducerTest extends Specification {
 
     def 'Test getItem method'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> [new Pair("1", "2"), new Pair("2", "3"), new Pair("3", "4"), null]
         }
 
         given:
-        ToMapOperator opt = new ToMapOperator(preOpt)
+        ToMapReducer opt = new ToMapReducer(preOpt)
 
         expect:
         opt.getItem() == ["1":"2", "2":"3", "3":"4"]

@@ -12,16 +12,16 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for IteratorSource
+ * Test for IteratorMapper
  */
-class IteratorSourceTest extends Specification {
+class IteratorMapperTest extends Specification {
 
     def 'Test getItem'() {
         setup:
         Iterator<String> mockIt = (items as Collection).iterator()
 
         when:
-        IteratorSource itSrc = new IteratorSource(mockIt)
+        IteratorMapper itSrc = new IteratorMapper(mockIt)
 
         then:
         itSrc.getItem() == item1

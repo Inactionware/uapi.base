@@ -13,18 +13,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The ToListOperator will collect all of element and put into a List
+ * The ToListReducer will collect all of element and put into a List
  */
-class ToListOperator<T> extends TerminatedOperator<List<T>> {
+class ToListReducer<T> extends Reducer<List<T>> {
 
     private List<T> _list;
 
-    ToListOperator(Operator<T> previously) {
+    ToListReducer(Mapper<T> previously) {
         super(previously);
     }
 
     @Override
-    List<T> getItem() {
+    public List<T> getItem() {
         if (this._list == null) {
             this._list = new LinkedList<>();
         }

@@ -7,17 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The ToMapOperator will collect all of element and put into a Map
+ * The ToMapReducer will collect all of element and put into a Map
  * The previously operator must generate a value which is instance of Pair
  */
-class ToMapOperator<K, V> extends TerminatedOperator<Map<K, V>> {
+class ToMapReducer<K, V> extends Reducer<Map<K, V>> {
 
-    ToMapOperator(Operator<Pair<K, V>> previously) {
+    ToMapReducer(Mapper<Pair<K, V>> previously) {
         super(previously);
     }
 
     @Override
-    Map<K, V> getItem() throws NoItemException {
+    public Map<K, V> getItem() throws NoItemException {
         Map<K, V> items = new HashMap<>();
         while (hasItem()) {
             try {
@@ -29,7 +29,8 @@ class ToMapOperator<K, V> extends TerminatedOperator<Map<K, V>> {
             } catch (NoItemException ex) {
                 // do nothing
             } catch (ClassCastException ex) {
-                throw new GeneralException("The ToMapOperator requires previously operator generate item is instance of Pair");
+                throw new GeneralException(
+                        "The ToMapReducer requires previously operator generated item is instance of Pair");
             }
         }
         return items;

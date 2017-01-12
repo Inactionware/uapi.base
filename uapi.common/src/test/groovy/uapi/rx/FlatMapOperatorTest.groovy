@@ -12,18 +12,18 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test case for FlatMapOperator
+ * Test case for FlatMapMapper
  */
 class FlatMapOperatorTest extends Specification {
 
     def 'Test get item'() {
-        def preOpt = Mock(Operator) {
+        def preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1,2,3", "4,5,6"]
         }
 
         given:
-        FlatMapOperator opt = new FlatMapOperator(preOpt, {item -> Looper.on(item.split(","))})
+        FlatMapMapper opt = new FlatMapMapper(preOpt, { item -> Looper.on(item.split(","))})
 
         expect:
         opt.getItem() == "1"

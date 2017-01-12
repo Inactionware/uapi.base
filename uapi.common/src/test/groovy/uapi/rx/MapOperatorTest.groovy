@@ -12,17 +12,17 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for MapOperator
+ * Test for MapMapper
  */
 class MapOperatorTest extends Specification {
 
     def 'Test get item'() {
         when:
-        Operator<String> preOpt = Mock(Operator) {
+        Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >> next
             getItem() >> data
         }
-        MapOperator mapOpt = new MapOperator(preOpt, {item -> Integer.parseInt(item)});
+        MapMapper mapOpt = new MapMapper(preOpt, { item -> Integer.parseInt(item)});
 
         then:
         mapOpt.hasItem() == next

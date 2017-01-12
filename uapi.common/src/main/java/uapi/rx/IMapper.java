@@ -17,10 +17,10 @@ import java.util.Map;
 /**
  * All rx operator need to implement this interface
  */
-public interface IOperator<T> {
+public interface IMapper<T> {
 
     /**
-     * Return a operator which can map input data to output data by specific logic
+     * Return an operator which can map input data to output data by specific logic
      *
      * @param   operator
      *          The logic used for map input data to output data
@@ -28,9 +28,18 @@ public interface IOperator<T> {
      *          The output data type
      * @return  The map operator
      */
-    <O> IOperator<O> map(Functionals.Convert<T, O> operator);
+    <O> IMapper<O> map(Functionals.Convert<T, O> operator);
 
-    <O> IOperator<O> flatmap(ConvertMore<T, O> operator);
+    /**
+     * Return an operator which can map one input data to more than one output data by specific logic
+     *
+     * @param   operator
+     *          The logic used for map input data to output data
+     * @param   <O>
+     *          The output data type
+     * @return  The flatmap operator
+     */
+    <O> IMapper<O> flatmap(ConvertMore<T, O> operator);
 
     /**
      * Return a operator which can filter out input data by specific logic
@@ -39,7 +48,7 @@ public interface IOperator<T> {
      *          The filter logic
      * @return  The filter operator instance
      */
-    IOperator<T> filter(Functionals.Filter<T> operator);
+    IMapper<T> filter(Functionals.Filter<T> operator);
 
     /**
      * Construct an operator which can limit data size by specified count
@@ -48,12 +57,20 @@ public interface IOperator<T> {
      *          Limited count
      * @return  The limitation operator
      */
-    IOperator<T> limit(int count);
+    IMapper<T> limit(int count);
 
-    IOperator<T> next(Functionals.Action<T> operator);
+    /**
+     * Construct an operator which do specific action on each data
+     *
+     * @param   operator
+     *          The operator which contains specific action
+     * @return  The next operator instance
+     */
+    IMapper<T> next(Functionals.Action<T> operator);
 
     /**
      * Iterate all of input data by specific logic
+     *
      * @param   action
      *          The iteration logic
      */
@@ -65,7 +82,7 @@ public interface IOperator<T> {
      * @param   action
      *          The iteration logic
      */
-    void foreachWithIndex(IndexedForeachOperator.IndexedForeach<T> action);
+    void foreachWithIndex(IndexedAction<T> action);
 
     /**
      * Return first element of data
@@ -74,6 +91,13 @@ public interface IOperator<T> {
      */
     T first() throws NoItemException;
 
+    /**
+     * Return first element of data or return default value if no element is reached
+     *
+     * @param   defaultValue
+     *          Default value if no element is reached
+     * @return  The first element or default value
+     */
     T first(T defaultValue);
 
     /**
@@ -97,6 +121,13 @@ public interface IOperator<T> {
      */
     T single(T defaultValue) throws MoreItemException;
 
+    /**
+     * Sum all item's value
+     *
+     * @return  The sum value
+     * @throws  NoItemException
+     *          If no item can be reached
+     */
     T sum() throws NoItemException;
 
     /**

@@ -12,18 +12,18 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test case for FilterOperator
+ * Test case for FilterMapper
  */
 class FilterOperatorTest extends Specification {
 
     def 'Test get item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
 
         given:
-        FilterOperator opt = new FilterOperator(preOpt, {item -> item != null})
+        FilterMapper opt = new FilterMapper(preOpt, { item -> item != null})
 
         expect:
         opt.getItem() == "1"
@@ -32,13 +32,13 @@ class FilterOperatorTest extends Specification {
     }
 
     def 'Test get item with exception'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
 
         when:
-        FilterOperator opt = new FilterOperator(preOpt, {item -> item != null})
+        FilterMapper opt = new FilterMapper(preOpt, { item -> item != null})
         opt.getItem()
         opt.getItem()
         opt.getItem()

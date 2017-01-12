@@ -13,20 +13,20 @@ import uapi.common.ArgumentChecker;
 import uapi.common.Functionals;
 
 /**
- * The FilterOperator will filter out specific value which are not match specified logic
+ * The FilterMapper will filter out specific value which are not match specified logic
  */
-class FilterOperator<T> extends Operator<T>{
+class FilterMapper<T> extends Mapper<T> {
 
     private final Functionals.Filter<T> _filter;
 
-    FilterOperator(Operator<T> previously, final Functionals.Filter<T> filter) {
+    FilterMapper(Mapper<T> previously, final Functionals.Filter<T> filter) {
         super(previously);
         ArgumentChecker.required(filter, "filter");
         this._filter = filter;
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (! hasItem()) {
             return null;
         }

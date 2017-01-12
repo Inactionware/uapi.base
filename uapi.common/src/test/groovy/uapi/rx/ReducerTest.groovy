@@ -9,17 +9,19 @@
 
 package uapi.rx
 
+import spock.lang.Ignore
 import spock.lang.Specification
 import uapi.GeneralException
 
 /**
- * Tests for TerminatedOperator
+ * Tests for Reducer
  */
-class TerminatedOperatorTest extends Specification {
+@Ignore
+class ReducerTest extends Specification {
 
     def 'Test map method'() {
         given:
-        def Operator<String> preOpt = Mock(Operator) { }
+        def Mapper<String> preOpt = Mock(Mapper)
         def TestOp op = new TestOp(preOpt)
 
         when:
@@ -29,9 +31,21 @@ class TerminatedOperatorTest extends Specification {
         thrown(GeneralException)
     }
 
+    def 'Test flatmap method'() {
+        given:
+        def Mapper<String> preOpt = Mock(Mapper)
+        def TestOp op = new TestOp(preOpt)
+
+        when:
+        op.flatmap(null)
+
+        then:
+        thrown(GeneralException)
+    }
+
     def 'Test filter method'() {
         given:
-        def Operator<String> preOpt = Mock(Operator) { }
+        def Mapper<String> preOpt = Mock(Mapper)
         def TestOp op = new TestOp(preOpt)
 
         when:
@@ -43,7 +57,7 @@ class TerminatedOperatorTest extends Specification {
 
     def 'Test limit method'() {
         given:
-        def Operator<String> preOpt = Mock(Operator) { }
+        def Mapper<String> preOpt = Mock(Mapper)
         def TestOp op = new TestOp(preOpt)
 
         when:
@@ -53,9 +67,21 @@ class TerminatedOperatorTest extends Specification {
         thrown(GeneralException)
     }
 
+    def 'Test next method'() {
+        given:
+        def Mapper<String> preOpt = Mock(Mapper)
+        def TestOp op = new TestOp(preOpt)
+
+        when:
+        op.next(null)
+
+        then:
+        thrown(GeneralException)
+    }
+
     def 'Test foreach method'() {
         given:
-        def Operator<String> preOpt = Mock(Operator) { }
+        def Mapper<String> preOpt = Mock(Mapper)
         def TestOp op = new TestOp(preOpt)
 
         when:
@@ -65,9 +91,9 @@ class TerminatedOperatorTest extends Specification {
         thrown(GeneralException)
     }
 
-    class TestOp extends TerminatedOperator {
+    class TestOp extends Reducer {
 
-        def TestOp(Operator previously) {
+        def TestOp(Mapper previously) {
             super(previously)
         }
 

@@ -12,19 +12,19 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for IndexedForeachOperator
+ * Test for
  */
-class IndexedForeachOperatorTest extends Specification {
+class ForeachReducerTest extends Specification {
 
-    def 'Test getItem'() {
-        def Operator<String> preOpt = Mock(Operator) {
+    def 'Test get item'() {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, false]
             getItem() >>> ["1", "2", null]
         }
 
         given:
         List<String> list = new ArrayList<>()
-        IndexedForeachOperator opt = new IndexedForeachOperator(preOpt, {index, item -> list.add(index, item)});
+        ForeachReducer opt = new ForeachReducer(preOpt, { item -> list.add(item)});
 
         expect:
         opt.getItem() == null

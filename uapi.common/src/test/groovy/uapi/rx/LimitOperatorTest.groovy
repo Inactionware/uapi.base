@@ -12,18 +12,18 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test case for LimitOperator
+ * Test case for LimitMapper
  */
 class LimitOperatorTest extends Specification {
 
     def 'Test get item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
 
         given:
-        LimitOperator opt = new LimitOperator(preOpt, 2)
+        LimitMapper opt = new LimitMapper(preOpt, 2)
 
         expect:
         opt.getItem() == "1"
@@ -33,13 +33,13 @@ class LimitOperatorTest extends Specification {
     }
 
     def 'Test get item with 0 count'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
 
         given:
-        LimitOperator opt = new LimitOperator(preOpt, 0)
+        LimitMapper opt = new LimitMapper(preOpt, 0)
 
         expect:
         opt.getItem() == null

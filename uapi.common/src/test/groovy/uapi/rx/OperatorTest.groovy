@@ -13,7 +13,7 @@ import spock.lang.Specification
 import uapi.common.Pair
 
 /**
- * Test for Operator
+ * Test for Mapper
  */
 class OperatorTest extends Specification {
 
@@ -26,7 +26,7 @@ class OperatorTest extends Specification {
 
         then:
         newOp != null
-        newOp instanceof MapOperator
+        newOp instanceof MapMapper
     }
 
     def 'Test flatmap'() {
@@ -38,7 +38,7 @@ class OperatorTest extends Specification {
 
         then:
         newOp != null
-        newOp instanceof FlatMapOperator
+        newOp instanceof FlatMapMapper
     }
 
     def 'Test filter'() {
@@ -50,7 +50,7 @@ class OperatorTest extends Specification {
 
         then:
         newOp != null
-        newOp instanceof FilterOperator
+        newOp instanceof FilterMapper
     }
 
     def 'Test limit'() {
@@ -62,7 +62,7 @@ class OperatorTest extends Specification {
 
         then:
         newOp != null
-        newOp instanceof LimitOperator
+        newOp instanceof LimitMapper
     }
 
     def 'Test next'() {
@@ -74,7 +74,7 @@ class OperatorTest extends Specification {
 
         then:
         newOp != null
-        newOp instanceof NextOperator
+        newOp instanceof NextMapper
     }
 
     def 'Test foreach'() {
@@ -179,7 +179,7 @@ class OperatorTest extends Specification {
         res == ['1': '2']
     }
 
-    class TestOp extends Operator {
+    class TestOp extends Mapper {
 
         Object item
         boolean first=true
@@ -200,10 +200,10 @@ class OperatorTest extends Specification {
         }
 
         @Override
-        void done() { }
+        void end() { }
     }
 
-    class TestOp2 extends Operator<Pair<String, String>> {
+    class TestOp2 extends Mapper<Pair<String, String>> {
 
         Pair<String, String> item
         boolean first=true
@@ -224,6 +224,6 @@ class OperatorTest extends Specification {
         }
 
         @Override
-        void done() { }
+        void end() { }
     }
 }

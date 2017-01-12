@@ -12,24 +12,24 @@ package uapi.rx;
 /**
  * The FirstOperator will emit only one first data, all subsequent data will be abandoned
  */
-class FirstOperator<T> extends TerminatedOperator<T> {
+class FirstOperator<T> extends Reducer<T> {
 
     private boolean _firstIsSent = false;
     private boolean _useDefault = false;
     private T _default = null;
 
-    FirstOperator(Operator<T> previously) {
+    FirstOperator(Mapper<T> previously) {
         super(previously);
     }
 
-    FirstOperator(Operator<T> previously, T defaultValue) {
+    FirstOperator(Mapper<T> previously, T defaultValue) {
         super(previously);
         this._useDefault = true;
         this._default = defaultValue;
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         if (this._firstIsSent) {
             return false;
         }
@@ -37,7 +37,7 @@ class FirstOperator<T> extends TerminatedOperator<T> {
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (! hasItem()) {
             if (this._useDefault) {
                 return this._default;

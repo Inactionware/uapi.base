@@ -18,34 +18,34 @@ import java.util.List;
 /**
  * The source hold item list and a position to point to last read position.
  */
-class OrderedSource<T> extends Operator<T> {
+class OrderedMapper<T> extends Mapper<T> {
 
     private final List<T> _items;
     private int _pos = -1;
 
-    OrderedSource(final List<T> items) {
+    OrderedMapper(final List<T> items) {
         ArgumentChecker.required(items, "items");
         this._items = items;
     }
 
-    OrderedSource(final T item) {
+    OrderedMapper(final T item) {
         ArgumentChecker.required(item, "items");
         this._items = new ArrayList<>(1);
         this._items.add(item);
     }
 
-    OrderedSource(final T... items) {
+    OrderedMapper(final T... items) {
         ArgumentChecker.required(items, "items");
         this._items = Arrays.asList(items);
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         return this._pos < this._items.size() - 1;
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (hasItem()) {
             this._pos++;
             return this._items.get(this._pos);
@@ -54,7 +54,7 @@ class OrderedSource<T> extends Operator<T> {
     }
 
     @Override
-    void done() {
+    public void end() {
         this._pos = -1;
     }
 }

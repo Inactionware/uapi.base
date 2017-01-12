@@ -12,20 +12,20 @@ package uapi.rx;
 import uapi.common.ArgumentChecker;
 
 /**
- * A IndexedForeachOperator iterate all items by specific functionality with item index
+ * A IndexedForeachReducer iterate all items by specific functionality with item index
  */
-public class IndexedForeachOperator<T> extends TerminatedOperator<T> {
+public class IndexedForeachReducer<T> extends Reducer<T> {
 
-    private final IndexedForeach<T> _action;
+    private final IndexedAction<T> _action;
 
-    IndexedForeachOperator(Operator<T> previously, final IndexedForeach<T> action) {
+    IndexedForeachReducer(Mapper<T> previously, final IndexedAction<T> action) {
         super(previously);
         ArgumentChecker.required(action, "action");
         this._action = action;
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         boolean hasItem = hasItem();
         int index = 0;
         while (hasItem) {
@@ -35,10 +35,5 @@ public class IndexedForeachOperator<T> extends TerminatedOperator<T> {
             index++;
         }
         return null;
-    }
-
-    @FunctionalInterface
-    public interface IndexedForeach<T> {
-        void accept(int index, T in);
     }
 }

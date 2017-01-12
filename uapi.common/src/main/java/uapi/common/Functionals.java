@@ -19,21 +19,47 @@ public interface Functionals {
         O accept(I instance) throws T;
     }
 
+    /**
+     * Create new data
+     *
+     * @param   <T>
+     *          The created data's type
+     */
     @FunctionalInterface
     interface Creator<T> {
         T accept();
     }
 
+    /**
+     * Convert input data to output data
+     *
+     * @param   <I>
+     *          The input data type
+     * @param   <O>
+     *          The output data type
+     */
     @FunctionalInterface
     interface Convert<I, O> {
         O accept(I in);
     }
 
+    /**
+     * Apply specific action on input data
+     *
+     * @param   <I>
+     *          The input data type
+     */
     @FunctionalInterface
     interface Action<I> {
         void accept(I in);
     }
 
+    /**
+     * Check input data by specific logic
+     *
+     * @param   <T>
+     *          input data
+     */
     @FunctionalInterface
     interface Filter<T> {
         boolean accept(T in);

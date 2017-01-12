@@ -13,21 +13,21 @@ import uapi.common.ArgumentChecker;
 import uapi.common.Functionals;
 
 /**
- * A NextOperator will do specific action on each input item
+ * A NextMapper will do specific action on each input item
  */
-class NextOperator<T> extends Operator<T> {
+class NextMapper<T> extends Mapper<T> {
 
     private final Functionals.Action<T> _action;
 
-    NextOperator(Operator<T> previously, final Functionals.Action<T> action) {
+    NextMapper(Mapper<T> previously, final Functionals.Action<T> action) {
         super(previously);
         ArgumentChecker.required(action, "action");
         this._action = action;
     }
 
     @Override
-    T getItem() throws NoItemException {
-        T item = ((Operator<T>) getPreviously()).getItem();
+    public T getItem() throws NoItemException {
+        T item = ((Mapper<T>) getPreviously()).getItem();
         this._action.accept(item);
         return item;
     }

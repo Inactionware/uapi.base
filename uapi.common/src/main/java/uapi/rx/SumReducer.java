@@ -16,18 +16,18 @@ import java.math.BigDecimal;
 /**
  * Created by min on 16/8/21.
  */
-public class SumOperator<T> extends TerminatedOperator<T> {
+public class SumReducer<T> extends Reducer<T> {
 
     private SupportedType _type;
 
     private BigDecimal _sum = new BigDecimal("0");
 
-    SumOperator(Operator<T> previously) {
+    SumReducer(Mapper<T> previously) {
         super(previously);
     }
 
     @Override
-    T getItem() throws NoItemException {
+    public T getItem() throws NoItemException {
         while (hasItem()) {
             try {
                 T item = (T) getPreviously().getItem();

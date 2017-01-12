@@ -12,21 +12,21 @@ package uapi.rx;
 import uapi.common.ArgumentChecker;
 
 /**
- * The FlatMapOperator will generate more then one element on input element
+ * The FlatMapMapper will generate more then one element on input element
  */
-class FlatMapOperator<I, T> extends Operator<T> {
+class FlatMapMapper<I, T> extends Mapper<T> {
 
     private final ConvertMore<I, T> _converter;
-    private Operator<T> _currently;
+    private Mapper<T> _currently;
 
-    FlatMapOperator(Operator<I> previously, ConvertMore<I, T> converter) {
+    FlatMapMapper(Mapper<I> previously, ConvertMore<I, T> converter) {
         super(previously);
         ArgumentChecker.required(converter, "converter");
         this._converter = converter;
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         boolean hasItem = false;
         if (this._currently != null) {
             hasItem = this._currently.hasItem();
@@ -38,7 +38,7 @@ class FlatMapOperator<I, T> extends Operator<T> {
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (! hasItem()) {
             return null;
         }
@@ -47,7 +47,7 @@ class FlatMapOperator<I, T> extends Operator<T> {
         }
         while (super.hasItem()) {
             I item = (I) getPreviously().getItem();
-            this._currently = (Operator<T>) this._converter.accept(item);
+            this._currently = (Mapper<T>) this._converter.accept(item);
             if (this._currently.hasItem()) {
                 return this._currently.getItem();
             }

@@ -12,13 +12,13 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for CollectionSource
+ * Test for CollectionMapper
  */
-class CollectionSourceTest extends Specification {
+class CollectionMapperTest extends Specification {
 
     def 'Test has item'() {
         when:
-        CollectionSource arrSource = new CollectionSource(input)
+        CollectionMapper arrSource = new CollectionMapper(input)
 
         then:
         arrSource.hasItem() == checkItem
@@ -30,7 +30,7 @@ class CollectionSourceTest extends Specification {
 
     def 'Test null item'() {
         when:
-        CollectionSource arrSource = new CollectionSource(input)
+        CollectionMapper arrSource = new CollectionMapper(input)
 
         then:
         arrSource.hasItem() == checkItem1

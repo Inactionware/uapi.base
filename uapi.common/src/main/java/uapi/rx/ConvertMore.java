@@ -10,9 +10,9 @@
 package uapi.rx;
 
 /**
- * Created by xquan on 6/14/2016.
+ * Convert one input data to more than one output data
  */
 @FunctionalInterface
 public interface ConvertMore<I, O> {
-    IOperator<O> accept(I in);
+    IMapper<O> accept(I in);
 }

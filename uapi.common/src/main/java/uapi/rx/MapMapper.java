@@ -13,21 +13,21 @@ import uapi.common.ArgumentChecker;
 import uapi.common.Functionals;
 
 /**
- * A MapOperator convert a input item to output item by specific functionality
+ * A MapMapper convert a input item to output item by specific functionality
  */
-class MapOperator<I, T> extends Operator<T> {
+class MapMapper<I, T> extends Mapper<T> {
 
     private final Functionals.Convert<I, T> _converter;
 
-    MapOperator(Operator<I> previously, Functionals.Convert<I, T> converter) {
+    MapMapper(Mapper<I> previously, Functionals.Convert<I, T> converter) {
         super(previously);
         ArgumentChecker.required(converter, "converter");
         this._converter = converter;
     }
 
     @Override
-    T getItem() {
-        I item = ((Operator<I>) getPreviously()).getItem();
+    public T getItem() {
+        I item = ((Mapper<I>) getPreviously()).getItem();
         if (item == null) {
             return null;
         }

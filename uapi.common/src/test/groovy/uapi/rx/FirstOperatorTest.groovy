@@ -17,7 +17,7 @@ import spock.lang.Specification
 class FirstOperatorTest extends Specification {
 
     def 'Test get item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, true, false]
             getItem() >>> ["1", null, "2", null]
         }
@@ -33,7 +33,7 @@ class FirstOperatorTest extends Specification {
     }
 
     def 'Test get item with default'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [false]
         }
 

@@ -12,13 +12,13 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for OrderedSourceTest
+ * Test for OrderedMapperTest
  */
-class OrderedSourceTest extends Specification {
+class OrderedMapperTest extends Specification {
 
     def 'Test has item'() {
         when:
-        OrderedSource listSource = new OrderedSource(input)
+        OrderedMapper listSource = new OrderedMapper(input)
 
         then:
         listSource.hasItem() == checkItem
@@ -30,7 +30,7 @@ class OrderedSourceTest extends Specification {
 
     def 'Test null item'() {
         when:
-        OrderedSource listSource = new OrderedSource(input)
+        OrderedMapper listSource = new OrderedMapper(input)
 
         then:
         listSource.hasItem() == checkItem1

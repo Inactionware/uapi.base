@@ -13,70 +13,70 @@ import spock.lang.Specification
 import uapi.GeneralException
 
 /**
- * Test for SumOperator
+ * Test for SumReducer
  */
-class SumOperatorTest extends Specification {
+class SumReducerTest extends Specification {
 
     def 'Test get int item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, false]
             getItem() >>> [1, 2, 3, null]
         }
 
         when:
-        SumOperator opt = new SumOperator(preOpt)
+        SumReducer opt = new SumReducer(preOpt)
 
         then:
         opt.getItem() == 6
     }
 
     def 'Test get float item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, false]
             getItem() >>> [1.1f, 2.1f, 3.1f, null]
         }
 
         when:
-        SumOperator opt = new SumOperator(preOpt)
+        SumReducer opt = new SumReducer(preOpt)
 
         then:
         opt.getItem() == 6.3f
     }
 
     def 'Test get double item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, false]
             getItem() >>> [1.1d, 2.1d, 3.1d, null]
         }
 
         when:
-        SumOperator opt = new SumOperator(preOpt)
+        SumReducer opt = new SumReducer(preOpt)
 
         then:
         opt.getItem() == 6.3d
     }
 
     def 'Test get long item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, false]
             getItem() >>> [1l, 2l, 3l, null]
         }
 
         when:
-        SumOperator opt = new SumOperator(preOpt)
+        SumReducer opt = new SumReducer(preOpt)
 
         then:
         opt.getItem() == 6l
     }
 
     def 'Test unsupported item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true, true, false]
             getItem() >>> [false, 2l, 3l, null]
         }
 
         when:
-        SumOperator opt = new SumOperator(preOpt)
+        SumReducer opt = new SumReducer(preOpt)
         opt.getItem()
 
         then:

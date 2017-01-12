@@ -12,18 +12,18 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for SingleOperator
+ * Test for SingleReducer
  */
-class SingleOperatorTest extends Specification {
+class SingleReducerTest extends Specification {
 
     def 'Test Get Item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, false]
             getItem() >>> ["1"]
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt)
+        SingleReducer opt = new SingleReducer(preOpt)
 
         expect:
         opt.getItem() == "1"
@@ -31,26 +31,26 @@ class SingleOperatorTest extends Specification {
     }
 
     def 'Test Get Item with default'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >> false
             getItem() >> {throw new NoItemException()}
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt, 0)
+        SingleReducer opt = new SingleReducer(preOpt, 0)
 
         expect:
         opt.getItem() == 0
     }
 
     def 'Test Get Item no item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >> false
             getItem() >> {throw new NoItemException()}
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt)
+        SingleReducer opt = new SingleReducer(preOpt)
 
         when:
         opt.getItem()
@@ -60,13 +60,13 @@ class SingleOperatorTest extends Specification {
     }
 
     def 'Test Get Item no item2'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >> true
             getItem() >> {throw new NoItemException()}
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt)
+        SingleReducer opt = new SingleReducer(preOpt)
 
         when:
         opt.getItem()
@@ -76,26 +76,26 @@ class SingleOperatorTest extends Specification {
     }
 
     def 'Test Get Item no item3'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >> true
             getItem() >> {throw new NoItemException()}
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt, 0)
+        SingleReducer opt = new SingleReducer(preOpt, 0)
 
         expect:
         opt.getItem() == 0
     }
 
     def 'Test Get Item more item'() {
-        def Operator<String> preOpt = Mock(Operator) {
+        def Mapper<String> preOpt = Mock(Mapper) {
             hasItem() >>> [true, true]
             getItem() >>> ["1", "2"]
         }
 
         given:
-        SingleOperator opt = new SingleOperator(preOpt)
+        SingleReducer opt = new SingleReducer(preOpt)
 
         when:
         opt.getItem()

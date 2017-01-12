@@ -10,25 +10,25 @@
 package uapi.rx;
 
 /**
- * The SingleOperator return only one item or throw an exception if no item can be returned
+ * The SingleReducer return only one item or throw an exception if no item can be returned
  */
-class SingleOperator<T> extends TerminatedOperator<T> {
+class SingleReducer<T> extends Reducer<T> {
 
     private boolean _useDefault = false;
     private T _default = null;
 
-    SingleOperator(Operator previously) {
+    SingleReducer(Mapper previously) {
         super(previously);
     }
 
-    SingleOperator(Operator<T> previously, T defaultValue) {
+    SingleReducer(Mapper<T> previously, T defaultValue) {
         super(previously);
         this._useDefault = true;
         this._default = defaultValue;
     }
 
     @Override
-    T getItem() throws NoItemException {
+    public T getItem() throws NoItemException {
         boolean hasItem = hasItem();
         T item = null;
         boolean itemSet = false;

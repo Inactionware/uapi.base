@@ -14,27 +14,27 @@ import uapi.common.ArgumentChecker;
 import java.util.*;
 
 /**
- * A CollectionSource hold data source locally, unlike OrderedSource, it does not guarantee the items are ordered
+ * A CollectionMapper hold data source locally, unlike OrderedMapper, it does not guarantee the items are ordered
  * which is depends on underlay implementation
  */
-class CollectionSource<T> extends Operator<T> {
+class CollectionMapper<T> extends Mapper<T> {
 
     private final Collection<T> _items;
     private Iterator<T> _itemsIte;
 
-    CollectionSource(Collection<T> items) {
+    CollectionMapper(Collection<T> items) {
         ArgumentChecker.required(items, "items");
         this._items = items;
         this._itemsIte = items.iterator();
     }
 
     @Override
-    boolean hasItem() {
+    public boolean hasItem() {
         return this._itemsIte.hasNext();
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         if (hasItem()) {
             return this._itemsIte.next();
         }
@@ -42,7 +42,7 @@ class CollectionSource<T> extends Operator<T> {
     }
 
     @Override
-    void done() {
+    public void end() {
         this._itemsIte = this._items.iterator();
     }
 }

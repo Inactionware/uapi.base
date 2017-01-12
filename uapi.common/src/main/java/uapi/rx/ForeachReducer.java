@@ -13,20 +13,20 @@ import uapi.common.ArgumentChecker;
 import uapi.common.Functionals;
 
 /**
- * A ForeachOperator iterate all items by specific functionality
+ * A ForeachReducer iterate all items by specific functionality
  */
-class ForeachOperator<T> extends TerminatedOperator<T> {
+class ForeachReducer<T> extends Reducer<T> {
 
     private final Functionals.Action _action;
 
-    ForeachOperator(Operator previously, final Functionals.Action action) {
+    ForeachReducer(Mapper previously, final Functionals.Action action) {
         super(previously);
         ArgumentChecker.required(action, "action");
         this._action = action;
     }
 
     @Override
-    T getItem() {
+    public T getItem() {
         try {
             boolean hasItem = hasItem();
             while (hasItem) {

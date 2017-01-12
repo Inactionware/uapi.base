@@ -12,20 +12,20 @@ package uapi.rx
 import spock.lang.Specification
 
 /**
- * Test for NextOperator
+ * Test for NextMapper
  */
 class NextOperatorTest extends Specification {
 
     def 'Test getItem'() {
         setup:
-        Operator<String> mockOp = Mock(Operator) {
+        Mapper<String> mockOp = Mock(Mapper) {
             hasItem() >>> hasItem
             getItem() >>> items
         }
 
         when:
         def list = new ArrayList()
-        NextOperator nextOp = new NextOperator(mockOp, {item -> list.add(item)})
+        NextMapper nextOp = new NextMapper(mockOp, { item -> list.add(item)})
         nextOp.getItem()
         nextOp.getItem()
 
