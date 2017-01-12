@@ -20,32 +20,17 @@ import java.util.Map;
  */
 abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
 
-//    private final Mapper<?> _previously;
-
     Mapper() {
         super();
-//        this._previously = null;
     }
 
     Mapper(Mapper<?> previously) {
-//        ArgumentChecker.required(previously, "previously");
-//        this._previously = previously;
         super(previously);
     }
 
-//    Mapper<?> getPreviously() {
-//        return this._previously;
-//    }
-//
-//    boolean hasItem() {
-//        return this._previously != null && this._previously.hasItem();
-//    }
-//
-//    abstract T getItem() throws NoItemException;
-//
-//    void done() {
-//        getPreviously().done();
-//    }
+    // ----------------------------------------------------
+    // General mapper
+    // ----------------------------------------------------
 
     @Override
     public <O> IMapper<O> map(Functionals.Convert<T, O> operator) {
@@ -73,7 +58,7 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     // ----------------------------------------------------
-    // Terminated operations
+    // Terminated mapper
     // ----------------------------------------------------
 
     @Override
