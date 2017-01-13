@@ -1,3 +1,3 @@
 rootProject.name = 'uapi.base'
 
-include 'uapi.common', 'uapi.state', 'uapi.annotation', 'uapi.codegen'
+include 'uapi.common', 'uapi.state', 'uapi.codegen', 'uapi.annotation'

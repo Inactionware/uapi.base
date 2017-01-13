@@ -14,44 +14,7 @@ package uapi.rx;
  */
 abstract class Reducer<T> extends Stream<T> {
 
-//    private static final String ERR_MSG = "The terminated operator can't wire to other operator";
-
     Reducer(Mapper previously) {
         super(previously);
     }
-
-//    @Override
-//    public <O> IMapper<O> map(Functionals.Convert<T, O> operator) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public <O> IMapper<O> flatmap(ConvertMore<T, O> operator) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public IMapper<T> filter(Functionals.Filter<T> operator) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public IMapper<T> limit(int count) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public IMapper<T> next(Functionals.Action<T> operator) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public void foreach(Functionals.Action<T> action) {
-//        throw new GeneralException(ERR_MSG);
-//    }
-//
-//    @Override
-//    public void foreachWithIndex(IndexedAction<T> action) {
-//        throw new GeneralException(ERR_MSG);
-//    }
 }

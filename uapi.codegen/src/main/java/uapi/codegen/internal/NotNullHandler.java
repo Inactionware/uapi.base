@@ -7,12 +7,12 @@
  * use the project into a commercial product
  */
 
-package uapi.annotation.internal;
+package uapi.codegen.internal;
 
 import com.google.auto.service.AutoService;
-import uapi.InvalidArgumentException;
 import uapi.GeneralException;
-import uapi.annotation.*;
+import uapi.InvalidArgumentException;
+import uapi.annotation.NotNull;
 import uapi.codegen.*;
 import uapi.common.ArgumentChecker;
 import uapi.common.StringHelper;
