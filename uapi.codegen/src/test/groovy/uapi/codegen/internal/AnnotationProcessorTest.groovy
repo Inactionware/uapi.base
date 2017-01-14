@@ -37,7 +37,6 @@ class AnnotationProcessorTest extends Specification {
         annoProc.getSupportedSourceVersion() != null
     }
 
-    @Ignore
     def 'Test process'() {
         def annoElem = Mock(TypeElement) {
 
