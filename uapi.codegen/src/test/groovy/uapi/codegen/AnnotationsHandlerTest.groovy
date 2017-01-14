@@ -11,7 +11,7 @@ package uapi.codegen
 
 import spock.lang.Specification
 import uapi.GeneralException
-import uapi.annotation.NotNull
+import uapi.codegen.internal.TestAnno
 
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
@@ -28,7 +28,7 @@ class AnnotationsHandlerTest extends Specification {
 
         @Override
         protected Class<? extends Annotation>[] getOrderedAnnotations() {
-            return [NotNull.class ] as Class<? extends Annotation>[]
+            return [TestAnno.class ] as Class<? extends Annotation>[]
         }
 
         @Override
@@ -56,7 +56,7 @@ class AnnotationsHandlerTest extends Specification {
         }
 
         when:
-        handler.checkModifiers(mockElemt, NotNull, unsupport)
+        handler.checkModifiers(mockElemt, TestAnno, unsupport)
 
         then:
         thrown(GeneralException)
@@ -75,7 +75,7 @@ class AnnotationsHandlerTest extends Specification {
         }
 
         when:
-        handler.checkAnnotations(mockElemt, NotNull)
+        handler.checkAnnotations(mockElemt, TestAnno)
 
         then:
         thrown(GeneralException)
@@ -247,6 +247,6 @@ class AnnotationsHandlerTest extends Specification {
 
     def 'Test to string'() {
         expect:
-        handler.toString() == 'AnnotationsHandler[supportedAnnotations=interface uapi.annotation.NotNull]'
+        handler.toString() == 'AnnotationsHandler[supportedAnnotations=interface uapi.codegen.internal.TestAnno]'
     }
 }

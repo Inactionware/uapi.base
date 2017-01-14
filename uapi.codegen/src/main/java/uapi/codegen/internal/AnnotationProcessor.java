@@ -67,13 +67,13 @@ public class AnnotationProcessor extends AbstractProcessor {
                     this._logger.info("Initial external annotation handler - " + handlerClassName);
                     Class handlerClass = Class.forName(handlerClassName);
                     Object handler = handlerClass.newInstance();
-                    if (!(handler instanceof AnnotationsHandler)) {
+                    if (!(handler instanceof IAnnotationsHandler)) {
                         this._logger.error(
                                 "The handler [{}] is not an instance of AnnotationsHandler",
                                 handler.getClass().getName());
                         return;
                     }
-                    initForHandler((AnnotationsHandler) handler);
+                    initForHandler((IAnnotationsHandler) handler);
                 }
             }
         } catch (Exception ex) {

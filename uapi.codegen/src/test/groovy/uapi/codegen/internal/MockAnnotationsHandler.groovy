@@ -9,6 +9,7 @@
 
 package uapi.codegen.internal
 
+import com.google.auto.service.AutoService
 import uapi.GeneralException
 import uapi.codegen.IAnnotationsHandler
 import uapi.codegen.IBuilderContext
@@ -19,6 +20,7 @@ import java.lang.annotation.Annotation
 /**
  * The mock for IAnnotationsHandler
  */
+@AutoService(IAnnotationsHandler)
 class MockAnnotationsHandler implements IAnnotationsHandler {
 
     @Override

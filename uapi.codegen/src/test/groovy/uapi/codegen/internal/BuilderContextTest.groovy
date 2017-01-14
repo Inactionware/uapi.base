@@ -11,18 +11,20 @@ package uapi.codegen.internal
 
 import spock.lang.Ignore
 import spock.lang.Specification
+import uapi.GeneralException
 import uapi.codegen.IHandlerHelper
-import uapi.annotation.NotNull
 
 import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
+import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 import javax.tools.FileObject
 import javax.tools.StandardLocation
+import java.lang.annotation.Annotation
 
 /**
  * Unit test for BuilderContext
@@ -51,6 +53,7 @@ class BuilderContextTest extends Specification {
         budrCtx.getFiler() != null
     }
 
+    @Ignore
     def 'Test getElementsAnnotatedWith'() {
         given:
         def procEnv = Mock(ProcessingEnvironment)
@@ -86,7 +89,6 @@ class BuilderContextTest extends Specification {
         }
         def roundEnv = Mock(RoundEnvironment)
         def budrCtx = new BuilderContext(procEnv, roundEnv)
-
 
         when:
         def found = budrCtx.findClassBuilder(mockElemt)
@@ -139,12 +141,142 @@ class BuilderContextTest extends Specification {
         'AAA'   | 'com.test'
     }
 
-    @Ignore
+    def 'Test check modifiers'() {
+        given:
+        def mockElemt = Mock(Element) {
+            getModifiers() >> ([Modifier.PUBLIC, Modifier.FINAL] as Set)
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        budrCtx.checkModifiers(mockElemt, TestAnno.class, Modifier.PRIVATE)
+
+        then:
+        noExceptionThrown()
+    }
+
+    def 'Test check modifiers which unexpected'() {
+        given:
+        def mockElemt = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getEnclosingElement() >> Mock(Element) {
+                getSimpleName() >> Mock(Name) {
+                    toString() >> 'Test'
+                }
+            }
+            getSimpleName() >> Mock(Name) {
+                toString() >> clsName
+            }
+            getModifiers() >> ([Modifier.PUBLIC, Modifier.FINAL] as Set)
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        budrCtx.checkModifiers(mockElemt, TestAnno.class, Modifier.FINAL)
+
+        then:
+        thrown(GeneralException)
+
+        where:
+        clsName | pkgName
+        'AAA'   | 'com.test'
+    }
+
+    def 'Test check annotation'() {
+        given:
+        def elem = Mock(Element) {
+            getAnnotation(TestAnno.class) >> Mock(Annotation)
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        budrCtx.checkAnnotations(elem, TestAnno.class)
+
+        then:
+        noExceptionThrown()
+    }
+
+    def 'Test check annotation which unexpected'() {
+        given:
+        def elem = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getSimpleName() >> Mock(Name) {
+                toString() >> 'AA'
+            }
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        budrCtx.checkAnnotations(elem, TestAnno.class)
+
+        then:
+        thrown(GeneralException)
+    }
+
+    def 'Test find field with'() {
+        given:
+        def fieldElem = Mock(Element) {
+            getKind() >> ElementKind.FIELD
+            asType() >> Mock(TypeMirror) {
+                toString() >> typeName
+            }
+            getAnnotation(TestAnno.class) >> Mock(Annotation)
+        }
+        def classElem = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getEnclosedElements() >> [fieldElem]
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def found = budrCtx.findFieldWith(classElem, type, TestAnno.class)
+
+        then:
+        noExceptionThrown()
+        found == fieldElem
+
+        where:
+        typeName                    | type
+        String.class.canonicalName  | String.class
+    }
+
+    def 'Test find field with nothing'() {
+        given:
+        def classElem = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getEnclosedElements() >> []
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def found = budrCtx.findFieldWith(classElem, type, TestAnno.class)
+
+        then:
+        noExceptionThrown()
+        found == null
+
+        where:
+        typeName                    | type
+        String.class.canonicalName  | String.class
+    }
+
     def 'Test load template'() {
         given:
         def filer = Mock(Filer) {
             getResource(StandardLocation.CLASS_PATH, _ as String, tempPath) >> Mock(FileObject) {
-                openReader(_) >> Mock(Reader)
+                openReader(_) >> new FileReader('src/main/resources/' + tempPath)
             }
         }
         def procEnv = Mock(ProcessingEnvironment) {
@@ -163,6 +295,33 @@ class BuilderContextTest extends Specification {
         where:
         tempPath                            | placeholder
         'template/generated_sources.ftl'    | null
+    }
+
+    def 'Test clear builders'() {
+        given:
+        def mockElemt = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getSimpleName() >> Mock(Name) {
+                toString() >> 'Class'
+            }
+        }
+        def procEnv = Mock(ProcessingEnvironment) {
+            getElementUtils() >> Mock(Elements) {
+                getPackageOf(mockElemt) >> Mock(PackageElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> 'PKG'
+                    }
+                }
+            }
+        }
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        expect:
+        budrCtx.findClassBuilder(mockElemt) != null
+        budrCtx.builders.size() == 1
+        budrCtx.clearBuilders()
+        budrCtx.builders.size() == 0
     }
 
     def 'Test put and get handler helper'() {
@@ -235,5 +394,33 @@ class BuilderContextTest extends Specification {
         where:
         type1   | type2
         'A'     | 'java.lang.String'
+    }
+
+    def 'Test is assignable by element'() {
+        given:
+        def dtype1 = Mock(DeclaredType)
+        def dtype2 = Mock(DeclaredType)
+        def type1Elem = Mock(TypeElement) {
+            asType() >> dtype1
+        }
+        def type2Elem = Mock(TypeElement)
+        def procEnv = Mock(ProcessingEnvironment) {
+            getElementUtils() >> Mock(Elements) {
+                getTypeElement(typeName) >> type2Elem
+            }
+            getTypeUtils() >> Mock(Types) {
+                getDeclaredType(type2Elem) >> dtype2
+                isAssignable(dtype1, dtype2) >> true
+            }
+        }
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        expect:
+        budrCtx.isAssignable(type1Elem, typeClass)
+
+        where:
+        typeClass       | typeName
+        String.class    | String.canonicalName
     }
 }

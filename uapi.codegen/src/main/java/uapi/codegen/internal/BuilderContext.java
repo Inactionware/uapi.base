@@ -169,9 +169,6 @@ public class BuilderContext implements IBuilderContext {
             final Class<? extends Annotation>... annotationTypes
     ) throws GeneralException {
         ArgumentChecker.notNull(element, "element");
-//        List<Class<? extends Annotation>> unAnnotateds = Observable.on(annotationTypes)
-//                .filter(annotationType -> element.getAnnotation(annotationType) == null)
-//                .toList().toBlocking().single();
         List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
                 .filter(annotationType -> element.getAnnotation(annotationType) == null)
                 .toList();
@@ -192,11 +189,6 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.notNull(classElement, "classElement");
         ArgumentChecker.notNull(fieldType, "fieldType");
         ArgumentChecker.notNull(annotationType, "annotationType");
-//        List<Element> elems = (List<Element>) Observable.on(classElement.getEnclosedElements())
-//                .filter(element -> element.getKind() == ElementKind.FIELD)
-//                .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
-//                .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)
-//                .toList().toBlocking().single();
         List<Element> elems = (List<Element>) Looper.on(classElement.getEnclosedElements())
                 .filter(element -> element.getKind() == ElementKind.FIELD)
                 .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
@@ -231,13 +223,6 @@ public class BuilderContext implements IBuilderContext {
 
     @Override
     public boolean isAssignable(final String type1, final Class type2) {
-//        Elements elemtUtils = getElementUtils();
-//        Types typeUtils = getTypeUtils();
-//        TypeElement typeElemt1 = elemtUtils.getTypeElement(type1);
-//        DeclaredType elemtType1 = typeUtils.getDeclaredType(typeElemt1);
-//        TypeElement typeElemt2 = elemtUtils.getTypeElement(type2.getCanonicalName());
-//        DeclaredType elemtType2 = typeUtils.getDeclaredType(typeElemt2);
-//        return typeUtils.isAssignable(elemtType1, elemtType2);
         return isAssignable(type1, type2.getCanonicalName());
     }
 
