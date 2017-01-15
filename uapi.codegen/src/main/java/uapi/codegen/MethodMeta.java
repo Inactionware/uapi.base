@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
  */
 public class MethodMeta {
 
-    private final Builder _builder;
+    protected final Builder _builder;
 
-    private MethodMeta(
+    protected MethodMeta(
             final Builder builder
     ) {
         this._builder = builder;
@@ -100,8 +100,7 @@ public class MethodMeta {
         ExecutableElement execElem = (ExecutableElement) methodElement;
         builder.setName(methodElement.getSimpleName().toString())
                 .setReturnTypeName(execElem.getReturnType().toString());
-        execElem.getModifiers().forEach(modifier ->
-                builder.addModifier(modifier));
+        execElem.getModifiers().forEach(builder::addModifier);
         execElem.getThrownTypes().forEach(throwType ->
                 builder.addThrowTypeName(throwType.toString()));
         execElem.getParameters().forEach(paramElem ->
