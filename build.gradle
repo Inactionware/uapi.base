@@ -81,7 +81,7 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
 
     reports {
         html.enabled = true // human readable
-        xml.enabled = true // required by coveralls
+        xml.enabled = true // required by coveralls 
     }
 
     doFirst {
