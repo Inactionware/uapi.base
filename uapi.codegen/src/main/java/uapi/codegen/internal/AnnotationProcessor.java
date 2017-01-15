@@ -11,7 +11,6 @@ package uapi.codegen.internal;
 
 import com.google.auto.service.AutoService;
 import freemarker.template.Template;
-import uapi.codegen.AnnotationsHandler;
 import uapi.codegen.ClassMeta;
 import uapi.codegen.IAnnotationsHandler;
 import uapi.codegen.LogSupport;
