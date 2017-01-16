@@ -35,12 +35,12 @@ bintray {
     publish = true
     pkg {
         repo = "${publish_repo}"
-        vcsUrl = 'https://github.com/Inactionware/uapi.base.git'
+        vcsUrl = "${project_repo_url}"
         name = "${project.name}"
-        licenses = ['GPL-3.0']
+        licenses = ["${project_license}"]
         userOrg = System.getenv('BINTRAY_USER_ORG')
 
-        githubRepo = 'Inactionware/uapi.base'
+        githubRepo = "${project_repo_name}"
         githubReleaseNotesFile = 'README.md'
 
         version {
