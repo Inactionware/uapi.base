@@ -16,9 +16,7 @@ import uapi.common.WordHelper;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public final class ClassHelper {
 
@@ -27,9 +25,13 @@ public final class ClassHelper {
     private static final String ADD_PREFIX      = "add";
     private static final String PUT_PREFIX      = "put";
 
-    public static String makeSetterName(String fieldName, boolean isCollection, boolean isMap) {
+    public static String makeSetterName(
+            final String fieldName,
+            final boolean isCollection,
+            final boolean isMap
+    ) {
         if (Strings.isNullOrEmpty(fieldName)) {
-            throw new IllegalArgumentException("The field name can't be empty or null");
+            throw new InvalidArgumentException("The field name can't be empty or null");
         }
         String propName;
         if (fieldName.startsWith(FIELD_PREFIX)) {
@@ -75,7 +77,10 @@ public final class ClassHelper {
 //        }
 //    }
 
-    public static Class<?>[] getInterfaceParameterizedClasses(Class<?> type, Class<?> interfaceType) {
+    public static Class<?>[] getInterfaceParameterizedClasses(
+            final Class<?> type,
+            final Class<?> interfaceType
+    ) {
         if (type == null) {
             throw new InvalidArgumentException("type", InvalidArgumentException.InvalidArgumentType.EMPTY);
         }

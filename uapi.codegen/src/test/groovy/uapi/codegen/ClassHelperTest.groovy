@@ -10,6 +10,7 @@
 package uapi.codegen
 
 import spock.lang.Specification
+import uapi.InvalidArgumentException
 
 import java.lang.annotation.Annotation
 
@@ -18,7 +19,7 @@ import java.lang.annotation.Annotation
  */
 class ClassHelperTest extends Specification {
 
-    def 'test CollectionField'() {
+    def 'Test CollectionField'() {
         expect:
         ClassHelper.makeSetterName(prop, isCollection, isMap) == setterName
 
@@ -26,6 +27,22 @@ class ClassHelperTest extends Specification {
         prop        | isCollection  | isMap | setterName
         'messages'  | true          | false | 'addMessage'
         'children'  | true          | false | 'addChild'
+        '_abc'      | true          | false | 'addAbc'
+        'abc'       | false         | true  | 'putAbc'
+        'abc'       | false         | false | 'setAbc'
+    }
+
+    def 'Test make setter name with exception'() {
+        when:
+        ClassHelper.makeSetterName(fieldName, isCollection, isMap)
+
+        then:
+        thrown(ex)
+
+        where:
+        fieldName   | isCollection  | isMap     | ex
+        null        | true          | false     | InvalidArgumentException
+        ''          | true          | false     | InvalidArgumentException
     }
 
     def  'test GetInterfaceParameterizedClasses'() {

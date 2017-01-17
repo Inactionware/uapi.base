@@ -10,6 +10,7 @@
 package uapi.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +47,7 @@ public class WordHelper {
         plural("(x|ch|ss|sh)$", "$1es");
         plural("(matr|vert|ind)ix|ex$", "$1ices");
         plural("([m|l])ouse$", "$1ice");
-        plural("(ox)$", "$1en");
+        plural("^(ox)$", "$1en");
         plural("(quiz)$", "$1zes");
         // plural to singular
         singular("s$", "");
@@ -80,14 +81,15 @@ public class WordHelper {
         irregular("sex", "sexes");
         irregular("move", "moves");
         // no singular or plural
-        uncountable(new String[] { "equipment", "information", "rice", "money", "species", "series", "fish", "sheep" });
+        uncountable("equipment", "information", "rice", "money", "species", "series", "fish", "sheep");
     }
 
     /**
      * singular to plural
      *
-     * @param word
-     * @return
+     * @param   word
+     *          Singular word
+     * @return  Plural word
      */
     public static String pluralize(String word) {
         if (uncountables.contains(word.toLowerCase())) {
@@ -99,8 +101,9 @@ public class WordHelper {
     /**
      * plural to singular
      *
-     * @param word
-     * @return
+     * @param   word
+     *          Plural word
+     * @return  Singular word
      */
     public static String singularize(String word) {
         if (uncountables.contains(word.toLowerCase())) {
@@ -110,11 +113,13 @@ public class WordHelper {
     }
 
     /**
-     * replace
+     * replace with first rule
      *
-     * @param word
-     * @param ruleAndReplacements
-     * @return
+     * @param   word
+     *          The word which will be replaced
+     * @param   ruleAndReplacements
+     *          The rule pattern list
+     * @return  Result word
      */
     private static String replaceWithFirstRule(String word, List<RuleAndReplacement> ruleAndReplacements) {
         for (RuleAndReplacement rar : ruleAndReplacements) {
@@ -131,32 +136,38 @@ public class WordHelper {
     }
 
     /**
-     * plural
+     * Add plural rule
      *
-     * @param rule
-     * @param replacement
+     * @param   rule
+     *          The rule
+     * @param   replacement
+     *          The replacement string
      */
-    public static void plural(String rule, String replacement) {
+    private static void plural(String rule, String replacement) {
         plurals.add(0, new RuleAndReplacement(rule, replacement));
     }
 
     /**
-     * singular
+     * Add singular rule
      *
-     * @param rule
-     * @param replacement
+     * @param   rule
+     *          The rule
+     * @param   replacement
+     *          The replacement string
      */
-    public static void singular(String rule, String replacement) {
+    private static void singular(String rule, String replacement) {
         singulars.add(0, new RuleAndReplacement(rule, replacement));
     }
 
     /**
-     * irregular
+     * Add irregular rule
      *
-     * @param singular
-     * @param plural
+     * @param   singular
+     *          The singular word
+     * @param   plural
+     *          The plural word
      */
-    public static void irregular(String singular, String plural) {
+    private static void irregular(String singular, String plural) {
         plural(singular, plural);
         singular(plural, singular);
     }
@@ -164,39 +175,38 @@ public class WordHelper {
     /**
      * no singular or plural
      *
-     * @param words
+     * @param   words
+     *          Words will be added
      */
-    public static void uncountable(String... words) {
-        for (String word : words) {
-            uncountables.add(word);
-        }
+    private static void uncountable(String... words) {
+        uncountables.addAll(Arrays.asList(words));
     }
 
     /**
      * rule replacement
      */
-    static class RuleAndReplacement {
+    private static class RuleAndReplacement {
         private String rule;
         private String replacement;
 
-        public RuleAndReplacement(String rule, String replacement) {
+        private RuleAndReplacement(String rule, String replacement) {
             this.rule = rule;
             this.replacement = replacement;
         }
 
-        public String getReplacement() {
+        private String getReplacement() {
             return replacement;
         }
 
-        public void setReplacement(String replacement) {
+        private void setReplacement(String replacement) {
             this.replacement = replacement;
         }
 
-        public String getRule() {
+        private String getRule() {
             return rule;
         }
 
-        public void setRule(String rule) {
+        private void setRule(String rule) {
             this.rule = rule;
         }
     }
