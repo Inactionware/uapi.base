@@ -294,7 +294,7 @@ class BuilderContextTest extends Specification {
 
         where:
         tempPath                            | placeholder
-        'template/generated_sources.ftl'    | null
+        'template/generated_source.ftl'    | null
     }
 
     def 'Test clear builders'() {
