@@ -24,6 +24,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -149,14 +150,17 @@ public class AnnotationProcessor extends AbstractProcessor {
         List<ClassMeta.Builder> classBuilders = builderContext.getBuilders();
 
         Template temp;
-//        try {
+        try {
+            this._logger.info("pre load template");
+        builderContext.getFiler().getResource(
+                StandardLocation.CLASS_PATH, "", TEMP_FILE);
             this._logger.info("load template");
             temp = builderContext.loadTemplate(TEMP_FILE);
             this._logger.info("end load template");
-//        } catch (Exception ex) {
-//            this._logger.error(ex);
-//            return;
-//        }
+        } catch (Exception ex) {
+            this._logger.error(ex);
+            return;
+        }
 
         for (ClassMeta.Builder classBuilder : classBuilders) {
             Writer srcWriter = null;
