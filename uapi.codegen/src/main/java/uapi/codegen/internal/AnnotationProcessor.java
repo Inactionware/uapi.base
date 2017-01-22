@@ -131,6 +131,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         this._logger.info("Starting generate source");
         try {
             generateSource(buildCtx);
+            this._logger.info("Finish generate source");
             buildCtx.clearBuilders();
         } catch (Exception ex) {
             this._logger.error(ex);
