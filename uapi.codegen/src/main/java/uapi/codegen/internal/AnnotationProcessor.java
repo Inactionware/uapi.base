@@ -151,9 +151,9 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Template temp;
         try {
-            this._logger.info("pre load template");
-        builderContext.getFiler().getResource(
-                StandardLocation.CLASS_PATH, "", TEMP_FILE);
+//            this._logger.info("pre load template");
+//        builderContext.getFiler().getResource(
+//                StandardLocation.CLASS_PATH, "", TEMP_FILE);
             this._logger.info("load template");
             temp = builderContext.loadTemplate(TEMP_FILE);
             this._logger.info("end load template");
