@@ -149,12 +149,14 @@ public class AnnotationProcessor extends AbstractProcessor {
         List<ClassMeta.Builder> classBuilders = builderContext.getBuilders();
 
         Template temp;
-        try {
+//        try {
+            this._logger.info("load template");
             temp = builderContext.loadTemplate(TEMP_FILE);
-        } catch (Exception ex) {
-            this._logger.error(ex);
-            return;
-        }
+            this._logger.info("end load template");
+//        } catch (Exception ex) {
+//            this._logger.error(ex);
+//            return;
+//        }
 
         for (ClassMeta.Builder classBuilder : classBuilders) {
             Writer srcWriter = null;
