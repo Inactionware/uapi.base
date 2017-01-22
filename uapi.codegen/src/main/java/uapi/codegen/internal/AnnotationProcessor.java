@@ -129,14 +129,8 @@ public class AnnotationProcessor extends AbstractProcessor {
                 .foreach(handler -> handler.handle(buildCtx));
 
         // Generate source
-        this._logger.info("Starting generate source");
-        try {
-            generateSource(buildCtx);
-            this._logger.info("Finish generate source");
-            buildCtx.clearBuilders();
-        } catch (Exception ex) {
-            this._logger.error(ex);
-        }
+        generateSource(buildCtx);
+        buildCtx.clearBuilders();
 
         this._logger.info("End processing");
         return true;
@@ -151,12 +145,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Template temp;
         try {
-//            this._logger.info("pre load template");
-//        builderContext.getFiler().getResource(
-//                StandardLocation.CLASS_PATH, "", TEMP_FILE);
-            this._logger.info("load template");
             temp = builderContext.loadTemplate(TEMP_FILE);
-            this._logger.info("end load template");
         } catch (Exception ex) {
             this._logger.error(ex);
             return;
@@ -165,14 +154,14 @@ public class AnnotationProcessor extends AbstractProcessor {
         for (ClassMeta.Builder classBuilder : classBuilders) {
             Writer srcWriter = null;
             try {
-                this._logger.info("Generate source for -> {}", classBuilder);
+//                this._logger.info("Generate source for -> {}", classBuilder);
                 ClassMeta classMeta = classBuilder.build();
                 JavaFileObject fileObj = builderContext.getFiler().createSourceFile(
                         StringHelper.makeString("{}.{}", classMeta.getPackageName(), classMeta.getGeneratedClassName())
                 );
                 srcWriter = fileObj.openWriter();
                 temp.process(classMeta, srcWriter);
-                this._logger.info("Generate source for " + classMeta.getClassName());
+//                this._logger.info("Generate source for " + classMeta.getClassName());
             } catch (Exception ex) {
                 this._logger.error(ex);
                 return;
