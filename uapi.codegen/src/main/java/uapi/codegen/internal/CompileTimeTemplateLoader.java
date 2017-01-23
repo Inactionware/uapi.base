@@ -17,6 +17,8 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The template loader for compiling source time
@@ -40,21 +42,22 @@ public class CompileTimeTemplateLoader implements TemplateLoader {
             final String name
     ) throws IOException {
         ArgumentChecker.required(name, "name");
-        return this._builderCtx.getFiler().getResource(
+        FileObject fileObj = this._builderCtx.getFiler().getResource(
                 StandardLocation.CLASS_PATH, this._basePkgPath, name);
+        return new TemplateSource(fileObj);
     }
 
     @Override
     public long getLastModified(
             final Object templateSource
     ) {
-        if (! (templateSource instanceof FileObject)) {
+        if (! (templateSource instanceof TemplateSource)) {
             throw new GeneralException(
-                    "The input must be a FileObject - {}",
+                    "The input must be a TemplateSource - {}",
                     templateSource.getClass().getName());
         }
-        FileObject fObj = (FileObject) templateSource;
-        return fObj.getLastModified();
+        TemplateSource tempSrc = (TemplateSource) templateSource;
+        return tempSrc.getLastModified();
     }
 
     @Override
@@ -62,19 +65,25 @@ public class CompileTimeTemplateLoader implements TemplateLoader {
             final Object templateSource,
             final String encoding
     ) throws IOException {
-        if (! (templateSource instanceof FileObject)) {
+        if (! (templateSource instanceof TemplateSource)) {
             throw new GeneralException(
-                    "The input must be a FileObject - {}",
+                    "The input must be a TemplateSource - {}",
                     templateSource.getClass().getName());
         }
-        FileObject fObj = (FileObject) templateSource;
-        return fObj.openReader(true);
+        TemplateSource tempSrc = (TemplateSource) templateSource;
+        return tempSrc.openReader();
     }
 
     @Override
     public void closeTemplateSource(
             final Object templateSource
     ) throws IOException {
-        // Do nothing
+        if (! (templateSource instanceof TemplateSource)) {
+            throw new GeneralException(
+                    "The input must be a TemplateSource - {}",
+                    templateSource.getClass().getName());
+        }
+        TemplateSource tempSrc = (TemplateSource) templateSource;
+        tempSrc.close();
     }
 }

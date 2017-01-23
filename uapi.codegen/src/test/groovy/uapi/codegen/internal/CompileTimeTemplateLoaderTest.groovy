@@ -48,18 +48,23 @@ class CompileTimeTemplateLoaderTest extends Specification {
 
     def 'Test get last modified'() {
         when:
-        def budrCtx = Mock(BuilderContext)
-        def tempSrc = Mock(FileObject) {
-            getLastModified() >> lastMod
+        def fileObj = Mock(Filer) {
+            getResource(_, _, filePath) >> Mock(FileObject) {
+                getLastModified() >> lastMod
+            }
+        }
+        def budrCtx = Mock(BuilderContext) {
+            getFiler() >> fileObj
         }
         def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
+        def tempSrc = tempLoader.findTemplateSource(filePath)
 
         then:
         tempLoader.getLastModified(tempSrc) == lastMod
 
         where:
-        basePkg | lastMod
-        'abc'   | 1L
+        basePkg | lastMod   | filePath
+        'abc'   | 1L        | 'test'
     }
 
     def 'Test get last modified with exception'() {
@@ -78,18 +83,23 @@ class CompileTimeTemplateLoaderTest extends Specification {
 
     def 'Test get reader'() {
         when:
-        def budrCtx = Mock(BuilderContext)
         def reader = Mock(Reader)
-        def tempSrc = Mock(FileObject) {
-            openReader(true) >> reader
+        def filer = Mock(Filer) {
+            getResource(_, _, filePath) >> Mock(FileObject) {
+                openReader(true) >> reader
+            }
+        }
+        def budrCtx = Mock(BuilderContext) {
+            getFiler() >> filer
         }
         def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
+        def tempSrc = tempLoader.findTemplateSource(filePath)
 
         then:
         tempLoader.getReader(tempSrc, encoding) == reader
 
         where:
-        basePkg | lastMod   | encoding
-        'abc'   | 1L        | 'UTF-8'
+        basePkg | lastMod   | encoding  | filePath
+        'abc'   | 1L        | 'UTF-8'   | 'Test'
     }
 }
