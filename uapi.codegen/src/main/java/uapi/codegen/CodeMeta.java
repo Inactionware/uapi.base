@@ -15,6 +15,7 @@ import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
 import uapi.common.StringHelper;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +35,25 @@ public class CodeMeta {
 
     public String getCode() {
         if (this._builder._temp != null) {
-            StringWriter writer = new StringWriter();
-            try {
+            try (StringWriter writer = new StringWriter()) {
                 this._builder._temp.process(this._builder._model, writer);
+                return writer.toString();
             } catch (Exception ex) {
                 throw new GeneralException(ex);
             }
-            return writer.toString();
+//            StringWriter writer = new StringWriter();
+//            try {
+//                this._builder._temp.process(this._builder._model, writer);
+//                return writer.toString();
+//            } catch (Exception ex) {
+//                throw new GeneralException(ex);
+//            } finally {
+//                try {
+//                    writer.close();
+//                } catch (IOException ex) {
+//                    throw new GeneralException(ex);
+//                }
+//            }
         } else {
             StringBuilder sb = new StringBuilder();
             this._builder._rawCodes.forEach(rawCode -> sb.append(rawCode));
