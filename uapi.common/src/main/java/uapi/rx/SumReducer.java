@@ -14,7 +14,7 @@ import uapi.GeneralException;
 import java.math.BigDecimal;
 
 /**
- * Created by min on 16/8/21.
+ * A SumReducer is used to sum all item's value
  */
 public class SumReducer<T> extends Reducer<T> {
 

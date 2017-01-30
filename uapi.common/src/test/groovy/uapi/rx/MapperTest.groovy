@@ -15,7 +15,7 @@ import uapi.common.Pair
 /**
  * Test for Mapper
  */
-class OperatorTest extends Specification {
+class MapperTest extends Specification {
 
     def 'Test map'() {
         given:
@@ -150,6 +150,18 @@ class OperatorTest extends Specification {
 
         when:
         def res = op.sum()
+
+        then:
+        res == 1
+    }
+
+    def 'Test count'() {
+        given:
+        TestOp op = new TestOp()
+        op.item = 1
+
+        when:
+        def res = op.count()
 
         then:
         res == 1

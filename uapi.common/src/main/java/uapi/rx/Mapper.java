@@ -116,6 +116,14 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     @Override
+    public T count() {
+        CountReducer<T> operator = new CountReducer<>(this);
+        T result = operator.getItem();
+        operator.end();
+        return result;
+    }
+
+    @Override
     public List<T> toList() {
         ToListReducer<T> operator = new ToListReducer<>(this);
         List<T> result = operator.getItem();

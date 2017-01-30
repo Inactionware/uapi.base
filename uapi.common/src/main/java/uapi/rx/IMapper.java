@@ -131,6 +131,13 @@ public interface IMapper<T> {
     T sum() throws NoItemException;
 
     /**
+     * Count all item number
+     *
+     * @return  Item number
+     */
+    T count();
+
+    /**
      * Return all element to a list, empty list will be returned if no element
      *
      * @return  A list contains all element
