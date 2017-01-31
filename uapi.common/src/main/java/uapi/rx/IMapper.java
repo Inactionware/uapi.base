@@ -135,7 +135,7 @@ public interface IMapper<T> {
      *
      * @return  Item number
      */
-    T count();
+    int count();
 
     /**
      * Return all element to a list, empty list will be returned if no element
