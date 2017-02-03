@@ -57,9 +57,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
             final Class<? extends Annotation>... annotationTypes
     ) throws GeneralException {
         ArgumentChecker.notNull(element, "element");
-//        List<Class<? extends Annotation>> unAnnotateds = Observable.on(annotationTypes)
-//                .filter(annotationType -> element.getAnnotation(annotationType) == null)
-//                .toList().toBlocking().single();
         List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
                 .filter(annotationType -> element.getAnnotation(annotationType) == null)
                 .toList();
@@ -77,13 +74,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
     ) throws GeneralException {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
-//        List<String> types = Observable.on(annotation.getElementValues().entrySet())
-//                .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
-//                .map(Map.Entry::getValue)
-//                .map(annoValue -> (DeclaredType) annoValue.getValue())
-//                .map(declaredType -> (TypeElement) declaredType.asElement())
-//                .map(typeElem -> typeElem.getQualifiedName().toString())
-//                .toList().toBlocking().single();
         List<String> types = Looper.on(annotation.getElementValues().entrySet())
                 .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
                 .map(Map.Entry::getValue)
@@ -118,15 +108,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
         List<String> types = new ArrayList<>();
-//        Observable.on(annotation.getElementValues().entrySet())
-//                .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
-//                .map(Map.Entry::getValue)
-//                .flatMap(annoValue -> Observable.on((List<AnnotationValue>) annoValue.getValue()))
-//                .map(annoValue -> (DeclaredType) annoValue.getValue())
-//                .map(declaredType -> (TypeElement) declaredType.asElement())
-//                .map(typeElem -> typeElem.getQualifiedName().toString())
-//                .subscribe(types::add, logger::error);
-//        try {
             Looper.on(annotation.getElementValues().entrySet())
                     .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
                     .map(Map.Entry::getValue)
@@ -135,9 +116,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
                     .map(declaredType -> (TypeElement) declaredType.asElement())
                     .map(typeElem -> typeElem.getQualifiedName().toString())
                     .foreach(types::add);
-//        } catch (Exception ex) {
-//            logger.error(ex);
-//        }
         return types;
     }
 
@@ -145,10 +123,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
     public void handle(
             final IBuilderContext builderContext
     ) throws GeneralException {
-//        Observable.on(getOrderedAnnotations())
-//                .map((annotation) -> new Pair<>(annotation, builderContext.getElementsAnnotatedWith(annotation)))
-//                .subscribe(pair -> handleAnnotatedElements(builderContext, pair.getLeftValue(), pair.getRightValue()),
-//                        (t) -> builderContext.getLogger().error(t));
         Looper.on(getOrderedAnnotations())
                 .map((annotation) -> new Pair<>(annotation, builderContext.getElementsAnnotatedWith(annotation)))
                 .foreach(pair -> handleAnnotatedElements(builderContext, pair.getLeftValue(), pair.getRightValue()));

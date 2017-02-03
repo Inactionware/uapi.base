@@ -52,31 +52,6 @@ public final class ClassHelper {
         return setterName;
     }
 
-//    public static Class<?> getElementType(Class<?> collectionClass, Type collectionType, ChangeableBoolean isCollection) {
-//        if (! (collectionType instanceof ParameterizedType)) {
-//            return collectionClass;
-//        }
-//        if (Collection.class.isAssignableFrom(collectionClass)) {
-//            isCollection.set(true);
-//            Type elemType = ((ParameterizedType) collectionType).getActualTypeArguments()[0];
-//            if (elemType instanceof ParameterizedType) {
-//                return getElementType((Class<?>) ((ParameterizedType) elemType).getRawType(), elemType, isCollection);
-//            } else {
-//                return (Class<?>) elemType;
-//            }
-//        } else if (Map.class.isAssignableFrom(collectionClass)) {
-//            isCollection.set(true);
-//            Type elemType = ((ParameterizedType) collectionType).getActualTypeArguments()[1];
-//            if (elemType instanceof ParameterizedType) {
-//                return getElementType((Class<?>) ((ParameterizedType) elemType).getRawType(), elemType, isCollection);
-//            } else {
-//                return (Class<?>) elemType;
-//            }
-//        } else {
-//            return collectionClass;
-//        }
-//    }
-
     public static Class<?>[] getInterfaceParameterizedClasses(
             final Class<?> type,
             final Class<?> interfaceType
