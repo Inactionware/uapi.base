@@ -69,7 +69,7 @@ public class ParameterMeta {
                 .setType(parameterElement.asType().toString());
     }
 
-    public static class Builder extends uapi.common.Builder<ParameterMeta> {
+    public static class Builder extends CodegenBuilder<ParameterMeta> {
 
         private String _name;
         private String _type;

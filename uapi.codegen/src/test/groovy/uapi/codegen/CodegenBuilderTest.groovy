@@ -7,17 +7,15 @@
  * use the project into a commercial product
  */
 
-package uapi.common
+package uapi.codegen
 
-import spock.lang.Ignore
 import spock.lang.Specification
 import uapi.InvalidArgumentException
 
 /**
- * The unit test for Builder
+ * Unit test for CodegenBuilder
  */
-@Ignore
-class BuilderTest extends Specification {
+class CodegenBuilderTest extends Specification {
 
     def 'Test put transience'() {
         given:
@@ -77,7 +75,7 @@ class BuilderTest extends Specification {
         builder.doValidation
     }
 
-    private class FakeBuilder extends Builder<String> {
+    private class FakeBuilder extends CodegenBuilder<String> {
 
         boolean doValidation = false;
         boolean doInitProperties = false;
@@ -89,15 +87,6 @@ class BuilderTest extends Specification {
         }
 
         @Override
-        protected void beforeCreateInstance() {
-
-        }
-
-        @Override
-        protected void afterCreateInstance() {
-
-        }
-        
         protected void initProperties() {
             this.doInitProperties = true;
         }

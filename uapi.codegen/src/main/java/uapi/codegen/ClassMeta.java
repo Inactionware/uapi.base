@@ -94,7 +94,7 @@ public class ClassMeta {
 
     }
 
-    public static class Builder extends uapi.common.Builder<ClassMeta> {
+    public static class Builder extends CodegenBuilder<ClassMeta> {
 
         private String _pkgName;
         private String _className;

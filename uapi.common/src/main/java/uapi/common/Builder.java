@@ -25,62 +25,6 @@ import java.util.Map;
 public abstract class Builder<T> {
 
     private boolean _built = false;
-    private Map<String, Object> _transience = new HashMap<>();
-
-    /**
-     * Put a transience object into the builder.
-     * A transience object will be removed after the instance is created which means
-     * the transience object is only used by instance creation
-     *
-     * @param   name
-     *          The transience object name
-     * @param   object
-     *          The transience object
-     */
-    public void putTransience(final String name, final Object object) {
-        ArgumentChecker.notEmpty(name, "name");
-        this._transience.put(name, object);
-    }
-
-    /**
-     * Receive previously saved transience object by its name
-     *
-     * @param   name
-     *          The name of transience object
-     * @param   <E>
-     *          The type of transience object
-     * @return  The transience object or null
-     */
-    @SuppressWarnings("unchecked")
-    public <E> E getTransience(final String name) {
-        ArgumentChecker.notEmpty(name, "name");
-        return (E) this._transience.get(name);
-    }
-
-    /**
-     * Receive previously saved transience object by its name
-     * The creator will be invoked if the related transience object is absent
-     *
-     * @param   name
-     *          The name of transience object
-     * @param   <E>
-     *          The type of transience object
-     * @return  The transience object or null
-     */
-    @SuppressWarnings("unchecked")
-    public <E> E createTransienceIfAbsent(
-            final String name,
-            final Functionals.Creator<E> creator) {
-        ArgumentChecker.required(name, "name");
-        E e = (E) this._transience.get(name);
-        if (e != null) {
-            return e;
-        }
-        ArgumentChecker.required(creator, "creator");
-        e = creator.accept();
-        this._transience.put(name, e);
-        return e;
-    }
 
     /**
      * Build instance by currently properties setting
@@ -90,26 +34,55 @@ public abstract class Builder<T> {
      *          Validation failed
      */
     public T build() throws GeneralException {
-        checkStatus();
+        ensureNotBuilt();
         validate();
-        initProperties();
-        this._transience.clear();
+        beforeCreateInstance();
         T obj = createInstance();
+        afterCreateInstance();
         this._built = true;
         return obj;
     }
 
+    /**
+     * Validate all properties of the builder to ensure they are valid
+     *
+     * @throws  InvalidArgumentException
+     *          If one of properties is invalid
+     */
+    protected abstract void validate() throws InvalidArgumentException;
 
+    /**
+     * Invoke it before create instance
+     */
+    protected abstract void beforeCreateInstance();
 
-    protected void checkStatus() {
-        if (this._built) {
-            throw new GeneralException("The builder[{}] is already used", this.getClass().getName());
+    /**
+     * Invoke it after create instance
+     */
+    protected abstract void afterCreateInstance();
+
+    /**
+     * Create instance based on properties settings
+     *
+     * @return  The instance
+     */
+    protected abstract T createInstance();
+
+    /**
+     * Ensure the instance is built, if the instance is not built then a GeneralException will be thrown.
+     */
+    private void ensureBuilt() {
+        if (! this._built) {
+            throw new GeneralException("The builder is not built - {}", this);
         }
     }
 
-    protected abstract void validate() throws InvalidArgumentException;
-
-    protected abstract void initProperties();
-
-    protected abstract T createInstance();
+    /**
+     * Ensure the instance is not built, if the instance is built then a GeneralException will be thrown.
+     */
+    private void ensureNotBuilt() {
+        if (this._built) {
+            throw new GeneralException("The builder is already built - {}", this);
+        }
+    }
 }

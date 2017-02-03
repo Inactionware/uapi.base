@@ -38,7 +38,7 @@ public class AnnotationMeta {
         return new Builder();
     }
 
-    public static class Builder extends uapi.common.Builder<AnnotationMeta> {
+    public static class Builder extends CodegenBuilder<AnnotationMeta> {
 
         private String _name;
         private List<ArgumentMeta> _args = new ArrayList<>();

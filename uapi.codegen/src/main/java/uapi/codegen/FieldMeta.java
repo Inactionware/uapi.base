@@ -62,7 +62,7 @@ public class FieldMeta {
     /**
      * The builder for <code>FieldMeta</code>
      */
-    public static class Builder extends uapi.common.Builder<FieldMeta> {
+    public static class Builder extends CodegenBuilder<FieldMeta> {
 
         private String _name;
         private String _typeName;

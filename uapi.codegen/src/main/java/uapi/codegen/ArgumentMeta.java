@@ -42,8 +42,7 @@ public class ArgumentMeta {
         return new Builder();
     }
 
-    public static class Builder
-            extends uapi.common.Builder<ArgumentMeta> {
+    public static class Builder extends CodegenBuilder<ArgumentMeta> {
 
         private String _name;
         private String _value;

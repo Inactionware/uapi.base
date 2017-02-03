@@ -109,7 +109,7 @@ public class MethodMeta {
         return builder;
     }
 
-    public static class Builder extends uapi.common.Builder<MethodMeta> {
+    public static class Builder extends CodegenBuilder<MethodMeta> {
 
         private String _name;
         private List<Modifier> _modifiers = new ArrayList<>();

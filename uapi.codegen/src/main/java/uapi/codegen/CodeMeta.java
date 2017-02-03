@@ -57,7 +57,7 @@ public class CodeMeta {
         return new Builder();
     }
 
-    public static class Builder extends uapi.common.Builder<CodeMeta> {
+    public static class Builder extends CodegenBuilder<CodeMeta> {
 
         private Object _model;
         private Template _temp;
