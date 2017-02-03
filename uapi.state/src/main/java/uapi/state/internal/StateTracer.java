@@ -63,8 +63,8 @@ public final class StateTracer<T> implements IStateTracer<T> {
 
     @Override
     public void shift(String operationType) {
-        SimpleOperation operatioin = new SimpleOperation(operationType);
-        shift(operatioin);
+        SimpleOperation operation = new SimpleOperation(operationType);
+        shift(operation);
     }
 
     @Override
