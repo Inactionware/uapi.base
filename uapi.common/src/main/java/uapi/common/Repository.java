@@ -23,7 +23,7 @@ public class Repository<K, V extends IIdentifiable<K>> {
      *          The data which will be put in the repository
      * @return  The existing data which has same id, return null if no existing data
      */
-    public Object put(final V data) {
+    public V put(final V data) {
         ArgumentChecker.required(data, "data");
         K key = data.getId();
         return this._store.put(key, data);
@@ -36,7 +36,7 @@ public class Repository<K, V extends IIdentifiable<K>> {
      *          The id which is associated with one data in the repository
      * @return  Return specific data which associated with the id
      */
-    public IIdentifiable get(K id) {
+    public V get(K id) {
         return this._store.get(id);
     }
 }
