@@ -53,6 +53,11 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     @Override
+    public IMapper<T> skip(int count) {
+        return new SkipMapper<>(this, count);
+    }
+
+    @Override
     public IMapper<T> next(Functionals.Action<T> operator) {
         return new NextMapper<>(this, operator);
     }

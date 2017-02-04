@@ -60,6 +60,13 @@ public interface IMapper<T> {
     IMapper<T> limit(int count);
 
     /**
+     * Construct an operator which can skip data item by specific count
+     *
+     * @return  The count of skipped item
+     */
+    IMapper<T> skip(int count);
+
+    /**
      * Construct an operator which do specific action on each data
      *
      * @param   operator

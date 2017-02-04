@@ -65,6 +65,18 @@ class MapperTest extends Specification {
         newOp instanceof LimitMapper
     }
 
+    def 'Test skip'() {
+        given:
+        TestOp op = new TestOp()
+
+        when:
+        def newOp = op.skip(1)
+
+        then:
+        newOp != null
+        newOp instanceof SkipMapper
+    }
+
     def 'Test next'() {
         given:
         TestOp op = new TestOp()
