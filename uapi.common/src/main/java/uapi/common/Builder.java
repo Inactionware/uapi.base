@@ -71,7 +71,7 @@ public abstract class Builder<T> {
     /**
      * Ensure the instance is built, if the instance is not built then a GeneralException will be thrown.
      */
-    private void ensureBuilt() {
+    protected void ensureBuilt() {
         if (! this._built) {
             throw new GeneralException("The builder is not built - {}", this);
         }
@@ -80,7 +80,7 @@ public abstract class Builder<T> {
     /**
      * Ensure the instance is not built, if the instance is built then a GeneralException will be thrown.
      */
-    private void ensureNotBuilt() {
+    protected void ensureNotBuilt() {
         if (this._built) {
             throw new GeneralException("The builder is already built - {}", this);
         }
