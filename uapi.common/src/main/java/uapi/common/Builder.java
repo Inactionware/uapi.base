@@ -12,9 +12,6 @@ package uapi.common;
 import uapi.InvalidArgumentException;
 import uapi.GeneralException;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * A Builder used to initialize some properties, validate properties and create an
  * instance

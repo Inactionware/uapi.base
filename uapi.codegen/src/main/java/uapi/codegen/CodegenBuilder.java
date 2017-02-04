@@ -12,7 +12,6 @@ package uapi.codegen;
 import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
-import uapi.common.Builder;
 import uapi.common.Functionals;
 
 import java.util.HashMap;

@@ -59,7 +59,7 @@ public class Guarder {
      * @return
      */
     public <T> T runForResult(Resultful<T> run) {
-        T rtn = null;
+        T rtn;
         this._lock.lock();
         try {
             rtn = run.run();

@@ -24,7 +24,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
