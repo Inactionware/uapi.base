@@ -97,7 +97,7 @@ class BuilderTest extends Specification {
         protected void afterCreateInstance() {
 
         }
-        
+
         protected void initProperties() {
             this.doInitProperties = true;
         }
