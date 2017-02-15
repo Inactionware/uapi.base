@@ -11,9 +11,6 @@ package uapi.common;
 
 import uapi.rx.Looper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The Multivariate hold multiple variables
  */

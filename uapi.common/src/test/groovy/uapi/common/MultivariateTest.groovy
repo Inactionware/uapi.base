@@ -81,6 +81,16 @@ class MultivariateTest extends Specification {
         -3      | null
     }
 
+    def 'Test remove item'() {
+        when:
+        def inst = new Multivariate(3)
+        inst.put(2, 'sss')
+
+        then:
+        inst.remove(2) == 'sss'
+        inst.get(2) == null
+    }
+
     def 'Test clear'() {
         when:
         def inst = new Multivariate(3)
