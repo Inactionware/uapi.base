@@ -9,6 +9,8 @@
 
 package uapi;
 
+import uapi.common.ArgumentChecker;
+
 import java.util.ArrayList;
 
 /**
@@ -24,6 +26,7 @@ public final class Type {
     public static final String FLOAT            = "float";
     public static final String DOUBLE           = "double";
 
+    public static final String Q_VOID           = Void.class.getCanonicalName();
     public static final String Q_BOOLEAN        = Boolean.class.getCanonicalName();
     public static final String Q_INTEGER        = Integer.class.getCanonicalName();
     public static final String Q_LONG           = Long.class.getCanonicalName();
@@ -51,4 +54,46 @@ public final class Type {
     public static final Class<String>   T_STRING    = String.class;
 
     private Type() { }
+
+    public static String toQType(String nativeType) {
+        ArgumentChecker.required(nativeType, "nativeType");
+        switch (nativeType) {
+            case VOID:
+                return Q_VOID;
+            case BOOLEAN:
+                return Q_BOOLEAN;
+            case INTEGER:
+                return Q_INTEGER;
+            case LONG:
+                return Q_LONG;
+            case SHORT:
+                return Q_SHORT;
+            case FLOAT:
+                return Q_FLOAT;
+            case DOUBLE:
+                return Q_DOUBLE;
+        }
+        return nativeType;
+    }
+
+    public static String toNType(String qualifiedType) {
+        ArgumentChecker.required(qualifiedType, "qualifiedType");
+        if (qualifiedType.equals(Q_VOID)) {
+            return VOID;
+        } else if (qualifiedType.equals(Q_BOOLEAN)) {
+            return BOOLEAN;
+        } else if (qualifiedType.equals(Q_INTEGER)) {
+            return INTEGER;
+        } else if (qualifiedType.equals(Q_LONG)) {
+            return LONG;
+        } else if (qualifiedType.equals(Q_SHORT)) {
+            return SHORT;
+        } else if (qualifiedType.equals(Q_FLOAT)) {
+            return FLOAT;
+        } else if (qualifiedType.equals(Q_DOUBLE)) {
+            return DOUBLE;
+        } else {
+            return qualifiedType;
+        }
+    }
 }
