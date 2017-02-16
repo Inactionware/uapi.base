@@ -63,78 +63,78 @@ class NotNullHandlerTest extends Specification {
         ElementKind.LOCAL_VARIABLE  | 'param'
     }
 
-    def 'Test handler annotated elements with incorrect enclosing method modifiers'() {
-        given:
-        def paramElem = Mock(Element) {
-            getKind() >> kind
-            getSimpleName() >> Mock(Name) {
-                toString() >> paramName
-            }
-            getEnclosingElement() >> Mock(Element) {
-                getModifiers() >> ([incorrectModifer] as Set)
-                getEnclosingElement() >> Mock(Element) {
-                    getSimpleName() >> Mock(Name) {
-                        toString() >> 'Class Element'
-                    }
-                }
-                getSimpleName() >> Mock(Name) {
-                    toString() >> 'Method Element'
-                }
-            }
-        }
-        def budrCtx = Mock(IBuilderContext)
+//    def 'Test handler annotated elements with incorrect enclosing method modifiers'() {
+//        given:
+//        def paramElem = Mock(Element) {
+//            getKind() >> kind
+//            getSimpleName() >> Mock(Name) {
+//                toString() >> paramName
+//            }
+//            getEnclosingElement() >> Mock(Element) {
+//                getModifiers() >> ([incorrectModifer] as Set)
+//                getEnclosingElement() >> Mock(Element) {
+//                    getSimpleName() >> Mock(Name) {
+//                        toString() >> 'Class Element'
+//                    }
+//                }
+//                getSimpleName() >> Mock(Name) {
+//                    toString() >> 'Method Element'
+//                }
+//            }
+//        }
+//        def budrCtx = Mock(IBuilderContext)
+//
+//        when:
+//        def handler = new NotNullHandler()
+//        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
+//
+//        then:
+//        thrown(GeneralException)
+//
+//        where:
+//        kind                        | paramName     | incorrectModifer
+//        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
+//        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
+//        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
+//    }
 
-        when:
-        def handler = new NotNullHandler()
-        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
-
-        then:
-        thrown(GeneralException)
-
-        where:
-        kind                        | paramName     | incorrectModifer
-        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
-        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
-        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
-    }
-
-    def 'Test handler annotated elements with incorrect enclosing class modifiers'() {
-        given:
-        def paramElem = Mock(Element) {
-            getKind() >> kind
-            getSimpleName() >> Mock(Name) {
-                toString() >> paramName
-            }
-            getEnclosingElement() >> Mock(Element) {
-                getModifiers() >> ([Modifier.PUBLIC] as Set)
-                getEnclosingElement() >> Mock(Element) {
-                    getModifiers() >> ([incorrectModifer] as Set)
-                    getSimpleName() >> Mock(Name) {
-                        toString() >> 'Class Element'
-                    }
-                    getEnclosingElement() >> Mock(Element) {
-                        getSimpleName() >> Mock(Name) {
-                            toString() >> 'Package Element'
-                        }
-                    }
-                }
-            }
-        }
-        def budrCtx = Mock(IBuilderContext)
-
-        when:
-        def handler = new NotNullHandler()
-        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
-
-        then:
-        thrown(GeneralException)
-
-        where:
-        kind                        | paramName     | incorrectModifer
-        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
-        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
-        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
-    }
+//    def 'Test handler annotated elements with incorrect enclosing class modifiers'() {
+//        given:
+//        def paramElem = Mock(Element) {
+//            getKind() >> kind
+//            getSimpleName() >> Mock(Name) {
+//                toString() >> paramName
+//            }
+//            getEnclosingElement() >> Mock(Element) {
+//                getModifiers() >> ([Modifier.PUBLIC] as Set)
+//                getEnclosingElement() >> Mock(Element) {
+//                    getModifiers() >> ([incorrectModifer] as Set)
+//                    getSimpleName() >> Mock(Name) {
+//                        toString() >> 'Class Element'
+//                    }
+//                    getEnclosingElement() >> Mock(Element) {
+//                        getSimpleName() >> Mock(Name) {
+//                            toString() >> 'Package Element'
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        def budrCtx = Mock(IBuilderContext)
+//
+//        when:
+//        def handler = new NotNullHandler()
+//        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
+//
+//        then:
+//        thrown(GeneralException)
+//
+//        where:
+//        kind                        | paramName     | incorrectModifer
+//        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
+//        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
+//        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
+//    }
 
     def 'Test handler annotated elements'() {
         given:

@@ -52,10 +52,10 @@ public final class NotNullHandler extends AnnotationsHandler {
                         paramElement.getSimpleName().toString());
             }
             Element methodElement = paramElement.getEnclosingElement();
-            checkModifiers(methodElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
+            builderCtx.checkModifiers(methodElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
 
             Element classElement = methodElement.getEnclosingElement();
-            checkModifiers(classElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
+            builderCtx.checkModifiers(classElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
 
             ClassMeta.Builder clsBuilder = builderCtx.findClassBuilder(classElement);
             MethodMeta.Builder methodBuilder = clsBuilder.findMethodBuilder(methodElement, builderCtx);

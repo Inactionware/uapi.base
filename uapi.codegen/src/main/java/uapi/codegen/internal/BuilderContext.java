@@ -144,61 +144,61 @@ public class BuilderContext implements IBuilderContext {
         return clsBuilder;
     }
 
-//    @Override
-//    public void checkModifiers(
-//            final Element element,
-//            final Class<? extends Annotation> annotation,
-//            final Modifier... unexpectedModifiers
-//    ) throws GeneralException {
-//        Set<Modifier> existingModifiers = element.getModifiers();
-//        Modifier unsupportedModifier = CollectionHelper.contains(existingModifiers, unexpectedModifiers);
-//        if (unsupportedModifier != null) {
-//            throw new GeneralException(
-//                    "The {} element [{}.{}] with {} annotation must not be {}",
-//                    element.getKind(),
-//                    element.getEnclosingElement().getSimpleName().toString(),
-//                    element.getSimpleName().toString(),
-//                    annotation.getName(),
-//                    unsupportedModifier);
-//        }
-//    }
+    @Override
+    public void checkModifiers(
+            final Element element,
+            final Class<? extends Annotation> annotation,
+            final Modifier... unexpectedModifiers
+    ) throws GeneralException {
+        Set<Modifier> existingModifiers = element.getModifiers();
+        Modifier unsupportedModifier = CollectionHelper.contains(existingModifiers, unexpectedModifiers);
+        if (unsupportedModifier != null) {
+            throw new GeneralException(
+                    "The {} element [{}.{}] with {} annotation must not be {}",
+                    element.getKind(),
+                    element.getEnclosingElement().getSimpleName().toString(),
+                    element.getSimpleName().toString(),
+                    annotation.getName(),
+                    unsupportedModifier);
+        }
+    }
 
-//    @Override
-//    public void checkAnnotations(
-//            final Element element,
-//            final Class<? extends Annotation>... annotationTypes
-//    ) throws GeneralException {
-//        ArgumentChecker.notNull(element, "element");
-//        List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
-//                .filter(annotationType -> element.getAnnotation(annotationType) == null)
-//                .toList();
-//        if (unAnnotateds == null || unAnnotateds.size() > 0) {
-//            throw new GeneralException("The {} element [{}] does not annotated with {}.",
-//                    element.getKind(),
-//                    element.getSimpleName().toString(),
-//                    CollectionHelper.asString(annotationTypes));
-//        }
-//    }
+    @Override
+    public void checkAnnotations(
+            final Element element,
+            final Class<? extends Annotation>... annotationTypes
+    ) throws GeneralException {
+        ArgumentChecker.notNull(element, "element");
+        List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
+                .filter(annotationType -> element.getAnnotation(annotationType) == null)
+                .toList();
+        if (unAnnotateds == null || unAnnotateds.size() > 0) {
+            throw new GeneralException("The {} element [{}] does not annotated with {}.",
+                    element.getKind(),
+                    element.getSimpleName().toString(),
+                    CollectionHelper.asString(annotationTypes));
+        }
+    }
 
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    public Element findFieldWith(
-//            final Element classElement,
-//            final Class<?> fieldType,
-//            final Class annotationType) {
-//        ArgumentChecker.notNull(classElement, "classElement");
-//        ArgumentChecker.notNull(fieldType, "fieldType");
-//        ArgumentChecker.notNull(annotationType, "annotationType");
-//        List<Element> elems = (List<Element>) Looper.on(classElement.getEnclosedElements())
-//                .filter(element -> element.getKind() == ElementKind.FIELD)
-//                .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
-//                .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)
-//                .toList();
-//        if (elems == null || elems.size() == 0) {
-//            return null;
-//        }
-//        return elems.get(0);
-//    }
+    @SuppressWarnings("unchecked")
+    @Override
+    public Element findFieldWith(
+            final Element classElement,
+            final Class<?> fieldType,
+            final Class annotationType) {
+        ArgumentChecker.notNull(classElement, "classElement");
+        ArgumentChecker.notNull(fieldType, "fieldType");
+        ArgumentChecker.notNull(annotationType, "annotationType");
+        List<Element> elems = (List<Element>) Looper.on(classElement.getEnclosedElements())
+                .filter(element -> element.getKind() == ElementKind.FIELD)
+                .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
+                .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)
+                .toList();
+        if (elems == null || elems.size() == 0) {
+            return null;
+        }
+        return elems.get(0);
+    }
 
     @Override
     public void putHelper(IHandlerHelper helper) {

@@ -13,11 +13,8 @@ import spock.lang.Specification
 import uapi.GeneralException
 import uapi.codegen.internal.TestAnno
 
-import javax.annotation.processing.ProcessingEnvironment
-import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
-import javax.lang.model.type.TypeMirror
 import java.lang.annotation.Annotation
 
 /**
@@ -44,94 +41,45 @@ class AnnotationsHandlerTest extends Specification {
         }
     }
 
-    def 'Test check modifiers'() {
-        def mockElemt = Mock(Element) {
-            getModifiers() >> supports
-            getKind() >> ElementKind.CLASS
-            getEnclosingElement() >> Mock(Element) {
-                getSimpleName() >> Mock(Name) {
-                    toString() >> 'aaa'
-                }
-            }
-            getSimpleName() >> Mock(Name) {
-                toString() >> 'bbb'
-            }
-        }
+//    def 'Test check modifiers'() {
+//        def mockElemt = Mock(Element) {
+//            getModifiers() >> supports
+//            getKind() >> ElementKind.CLASS
+//            getEnclosingElement() >> Mock(Element) {
+//                getSimpleName() >> Mock(Name) {
+//                    toString() >> 'aaa'
+//                }
+//            }
+//            getSimpleName() >> Mock(Name) {
+//                toString() >> 'bbb'
+//            }
+//        }
+//
+//        when:
+//        handler.checkModifiers(mockElemt, TestAnno, unsupport)
+//
+//        then:
+//        thrown(GeneralException)
+//
+//        where:
+//        supports                                    | unsupport
+//        [Modifier.PUBLIC, Modifier.FINAL ] as Set   | Modifier.PUBLIC
+//    }
 
-        when:
-        handler.checkModifiers(mockElemt, TestAnno, unsupport)
-
-        then:
-        thrown(GeneralException)
-
-        where:
-        supports                                    | unsupport
-        [Modifier.PUBLIC, Modifier.FINAL ] as Set   | Modifier.PUBLIC
-    }
-
-    def 'Test find field with'() {
-        given:
-        def fieldElem = Mock(Element) {
-            getKind() >> ElementKind.FIELD
-            asType() >> Mock(TypeMirror) {
-                toString() >> typeName
-            }
-            getAnnotation(TestAnno.class) >> Mock(Annotation)
-        }
-        def classElem = Mock(Element) {
-            getKind() >> ElementKind.CLASS
-            getEnclosedElements() >> [fieldElem]
-        }
-        def procEnv = Mock(ProcessingEnvironment)
-        def roundEnv = Mock(RoundEnvironment)
-
-        when:
-        def found = handler.findFieldWith(classElem, type, TestAnno.class)
-
-        then:
-        noExceptionThrown()
-        found == fieldElem
-
-        where:
-        typeName                    | type
-        String.class.canonicalName  | String.class
-    }
-
-    def 'Test find field with nothing'() {
-        given:
-        def classElem = Mock(Element) {
-            getKind() >> ElementKind.CLASS
-            getEnclosedElements() >> []
-        }
-        def procEnv = Mock(ProcessingEnvironment)
-        def roundEnv = Mock(RoundEnvironment)
-
-        when:
-        def found = handler.findFieldWith(classElem, type, TestAnno.class)
-
-        then:
-        noExceptionThrown()
-        found == null
-
-        where:
-        typeName                    | type
-        String.class.canonicalName  | String.class
-    }
-
-    def 'Test check annotations'() {
-        def mockElemt = Mock(Element) {
-            getAnnotation(_) >> null
-            getSimpleName() >> Mock(Name) {
-                toString() >> 'bbb'
-            }
-        }
-
-        when:
-        handler.checkAnnotations(mockElemt, TestAnno)
-
-        then:
-        thrown(GeneralException)
-    }
+//    def 'Test check annotations'() {
+//        def mockElemt = Mock(Element) {
+//            getAnnotation(_) >> null
+//            getSimpleName() >> Mock(Name) {
+//                toString() >> 'bbb'
+//            }
+//        }
+//
+//        when:
+//        handler.checkAnnotations(mockElemt, TestAnno)
+//
+//        then:
+//        thrown(GeneralException)
+//    }
 
     def 'Test get type in annotation without field definition'() {
         given:
