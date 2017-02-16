@@ -13,8 +13,11 @@ import spock.lang.Specification
 import uapi.GeneralException
 import uapi.codegen.internal.TestAnno
 
+import javax.annotation.processing.ProcessingEnvironment
+import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
+import javax.lang.model.type.TypeMirror
 import java.lang.annotation.Annotation
 
 /**
@@ -64,6 +67,55 @@ class AnnotationsHandlerTest extends Specification {
         where:
         supports                                    | unsupport
         [Modifier.PUBLIC, Modifier.FINAL ] as Set   | Modifier.PUBLIC
+    }
+
+    def 'Test find field with'() {
+        given:
+        def fieldElem = Mock(Element) {
+            getKind() >> ElementKind.FIELD
+            asType() >> Mock(TypeMirror) {
+                toString() >> typeName
+            }
+            getAnnotation(TestAnno.class) >> Mock(Annotation)
+        }
+        def classElem = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getEnclosedElements() >> [fieldElem]
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+
+        when:
+        def found = handler.findFieldWith(classElem, type, TestAnno.class)
+
+        then:
+        noExceptionThrown()
+        found == fieldElem
+
+        where:
+        typeName                    | type
+        String.class.canonicalName  | String.class
+    }
+
+    def 'Test find field with nothing'() {
+        given:
+        def classElem = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getEnclosedElements() >> []
+        }
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+
+        when:
+        def found = handler.findFieldWith(classElem, type, TestAnno.class)
+
+        then:
+        noExceptionThrown()
+        found == null
+
+        where:
+        typeName                    | type
+        String.class.canonicalName  | String.class
     }
 
     def 'Test check annotations'() {

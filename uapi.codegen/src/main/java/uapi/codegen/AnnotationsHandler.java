@@ -68,6 +68,25 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public Element findFieldWith(
+            final Element classElement,
+            final Class<?> fieldType,
+            final Class annotationType) {
+        ArgumentChecker.notNull(classElement, "classElement");
+        ArgumentChecker.notNull(fieldType, "fieldType");
+        ArgumentChecker.notNull(annotationType, "annotationType");
+        List<Element> elems = (List<Element>) Looper.on(classElement.getEnclosedElements())
+                .filter(element -> element.getKind() == ElementKind.FIELD)
+                .filter(fieldElement -> fieldElement.asType().toString().equals(fieldType.getCanonicalName()))
+                .filter(fieldElement -> fieldElement.getAnnotation(annotationType) != null)
+                .toList();
+        if (elems == null || elems.size() == 0) {
+            return null;
+        }
+        return elems.get(0);
+    }
+
     protected String getTypeInAnnotation(
             final AnnotationMirror annotation,
             final String fieldName

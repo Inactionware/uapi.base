@@ -54,21 +54,21 @@ public interface IBuilderContext {
 
     IHandlerHelper getHelper(String name);
 
-    void checkModifiers(
-            final Element element,
-            final Class<? extends Annotation> annotation,
-            final Modifier... unexpectedModifiers
-    ) throws GeneralException;
-
-    void checkAnnotations(
-            final Element element,
-            final Class<? extends Annotation>... annotationTypes
-    ) throws GeneralException;
-
-    Element findFieldWith(
-            final Element classElement,
-            final Class<?> fieldType,
-            final Class annotationType);
+//    void checkModifiers(
+//            final Element element,
+//            final Class<? extends Annotation> annotation,
+//            final Modifier... unexpectedModifiers
+//    ) throws GeneralException;
+//
+//    void checkAnnotations(
+//            final Element element,
+//            final Class<? extends Annotation>... annotationTypes
+//    ) throws GeneralException;
+//
+//    Element findFieldWith(
+//            final Element classElement,
+//            final Class<?> fieldType,
+//            final Class annotationType);
 
     /**
      * Check specific class element can be assigned to specified type
