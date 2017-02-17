@@ -28,4 +28,12 @@ class InvalidArgumentExceptionTest extends Specification {
         'aaa'   | InvalidArgumentException.InvalidArgumentType.EMPTY    | 'The argument is invalid - aaa, cause - EMPTY'
         'aaa'   | InvalidArgumentException.InvalidArgumentType.FORMAT   | 'The argument is invalid - aaa, cause - FORMAT'
     }
+
+    def 'Test exception message'() {
+        given:
+        def ex = new InvalidArgumentException(new Exception('test'))
+
+        expect:
+        ex.message == 'test'
+    }
 }

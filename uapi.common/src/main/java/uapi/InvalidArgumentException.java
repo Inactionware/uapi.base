@@ -22,6 +22,10 @@ public class InvalidArgumentException extends GeneralException {
         super(message, args);
     }
 
+    public InvalidArgumentException(Throwable t) {
+        super(t);
+    }
+
     public enum InvalidArgumentType {
 
         EMPTY, FORMAT
