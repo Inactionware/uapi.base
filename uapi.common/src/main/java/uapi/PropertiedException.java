@@ -17,15 +17,17 @@ import uapi.common.StringHelper;
 import java.io.*;
 
 /**
- * The exception information can be received from property file
+ * The exception add ability to receive exception message from property file.
+ *
+ * Every exception extend from PropertiedException will provide two attributes: error code and category, the two
+ * attributes will be mapped to property key which is defined in a property file and map to a exception message
+ * template string.
+ *
+ * The category is a integer value, 0 ~ 8192 is reserved by framework.
  */
 public class PropertiedException extends UapiException {
 
     private static final String PROPERTY_FILE   = "exception.properties";
-
-    public static ExceptionBuilder<PropertiedException> builder() {
-        return new ExceptionBuilder<>();
-    }
 
     private final ExceptionBuilder _builder;
 
@@ -76,23 +78,26 @@ public class PropertiedException extends UapiException {
         return this._builder._errCode + "." + this._builder._category;
     }
 
-    protected static class ExceptionBuilder<T extends PropertiedException> extends Builder<T> {
+    public static abstract class ExceptionBuilder<E extends PropertiedException, B extends ExceptionBuilder>
+            extends Builder<E> {
 
         private int _errCode = -1;
         private int _category = -1;
         private Object[] _args;
 
-        private <B extends ExceptionBuilder> B errorCode(int errorCode) {
+        public ExceptionBuilder(final int category) {
+            if (category < 0) {
+                throw new GeneralException("The exception category cant be negative");
+            }
+            this._category = category;
+        }
+
+        public B errorCode(int errorCode) {
             this._errCode = errorCode;
             return (B) this;
         }
 
-        private <B extends ExceptionBuilder> B category(int category) {
-            this._category = category;
-            return (B) this;
-        }
-
-        private <B extends ExceptionBuilder> B arguments(Object... arguments) {
+        public B arguments(Object... arguments) {
             ArgumentChecker.required(arguments, "arguments");
             this._args = arguments;
             return (B) this;
@@ -118,11 +123,6 @@ public class PropertiedException extends UapiException {
         @Override
         protected void afterCreateInstance() {
             // do nothing
-        }
-
-        @Override
-        protected T createInstance() {
-            return (T) new PropertiedException(this);
         }
     }
 }

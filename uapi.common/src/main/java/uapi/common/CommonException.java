@@ -9,14 +9,31 @@
 
 package uapi.common;
 
+import uapi.ExceptionCategory;
 import uapi.PropertiedException;
 
 /**
- * Created by xquan on 2/22/2017.
+ * Root exception for common package
  */
 public class CommonException extends PropertiedException {
 
+    public static CommonExceptionBuilder builder() {
+        return new CommonExceptionBuilder();
+    }
+
     private CommonException(final ExceptionBuilder builder) {
         super(builder);
+    }
+
+    public static class CommonExceptionBuilder extends ExceptionBuilder<CommonException, CommonExceptionBuilder> {
+
+        CommonExceptionBuilder() {
+            super(ExceptionCategory.COMMON);
+        }
+
+        @Override
+        protected CommonException createInstance() {
+            return new CommonException(this);
+        }
     }
 }
