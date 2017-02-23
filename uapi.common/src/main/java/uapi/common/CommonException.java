@@ -9,7 +9,6 @@
 
 package uapi.common;
 
-import uapi.ExceptionCategory;
 import uapi.PropertiedException;
 
 /**
@@ -28,12 +27,31 @@ public class CommonException extends PropertiedException {
     public static class CommonExceptionBuilder extends ExceptionBuilder<CommonException, CommonExceptionBuilder> {
 
         CommonExceptionBuilder() {
-            super(ExceptionCategory.COMMON);
+            super(CommonErrors.CATEGORY, new CommonErrors());
         }
 
         @Override
         protected CommonException createInstance() {
             return new CommonException(this);
+        }
+    }
+
+    public static class CommonErrors extends ExceptionErrors {
+
+        private static final int CATEGORY   = 1;
+
+        public static final int INVALID_ARGUMENT    = 1;
+
+        static {
+            mapCodeKey(INVALID_ARGUMENT, "InvalidArgument");
+        }
+
+        @Override
+        protected String getPropertiesFile(int category) {
+            if (category == CATEGORY) {
+                return "commonErrors.properties";
+            }
+            return null;
         }
     }
 }

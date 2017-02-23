@@ -12,9 +12,14 @@ package uapi;
 import com.google.common.base.Strings;
 import uapi.common.ArgumentChecker;
 import uapi.common.Builder;
+import uapi.common.Guarder;
 import uapi.common.StringHelper;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The exception add ability to receive exception message from property file.
@@ -27,12 +32,45 @@ import java.io.*;
  */
 public class PropertiedException extends UapiException {
 
-    private static final String PROPERTY_FILE   = "exception.properties";
+    private static final Lock CATEGORY_REG_LOCK                                             = new ReentrantLock();
+    private static final Map<Integer, Class<? extends PropertiedException>> CATEGORY_REG    = new HashMap<>();
+
+    /**
+     * Check is the exception category registered by other exception or not.
+     *
+     * @param   category
+     *          The exception category
+     * @param   exceptionClass
+     *          The exception class
+     * @throws  GeneralException
+     *          If the exception category is registered by other exception class
+     */
+    protected static void checkCategory(
+            final int category,
+            final Class<? extends PropertiedException> exceptionClass
+    ) throws GeneralException {
+        ArgumentChecker.required(exceptionClass, "exceptionClass");
+        Guarder.by(CATEGORY_REG_LOCK).run(() -> {
+            Class<? extends PropertiedException> regExClass = CATEGORY_REG.get(category);
+            if (regExClass == null) {
+                CATEGORY_REG.put(category, exceptionClass);
+            } else if (! regExClass.equals(exceptionClass)) {
+                if (! exceptionClass.isAssignableFrom(regExClass) && ! regExClass.isAssignableFrom(exceptionClass)) {
+                    throw new GeneralException("The category [{}] is registered by exception - {}", category, regExClass);
+                }
+                // Using super exception class to register
+                if (regExClass.isAssignableFrom(exceptionClass)) {
+                    CATEGORY_REG.put(category, exceptionClass);
+                }
+            }
+        });
+    }
 
     private final ExceptionBuilder _builder;
 
     protected PropertiedException(final ExceptionBuilder builder) {
         super();
+        checkCategory(builder._category, this.getClass());
         this._builder = builder;
     }
 
@@ -46,13 +84,17 @@ public class PropertiedException extends UapiException {
 
     @Override
     public String getMessage() {
-        String propKey = getPropertyKey();
+        String propKey = this._builder._errors.getMappedKey(errorCode());
         if (Strings.isNullOrEmpty(propKey)) {
             return super.getMessage();
         }
+        String propFile = this._builder._errors.getPropertiesFile(category());
+        if (propFile == null) {
+            throw new GeneralException("No properties file is mapped to category - {}", category());
+        }
         String msgTemp = null;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(PropertiedException.class.getResourceAsStream(PROPERTY_FILE)))) {
+                new InputStreamReader(PropertiedException.class.getResourceAsStream(propFile)))) {
             String line = reader.readLine();
             while (line != null) {
                 if (line.indexOf(propKey) != 0) {
@@ -60,7 +102,7 @@ public class PropertiedException extends UapiException {
                 }
                 int idx = line.indexOf("=");
                 if (idx <= 0) {
-                    throw new GeneralException("Incorrect property line in exception.properties - {}", line);
+                    throw new GeneralException("Incorrect property line in commonErrors.properties - {}", line);
                 }
                 msgTemp = line.substring(idx).trim();
                 break;
@@ -70,12 +112,9 @@ public class PropertiedException extends UapiException {
         }
         if (msgTemp == null) {
             return super.getMessage();
+        } else {
+            return StringHelper.makeString(msgTemp, this._builder._args);
         }
-        return StringHelper.makeString(msgTemp, this._builder._args);
-    }
-
-    protected String getPropertyKey() {
-        return this._builder._errCode + "." + this._builder._category;
     }
 
     public static abstract class ExceptionBuilder<E extends PropertiedException, B extends ExceptionBuilder>
@@ -83,13 +122,18 @@ public class PropertiedException extends UapiException {
 
         private int _errCode = -1;
         private int _category = -1;
+        private final ExceptionErrors _errors;
         private Object[] _args;
 
-        public ExceptionBuilder(final int category) {
+        public ExceptionBuilder(final int category, final ExceptionErrors errors) {
             if (category < 0) {
                 throw new GeneralException("The exception category cant be negative");
             }
+            if (errors == null) {
+                throw new GeneralException("The ExceptionErrors is not specified");
+            }
             this._category = category;
+            this._errors = errors;
         }
 
         public B errorCode(int errorCode) {
@@ -124,5 +168,20 @@ public class PropertiedException extends UapiException {
         protected void afterCreateInstance() {
             // do nothing
         }
+    }
+
+    protected static abstract class ExceptionErrors {
+
+        private static final Map<Integer, String> codeKeyMapper = new HashMap<>();
+
+        protected static void mapCodeKey(int code, String key) {
+            codeKeyMapper.put(code, key);
+        }
+
+        protected String getMappedKey(int code) {
+            return codeKeyMapper.get(code);
+        }
+
+        protected abstract String getPropertiesFile(int category);
     }
 }
