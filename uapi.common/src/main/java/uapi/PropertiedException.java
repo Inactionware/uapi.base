@@ -28,7 +28,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * attributes will be mapped to property key which is defined in a property file and map to a exception message
  * template string.
  *
- * The category is a integer value, 0 ~ 8192 is reserved by framework.
+ * The category is a integer value, 0x0000 ~ 0xFFFF is reserved by framework.
+ * The projects which are in the uapi.base repo will reserve category id from 0x0000 ~ 0x00FF
+ * The projects which are in the uapi.cornerstone will reserve category id from 0x0100 ~ 0x01FF
  */
 public class PropertiedException extends UapiException {
 
@@ -88,7 +90,7 @@ public class PropertiedException extends UapiException {
         if (Strings.isNullOrEmpty(propKey)) {
             return super.getMessage();
         }
-        String propFile = this._builder._errors.getPropertiesFile(category());
+        String propFile = this._builder._errors.getPropertiesFile(this);
         if (propFile == null) {
             throw new GeneralException("No properties file is mapped to category - {}", category());
         }
@@ -168,20 +170,5 @@ public class PropertiedException extends UapiException {
         protected void afterCreateInstance() {
             // do nothing
         }
-    }
-
-    protected static abstract class ExceptionErrors {
-
-        private static final Map<Integer, String> codeKeyMapper = new HashMap<>();
-
-        protected static void mapCodeKey(int code, String key) {
-            codeKeyMapper.put(code, key);
-        }
-
-        protected String getMappedKey(int code) {
-            return codeKeyMapper.get(code);
-        }
-
-        protected abstract String getPropertiesFile(int category);
     }
 }

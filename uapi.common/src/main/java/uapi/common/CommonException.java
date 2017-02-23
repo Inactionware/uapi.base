@@ -35,23 +35,4 @@ public class CommonException extends PropertiedException {
             return new CommonException(this);
         }
     }
-
-    public static class CommonErrors extends ExceptionErrors {
-
-        private static final int CATEGORY   = 1;
-
-        public static final int INVALID_ARGUMENT    = 1;
-
-        static {
-            mapCodeKey(INVALID_ARGUMENT, "InvalidArgument");
-        }
-
-        @Override
-        protected String getPropertiesFile(int category) {
-            if (category == CATEGORY) {
-                return "commonErrors.properties";
-            }
-            return null;
-        }
-    }
 }
