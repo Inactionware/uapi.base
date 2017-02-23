@@ -10,6 +10,7 @@
 package uapi.common
 
 import spock.lang.Specification
+import uapi.GeneralException
 import uapi.InvalidArgumentException
 
 /**
@@ -31,8 +32,27 @@ class StringHelperTest extends Specification{
         "Invalid String - {0}"                      | ["argument"] as Object[]                      | "Invalid String - argument"
         "Test {0} is {1}"                           | ["test", "uapi.kernel.Class"] as Object[]     | "Test test is uapi.kernel.Class"
         "{0} is test"                               | ["a"] as Object[]                             | "a is test"
-        "{1} index is not start on {}"            | ["test", "un-index", "0"] as Object[]         | "un-index index is not start on 0"
+        "{1} index is not start on {}"              | ["test", "un-index", "0"] as Object[]         | "un-index index is not start on 0"
         "abc {} tt {}"                              | [null, "dd"] as Object[]                      | "abc  tt dd"
+        ''                                          | []                                            | ''
+        //'abc {} tt {1'                              | []                                            | 'abc {} tt {1'
+    }
+
+    def 'Test make string by map'() {
+        expect:
+        StringHelper.makeString(strTemp, args) == expect
+
+        where:
+        strTemp                                     | args                                          | expect
+        ''                                          | [a: 'b']                                      | ''
+        'Invalid String - {name}'                   | [name: 'test']                                | 'Invalid String - test'
+        'Invalid arg [{a}] at class {b}'            | [a: '11', b: '22']                            | 'Invalid arg [11] at class 22'
+        'Invalid arg [{a}] at class {b}'            | [b: '22']                                     | 'Invalid arg [{a}] at class 22'
+        'Invalid arg {a'                            | []                                            | 'Invalid arg {a'
+        'Invalid arg {{ab}}'                        | [ab: 12]                                      | 'Invalid arg {12}'
+        'Invalid arg {a{b}c}'                       | [b: 12]                                       | 'Invalid arg {a12c}'
+        'Invalid arg } bc'                          | [b: 23]                                       | 'Invalid arg } bc'
+        'Invalid arg { abc'                         | null                                          | 'Invalid arg { abc'
     }
 
     def 'Test get first line'() {

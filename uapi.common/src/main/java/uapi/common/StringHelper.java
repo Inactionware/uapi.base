@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class StringHelper {
 
@@ -87,6 +89,62 @@ public final class StringHelper {
                     buffer.append(c);
                 }
             }
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Construct string from a string template and all named variable in the template will be replaced by arguments map.
+     * The named variable will around with { and }. If named variable is found in argument map then the named variable
+     * will keep no change including { and }.
+     *
+     * @param   stringTemplate
+     *          The string template
+     * @param   arguments
+     *          The argument map which will replace to the string template
+     * @return  The result string
+     */
+    public static String makeString(String stringTemplate, Map<Object, Object> arguments) {
+        if (Strings.isNullOrEmpty(stringTemplate)) {
+            return stringTemplate;
+        }
+        if (arguments == null) {
+            arguments = new HashMap<>();
+        }
+        StringBuilder buffer = new StringBuilder();
+        boolean foundVarStart = false;
+        String varName = "";
+        for (int i = 0; i < stringTemplate.length(); i++) {
+            char c = stringTemplate.charAt(i);
+            if (c == VAR_START) {
+                if (foundVarStart) {
+                    buffer.append(VAR_START).append(varName);
+                    varName = "";
+                }
+                foundVarStart = true;
+            } else if (c == VAR_END) {
+                if (foundVarStart) {
+                    Object argument = arguments.get(varName.trim());
+                    if (argument != null) {
+                        buffer.append(argument);
+                    } else {
+                        buffer.append(VAR_START).append(varName).append(VAR_END);
+                    }
+                    foundVarStart = false;
+                    varName = "";
+                } else {
+                    buffer.append(c);
+                }
+            } else {
+                if (foundVarStart) {
+                    varName += c;
+                } else {
+                    buffer.append(c);
+                }
+            }
+        }
+        if (foundVarStart) {
+            buffer.append(VAR_START).append(varName);
         }
         return buffer.toString();
     }

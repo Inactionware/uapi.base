@@ -170,5 +170,9 @@ public class PropertiedException extends UapiException {
         protected void afterCreateInstance() {
             // do nothing
         }
+
+        IExceptionArgumentMapper getArgumentMapper() {
+            throw new GeneralException("No argument mapper for the exception");
+        }
     }
 }

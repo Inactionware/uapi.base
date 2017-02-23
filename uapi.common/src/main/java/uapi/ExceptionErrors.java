@@ -42,4 +42,8 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
      * @return  The properties file which is defined errors belongs the category
      */
     protected abstract String getPropertiesFile(T exception);
+
+    public IExceptionArgumentMapper getArgumentBuilder() {
+        throw new GeneralException();
+    }
 }
