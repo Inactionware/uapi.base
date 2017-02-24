@@ -42,7 +42,7 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
 //        return super.getVariableBuilder(builder);
 //    }
 
-    public final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
+    public static final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
 
         private static final String ARG_NAME    = "argumentName";
 

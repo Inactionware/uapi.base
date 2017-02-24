@@ -52,7 +52,7 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
         T build();
     }
 
-    protected abstract class NamedVariableBuilder implements IVariableBuilder<Map> { }
+    protected static abstract class NamedVariableBuilder implements IVariableBuilder<Map> { }
 
-    protected abstract class IndexedVariableBuilder implements IVariableBuilder<Object[]> { }
+    protected static abstract class IndexedVariableBuilder implements IVariableBuilder<Object[]> { }
 }
