@@ -34,13 +34,13 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
         return null;
     }
 
-    @Override
-    public IVariableBuilder getVariableBuilder(int category) {
-        if (category == CATEGORY) {
-            return new InvalidArgumentVariableBuilder();
-        }
-        return super.getVariableBuilder(category);
-    }
+//    @Override
+//    public <T extends IVariableBuilder> T getVariableBuilder(CommonException.CommonExceptionBuilder builder) {
+//        if (builder.category() == CATEGORY) {
+//            return (T) new InvalidArgumentVariableBuilder();
+//        }
+//        return super.getVariableBuilder(builder);
+//    }
 
     public final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
 

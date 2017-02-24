@@ -153,11 +153,10 @@ public class PropertiedException extends UapiException {
             return (B) this;
         }
 
-//        public B arguments(Object... arguments) {
-//            ArgumentChecker.required(arguments, "arguments");
-//            this._args = arguments;
-//            return (B) this;
-//        }
+        public B variableBuilder(ExceptionErrors.IVariableBuilder builder) {
+            this._varBuilder = builder;
+            return (B) this;
+        }
 
         @Override
         protected void validate() throws InvalidArgumentException {
@@ -177,13 +176,6 @@ public class PropertiedException extends UapiException {
         @Override
         protected void afterCreateInstance() {
             // do nothing
-        }
-
-        public <T extends ExceptionErrors.IVariableBuilder> T getNamedVariableBuilder() {
-            if (this._varBuilder == null) {
-                this._varBuilder = this._errors.getVariableBuilder(this._category);
-            }
-            return (T) this._varBuilder;
         }
     }
 }
