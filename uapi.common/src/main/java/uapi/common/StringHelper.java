@@ -56,10 +56,8 @@ public final class StringHelper {
                         idxVar = tmpIdx;
                     }
                     if (args.length <= idxVar) {
-                        throw new IllegalArgumentException(
-                                "The argument index is more than argument count - " + str + "," + CollectionHelper.asString(args));
-                    }
-                    if (args[idxVar] != null) {
+                        buffer.append(VAR_START).append(tmpIdx == -1 ? "" : tmpIdx).append(VAR_END);
+                    } else if (args[idxVar] != null) {
                         buffer.append(args[idxVar]);
                     }
                     foundVarStart = false;
@@ -80,15 +78,17 @@ public final class StringHelper {
                         if (tmpIdx != -1) {
                             buffer.append(tmpIdx);
                             tmpIdx = -1;
-                        } else {
-                            buffer.append(c);
                         }
+                        buffer.append(c);
                         foundVarStart = false;
                     }
                 } else {
                     buffer.append(c);
                 }
             }
+        }
+        if (foundVarStart) {
+            buffer.append(VAR_START).append(tmpIdx == -1 ? "" : tmpIdx);
         }
         return buffer.toString();
     }

@@ -35,7 +35,8 @@ class StringHelperTest extends Specification{
         "{1} index is not start on {}"              | ["test", "un-index", "0"] as Object[]         | "un-index index is not start on 0"
         "abc {} tt {}"                              | [null, "dd"] as Object[]                      | "abc  tt dd"
         ''                                          | []                                            | ''
-        //'abc {} tt {1'                              | []                                            | 'abc {} tt {1'
+        'abc {} tt {1'                              | [] as Object[]                                | 'abc {} tt {1'
+        'abc {1a} tt'                               | [] as Object[]                                | 'abc {1a} tt'
     }
 
     def 'Test make string by map'() {
