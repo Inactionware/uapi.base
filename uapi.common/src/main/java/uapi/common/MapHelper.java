@@ -85,12 +85,12 @@ public class MapHelper {
 
         private final Map<Object, Object> _map = new HashMap();
 
-        MapBuilder put(Object key, Object value) {
+        public MapBuilder put(Object key, Object value) {
             this._map.put(key, value);
             return this;
         }
 
-        Map<Object, Object> get() {
+        public Map<Object, Object> get() {
             return this._map;
         }
     }
