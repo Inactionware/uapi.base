@@ -11,6 +11,8 @@ package uapi.common;
 
 import uapi.ExceptionErrors;
 
+import java.util.Map;
+
 /**
  * The class define common errors
  */
@@ -30,5 +32,30 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
             return "commonErrors.properties";
         }
         return null;
+    }
+
+    @Override
+    public IVariableBuilder getVariableBuilder(int category) {
+        if (category == CATEGORY) {
+            return new InvalidArgumentVariableBuilder();
+        }
+        return super.getVariableBuilder(category);
+    }
+
+    public final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
+
+        private static final String ARG_NAME    = "argumentName";
+
+        private String _argName;
+
+        public InvalidArgumentVariableBuilder argumentName(String argumentName) {
+            this._argName = argumentName;
+            return this;
+        }
+
+        @Override
+        public Map<Object, Object> build() {
+            return MapHelper.newMap().put(ARG_NAME, this._argName).get();
+        }
     }
 }

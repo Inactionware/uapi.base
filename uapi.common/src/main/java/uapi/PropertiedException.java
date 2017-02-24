@@ -115,7 +115,16 @@ public class PropertiedException extends UapiException {
         if (msgTemp == null) {
             return super.getMessage();
         } else {
-            return StringHelper.makeString(msgTemp, this._builder._args);
+            if (this._builder._varBuilder == null) {
+                return msgTemp;
+            } else {
+                Object variables = this._builder._varBuilder.build();
+                if (variables instanceof Map) {
+                    return StringHelper.makeString(msgTemp, (Map) variables);
+                } else {
+                    return StringHelper.makeString(msgTemp, (String[]) variables);
+                }
+            }
         }
     }
 
@@ -125,7 +134,8 @@ public class PropertiedException extends UapiException {
         private int _errCode = -1;
         private int _category = -1;
         private final ExceptionErrors _errors;
-        private Object[] _args;
+//        private Object[] _args;
+        private ExceptionErrors.IVariableBuilder _varBuilder;
 
         public ExceptionBuilder(final int category, final ExceptionErrors errors) {
             if (category < 0) {
@@ -143,11 +153,11 @@ public class PropertiedException extends UapiException {
             return (B) this;
         }
 
-        public B arguments(Object... arguments) {
-            ArgumentChecker.required(arguments, "arguments");
-            this._args = arguments;
-            return (B) this;
-        }
+//        public B arguments(Object... arguments) {
+//            ArgumentChecker.required(arguments, "arguments");
+//            this._args = arguments;
+//            return (B) this;
+//        }
 
         @Override
         protected void validate() throws InvalidArgumentException {
@@ -161,9 +171,7 @@ public class PropertiedException extends UapiException {
 
         @Override
         protected void beforeCreateInstance() {
-            if (this._args == null) {
-                this._args = new Object[0];
-            }
+            // do nothing
         }
 
         @Override
@@ -171,8 +179,11 @@ public class PropertiedException extends UapiException {
             // do nothing
         }
 
-        IExceptionArgumentMapper getArgumentMapper() {
-            throw new GeneralException("No argument mapper for the exception");
+        public <T extends ExceptionErrors.IVariableBuilder> T getNamedVariableBuilder() {
+            if (this._varBuilder == null) {
+                this._varBuilder = this._errors.getVariableBuilder(this._category);
+            }
+            return (T) this._varBuilder;
         }
     }
 }

@@ -9,6 +9,8 @@
 
 package uapi;
 
+import uapi.common.Builder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +45,16 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
      */
     protected abstract String getPropertiesFile(T exception);
 
-    public IExceptionArgumentMapper getArgumentBuilder() {
-        throw new GeneralException();
+    public <T extends IVariableBuilder> T getVariableBuilder(int category) {
+        throw new GeneralException("No named variable builder is available");
     }
+
+    protected interface IVariableBuilder<T> {
+
+        T build();
+    }
+
+    protected abstract class NamedVariableBuilder implements IVariableBuilder<Map> { }
+
+    protected abstract class IndexedVariableBuilder implements IVariableBuilder<Object[]> { }
 }
