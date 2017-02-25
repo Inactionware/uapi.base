@@ -161,4 +161,11 @@ public interface IMapper<T> {
      * @return  A map contains all element
      */
     <KT, VT> Map<KT, VT> toMap();
+
+    /**
+     * Return all element to an array, empty array will be returned if no element
+     *
+     * @return  An array contains all element
+     */
+    T[] toArray();
 }

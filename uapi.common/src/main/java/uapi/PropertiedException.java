@@ -121,8 +121,10 @@ public class PropertiedException extends UapiException {
                 Object variables = this._builder._varBuilder.build();
                 if (variables instanceof Map) {
                     return StringHelper.makeString(msgTemp, (Map) variables);
+                } else if (variables instanceof Object[]) {
+                    return StringHelper.makeString(msgTemp, (Object[]) variables);
                 } else {
-                    return StringHelper.makeString(msgTemp, (String[]) variables);
+                    throw new GeneralException("Unsupported return type - {}", variables.getClass().getCanonicalName());
                 }
             }
         }
