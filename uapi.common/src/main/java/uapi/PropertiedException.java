@@ -115,18 +115,7 @@ public class PropertiedException extends UapiException {
         if (msgTemp == null) {
             return super.getMessage();
         } else {
-            if (this._builder._varBuilder == null) {
-                return msgTemp;
-            } else {
-                Object variables = this._builder._varBuilder.build();
-                if (variables instanceof Map) {
-                    return StringHelper.makeString(msgTemp, (Map) variables);
-                } else if (variables instanceof Object[]) {
-                    return StringHelper.makeString(msgTemp, (Object[]) variables);
-                } else {
-                    throw new GeneralException("Unsupported return type - {}", variables.getClass().getCanonicalName());
-                }
-            }
+            return StringHelper.makeString(msgTemp, this._builder._namedVars, this._builder._indexedVars);
         }
     }
 
@@ -136,8 +125,8 @@ public class PropertiedException extends UapiException {
         private int _errCode = -1;
         private int _category = -1;
         private final ExceptionErrors _errors;
-//        private Object[] _args;
-        private ExceptionErrors.IVariableBuilder _varBuilder;
+        private Object[] _indexedVars;
+        private Map<Object, Object> _namedVars;
 
         public ExceptionBuilder(final int category, final ExceptionErrors errors) {
             if (category < 0) {
@@ -155,8 +144,13 @@ public class PropertiedException extends UapiException {
             return (B) this;
         }
 
-        public B variableBuilder(ExceptionErrors.IVariableBuilder builder) {
-            this._varBuilder = builder;
+        public B variables(Object... vars) {
+            this._indexedVars = vars;
+            return (B) this;
+        }
+
+        public B variables(Map<Object, Object> vars) {
+            this._namedVars = vars;
             return (B) this;
         }
 

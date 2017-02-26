@@ -106,14 +106,14 @@ public class ArgumentChecker {
     }
 
     /**
-     * Ensure the argument is not empty, if it is empty then the exception will be thrown
+     * Ensure the argument is not emptyArray, if it is emptyArray then the exception will be thrown
      *
      * @param   argument
      *          The argument which will be checked
      * @param   argumentName
      *          The argument name
      * @throws  InvalidArgumentException
-     *          The argument is null or empty string or only contains blank string
+     *          The argument is null or emptyArray string or only contains blank string
      */
     public static void notEmpty(
             final String argument,
@@ -125,12 +125,12 @@ public class ArgumentChecker {
     }
 
     /**
-     * Test the argument is empty or not.
-     * Empty string means null, empty string or only contains blank string
+     * Test the argument is emptyArray or not.
+     * Empty string means null, emptyArray string or only contains blank string
      *
      * @param   argument
      *          The argument which will be tested
-     * @return  true if the argument is empty otherwise return false
+     * @return  true if the argument is emptyArray otherwise return false
      */
     public static boolean isEmpty(
             final String argument
@@ -139,8 +139,8 @@ public class ArgumentChecker {
     }
 
     /**
-     * Ensure the array argument is not empty.
-     * A empty array means null or the array length is 0
+     * Ensure the array argument is not emptyArray.
+     * A emptyArray array means null or the array length is 0
      *
      * @param   argument
      *          The argument which will be checked
@@ -149,7 +149,7 @@ public class ArgumentChecker {
      * @param   <T>
      *          The argument type
      * @throws  InvalidArgumentException
-     *          If the array argument is empty
+     *          If the array argument is emptyArray
      */
     public static <T> void notEmpty(
             final T[] argument,
@@ -265,7 +265,7 @@ public class ArgumentChecker {
     }
 
     /**
-     * Ensure the argument is presented, if the argument is null or is empty string
+     * Ensure the argument is presented, if the argument is null or is emptyArray string
      * then the exception will be thrown.
      *
      * @param   argument
@@ -273,7 +273,7 @@ public class ArgumentChecker {
      * @param   argumentName
      *          The argument name will be used in exception message if check failed
      * @throws  InvalidArgumentException
-     *          The argument is null or it is empty string
+     *          The argument is null or it is emptyArray string
      */
     public static void required(
             final Object argument,
@@ -287,14 +287,14 @@ public class ArgumentChecker {
     }
 
     /**
-     * Test the collection is null or it is empty, if so an exception will be thrown
+     * Test the collection is null or it is emptyArray, if so an exception will be thrown
      *
      * @param   collection
      *          The collection which will be checked
      * @param   argumentName
      *          The argument name
      * @throws  InvalidArgumentException
-     *          The checked collection is null or it is empty
+     *          The checked collection is null or it is emptyArray
      */
     public static void notZero(
             final Collection collection,

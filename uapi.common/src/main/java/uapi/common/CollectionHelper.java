@@ -18,13 +18,13 @@ import java.util.*;
  */
 public final class CollectionHelper {
 
-    public static final Object[] emptyArray = new Object[0];
+    public static final Object[] EMPTY_ARRAY = new Object[0];
 
     private static final String DEFAULT_SEPARATOR   = ",";
 
     @SuppressWarnings("unchecked")
-    public static <T> T[] empty() {
-        return (T[]) emptyArray;
+    public static <T> T[] emptyArray() {
+        return (T[]) EMPTY_ARRAY;
     }
 
     /**

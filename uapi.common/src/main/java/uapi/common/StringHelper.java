@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class StringHelper {
@@ -39,9 +37,15 @@ public final class StringHelper {
 
     private StringHelper() { }
 
-    public static String makeString(String str, Object... args) {
+    public static String makeString(
+            final String str,
+            Object... args
+    ) {
         if (Strings.isNullOrEmpty(str)) {
             return str;
+        }
+        if (args == null) {
+            args = CollectionHelper.EMPTY_ARRAY;
         }
         StringBuilder buffer = new StringBuilder();
         boolean foundVarStart = false;
@@ -53,13 +57,12 @@ public final class StringHelper {
                 foundVarStart = true;
             } else if (c == VAR_END) {
                 if (foundVarStart) {
-                    if (tmpIdx != -1) {
-                        idxVar = tmpIdx;
-                    }
-                    if (args.length <= idxVar) {
+                    if (tmpIdx != -1 && tmpIdx < args.length) {
+                        buffer.append(args[tmpIdx] == null ? "" : args[tmpIdx]);
+                    } else if (idxVar < args.length) {
+                        buffer.append(args[idxVar] == null ? "" : args[idxVar]);
+                    } else {
                         buffer.append(VAR_START).append(tmpIdx == -1 ? "" : tmpIdx).append(VAR_END);
-                    } else if (args[idxVar] != null) {
-                        buffer.append(args[idxVar]);
                     }
                     foundVarStart = false;
                     idxVar++;
@@ -105,12 +108,15 @@ public final class StringHelper {
      *          The argument map which will replace to the string template
      * @return  The result string
      */
-    public static String makeString(String stringTemplate, Map<Object, Object> arguments) {
+    public static String makeString(
+            final String stringTemplate,
+            Map<Object, Object> arguments
+    ) {
         if (Strings.isNullOrEmpty(stringTemplate)) {
             return stringTemplate;
         }
         if (arguments == null) {
-            arguments = new HashMap<>();
+            arguments = MapHelper.EMPTY;
         }
         StringBuilder buffer = new StringBuilder();
         boolean foundVarStart = false;
@@ -146,6 +152,100 @@ public final class StringHelper {
         }
         if (foundVarStart) {
             buffer.append(VAR_START).append(varName);
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Make string based on string template and replace variables by named variables or indexed variables.
+     *
+     * @param   stringTemplate
+     *          The string template
+     * @param   namedVariables
+     *          The named variables which will replace named variable in the string template
+     * @param   indexedVariables
+     *          The indexed variables which will replace indexed variable in the string template
+     * @return  The result string
+     */
+    public static String makeString(
+            final String stringTemplate,
+            Map<Object, Object> namedVariables,
+            Object... indexedVariables
+    ) {
+        if (Strings.isNullOrEmpty(stringTemplate)) {
+            return stringTemplate;
+        }
+        if (namedVariables == null) {
+            namedVariables = MapHelper.EMPTY;
+        }
+        if (indexedVariables == null) {
+            indexedVariables = CollectionHelper.EMPTY_ARRAY;
+        }
+        StringBuilder buffer = new StringBuilder();
+        boolean foundVarStart = false;
+        int idxVar = 0;
+        String namedVar = "";
+        int tmpIdx = -1;
+        for (int i = 0; i < stringTemplate.length(); i++) {
+            char c = stringTemplate.charAt(i);
+            if (c == VAR_START) {
+                foundVarStart = true;
+            } else if (c == VAR_END) {
+                if (foundVarStart) {
+                    boolean proceed = false;
+                    if (! Strings.isNullOrEmpty(namedVar)) {
+                        // try using named variable
+                        if (namedVariables.get(namedVar) != null) {
+                            buffer.append(namedVariables.get(namedVar));
+                            proceed = true;
+                        }
+                    }
+                    if (! proceed) {
+                        // try using indexed variable
+                        if (tmpIdx != -1 && tmpIdx < indexedVariables.length) {
+                            buffer.append(indexedVariables[tmpIdx] == null ? "" : indexedVariables[tmpIdx]);
+                        } else if (idxVar < indexedVariables.length) {
+                            buffer.append(indexedVariables[idxVar] == null ? "" : indexedVariables[idxVar]);
+                        } else {
+                            buffer.append(VAR_START).append(tmpIdx == -1 ? "" : tmpIdx).append(VAR_END);
+                        }
+                        tmpIdx = -1;
+                    }
+                    namedVar = "";
+                    idxVar++;
+                    foundVarStart = false;
+                } else {
+                    buffer.append(c);
+                }
+            } else {
+                if (foundVarStart) {
+                    if (! namedVar.equals("")) {
+                        namedVar += c;
+                    } else {
+                        if (c >= '0' && c <= '9') {
+                            if (tmpIdx == -1) {
+                                tmpIdx = 0;
+                            }
+                            tmpIdx = tmpIdx * 10 + Character.getNumericValue(c);
+                        } else {
+                            if (tmpIdx != -1) {
+                                namedVar += tmpIdx;
+                                tmpIdx = -1;
+                            }
+                            namedVar += c;
+                        }
+                    }
+                } else {
+                    buffer.append(c);
+                }
+            }
+        }
+        if (foundVarStart) {
+            if (tmpIdx != -1) {
+                buffer.append(VAR_START).append(tmpIdx);
+            } else {
+                buffer.append(VAR_START).append(namedVar);
+            }
         }
         return buffer.toString();
     }

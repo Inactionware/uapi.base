@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation to apply on method string argument to
- * indicate the argument can't be null or empty string
+ * indicate the argument can't be null or emptyArray string
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.SOURCE)

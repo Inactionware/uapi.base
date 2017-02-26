@@ -11,6 +11,7 @@ package uapi.common;
 
 import uapi.rx.Looper;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,8 @@ import java.util.Map;
  * Utilities for Map
  */
 public class MapHelper {
+
+    public static final Map EMPTY   = Collections.EMPTY_MAP;
 
     private MapHelper() { }
 

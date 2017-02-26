@@ -18,7 +18,7 @@ import uapi.InvalidArgumentException
  */
 class StringHelperTest extends Specification{
 
-    def 'Test make string'() {
+    def 'Test make string by array'() {
         expect:
         StringHelper.makeString(msg, args) == expect
 
@@ -32,11 +32,12 @@ class StringHelperTest extends Specification{
         "Invalid String - {0}"                      | ["argument"] as Object[]                      | "Invalid String - argument"
         "Test {0} is {1}"                           | ["test", "uapi.kernel.Class"] as Object[]     | "Test test is uapi.kernel.Class"
         "{0} is test"                               | ["a"] as Object[]                             | "a is test"
-        "{1} index is not start on {}"              | ["test", "un-index", "0"] as Object[]         | "un-index index is not start on 0"
+        "{1} index is not start on {}"              | ["test", "un-index", "0"] as Object[]         | "un-index index is not start on un-index"
         "abc {} tt {}"                              | [null, "dd"] as Object[]                      | "abc  tt dd"
-        ''                                          | []                                            | ''
+        ''                                          | [] as Object[]                                | ''
         'abc {} tt {1'                              | [] as Object[]                                | 'abc {} tt {1'
         'abc {1a} tt'                               | [] as Object[]                                | 'abc {1a} tt'
+        'abc {1a} tt'                               | null                                          | 'abc {1a} tt'
     }
 
     def 'Test make string by map'() {
@@ -54,6 +55,28 @@ class StringHelperTest extends Specification{
         'Invalid arg {a{b}c}'                       | [b: 12]                                       | 'Invalid arg {a12c}'
         'Invalid arg } bc'                          | [b: 23]                                       | 'Invalid arg } bc'
         'Invalid arg { abc'                         | null                                          | 'Invalid arg { abc'
+    }
+
+    def 'Test make string by array and map'() {
+        expect:
+        StringHelper.makeString(strTemp, namedVars, indexedVars) == expect
+
+        where:
+        strTemp                 | namedVars                         | indexedVars               | expect
+        ''                      | [a: 'b']                          | [] as Object[]            | ''
+        'A {} b'                | [a: 'b']                          | ['1'] as Object[]         | 'A 1 b'
+        'A {a} b'               | [a: '1']                          | [] as Object[]            | 'A 1 b'
+        'A {} {a} b'            | [a: '1']                          | ['2'] as Object[]         | 'A 2 1 b'
+        'A {a} {} b'            | [a: '1']                          | [null, '2'] as Object[]   | 'A 1 2 b'
+        'A {a} {} b'            | [b: 'c']                          | ['1', '2'] as Object[]    | 'A 1 2 b'
+        'A {} {0} b'            | [b: 'c']                          | ['1', '2'] as Object[]    | 'A 1 1 b'
+        'A {} b'                | [b: 'c']                          | [] as Object[]            | 'A {} b'
+        'A {} b'                | [b: 'c']                          | [null] as Object[]        | 'A  b'
+        'A {} b {qw'            | [b: 'c']                          | ['1'] as Object[]         | 'A 1 b {qw'
+        'A {} b {12'            | [b: 'c']                          | ['1'] as Object[]         | 'A 1 b {12'
+        'A {1b} b'              | ['1b': 'c']                       | [] as Object[]            | 'A c b'
+        'A } b'                 | [b: 'c']                          | [] as Object[]            | 'A } b'
+        'A } b'                 | null                              | null                      | 'A } b'
     }
 
     def 'Test get first line'() {

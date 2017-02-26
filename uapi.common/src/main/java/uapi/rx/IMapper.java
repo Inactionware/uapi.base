@@ -145,7 +145,7 @@ public interface IMapper<T> {
     int count();
 
     /**
-     * Return all element to a list, empty list will be returned if no element
+     * Return all element to a list, emptyArray list will be returned if no element
      *
      * @return  A list contains all element
      */
@@ -163,7 +163,7 @@ public interface IMapper<T> {
     <KT, VT> Map<KT, VT> toMap();
 
     /**
-     * Return all element to an array, empty array will be returned if no element
+     * Return all element to an array, emptyArray array will be returned if no element
      *
      * @return  An array contains all element
      */
