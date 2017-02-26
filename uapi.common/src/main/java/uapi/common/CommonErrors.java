@@ -29,18 +29,10 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
     @Override
     protected String getPropertiesFile(CommonException exception) {
         if (exception.category() == CATEGORY) {
-            return "commonErrors.properties";
+            return "/commonErrors.properties";
         }
         return null;
     }
-
-//    @Override
-//    public <T extends IVariableBuilder> T getVariableBuilder(CommonException.CommonExceptionBuilder builder) {
-//        if (builder.category() == CATEGORY) {
-//            return (T) new InvalidArgumentVariableBuilder();
-//        }
-//        return super.getVariableBuilder(builder);
-//    }
 
     public static final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
 

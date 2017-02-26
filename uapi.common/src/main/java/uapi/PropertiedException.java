@@ -103,14 +103,15 @@ public class PropertiedException extends UapiException {
                     continue;
                 }
                 int idx = line.indexOf("=");
-                if (idx <= 0) {
+                if (idx <= 0 || (idx + 1) >= line.length()) {
                     throw new GeneralException("Incorrect property line in commonErrors.properties - {}", line);
                 }
-                msgTemp = line.substring(idx).trim();
+                msgTemp = line.substring(idx + 1).trim();
                 break;
             }
-        } catch (IOException ex) {
-            throw new GeneralException(ex);
+        } catch (Exception ex) {
+            throw new GeneralException(ex, "Encounter an exception when construct exception - {}",
+                    this.getClass().getCanonicalName());
         }
         if (msgTemp == null) {
             return super.getMessage();

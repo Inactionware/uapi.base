@@ -57,4 +57,15 @@ class PairTest extends Specification {
         str1    | str2      | sep
         "a@b"   | "a@b"     | "@"
     }
+
+    def 'Test hashcode'() {
+        given:
+        Pair p1 = Pair.splitTo('a@b', '@')
+        Pair p2 = Pair.splitTo('a@B', '@')
+
+        expect:
+        p1.hashCode()
+        p2.hashCode()
+        p1.hashCode() != p2.hashCode()
+    }
 }

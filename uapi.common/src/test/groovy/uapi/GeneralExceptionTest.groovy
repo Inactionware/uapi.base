@@ -13,6 +13,15 @@ import spock.lang.Specification
 
 class GeneralExceptionTest extends Specification {
 
+    def 'Test create instance with nothing'() {
+        given:
+        def instance = new GeneralException()
+
+        expect:
+        instance != null
+        instance.message == ""
+    }
+
     def 'Test create instance from throwable'() {
         given:
         def instance = new GeneralException(Mock(Throwable))
