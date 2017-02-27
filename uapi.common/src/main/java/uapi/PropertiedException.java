@@ -47,7 +47,7 @@ public class PropertiedException extends UapiException {
      * @throws  GeneralException
      *          If the exception category is registered by other exception class
      */
-    protected static void checkCategory(
+    private static void checkCategory(
             final int category,
             final Class<? extends PropertiedException> exceptionClass
     ) throws GeneralException {
@@ -157,11 +157,14 @@ public class PropertiedException extends UapiException {
 
         @Override
         protected void validate() throws InvalidArgumentException {
+            if (this._category == -1) {
+                throw new InvalidArgumentException("The category must be provider");
+            }
             if (this._errCode == -1) {
                 throw new InvalidArgumentException("The error code must be provider");
             }
-            if (this._category == -1) {
-                throw new InvalidArgumentException("The category must be provider");
+            if (this._errors.getMappedKey(this._errCode) == null) {
+                throw new InvalidArgumentException("The error code is not mapped to any message key - {}", this._errCode);
             }
         }
 

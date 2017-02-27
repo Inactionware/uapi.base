@@ -20,7 +20,7 @@ public class CommonException extends PropertiedException {
         return new CommonExceptionBuilder();
     }
 
-    private CommonException(final ExceptionBuilder builder) {
+    protected CommonException(final ExceptionBuilder builder) {
         super(builder);
     }
 
