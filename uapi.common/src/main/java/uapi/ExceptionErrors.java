@@ -54,8 +54,9 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
 
         private Object[] _vars;
 
-        public void set(Object... vars) {
+        public <T extends IndexedVariables> T set(Object... vars) {
             this._vars = vars;
+            return (T) this;
         }
 
         @Override
