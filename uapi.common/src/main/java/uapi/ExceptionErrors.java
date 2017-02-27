@@ -50,11 +50,11 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
 
     protected static abstract class NamedVariables implements IVariables<Map> { }
 
-    protected static class IndexedVariables implements IVariables<Object[]> {
+    protected static class IndexedVariables<T extends IndexedVariables> implements IVariables<Object[]> {
 
         private Object[] _vars;
 
-        public <T extends IndexedVariables> T set(Object... vars) {
+        public T set(Object... vars) {
             this._vars = vars;
             return (T) this;
         }
