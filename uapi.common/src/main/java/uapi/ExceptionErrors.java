@@ -20,6 +20,9 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
     private static final Map<Integer, String> codeKeyMapper = new HashMap<>();
 
     protected static void mapCodeKey(int code, String key) {
+        if (! key.equals(codeKeyMapper.get(code))) {
+            throw new GeneralException("The code {} is mapped to key {} but it will be overridden to different key {}");
+        }
         codeKeyMapper.put(code, key);
     }
 
