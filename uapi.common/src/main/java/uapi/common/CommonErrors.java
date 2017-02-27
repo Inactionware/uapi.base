@@ -34,19 +34,19 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
         return null;
     }
 
-    public static final class InvalidArgumentVariableBuilder extends NamedVariableBuilder {
+    public static final class InvalidArgumentVariables extends NamedVariables {
 
         private static final String ARG_NAME    = "argumentName";
 
         private String _argName;
 
-        public InvalidArgumentVariableBuilder argumentName(String argumentName) {
+        public InvalidArgumentVariables argumentName(String argumentName) {
             this._argName = argumentName;
             return this;
         }
 
         @Override
-        public Map<Object, Object> build() {
+        public Map<Object, Object> get() {
             return MapHelper.newMap().put(ARG_NAME, this._argName).get();
         }
     }

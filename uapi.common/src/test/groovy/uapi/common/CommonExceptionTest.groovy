@@ -1,6 +1,5 @@
 package uapi.common
 
-import spock.lang.Ignore
 import spock.lang.Specification
 import uapi.ExceptionErrors
 import uapi.GeneralException
@@ -11,14 +10,14 @@ import uapi.PropertiedException
  * Unit test for CommonException
  */
 class CommonExceptionTest extends Specification {
-    
+
     def 'Test create instance'() {
         when:
         def ex = CommonException.builder()
                 .errorCode(CommonErrors.INVALID_ARGUMENT)
-                .variables(new CommonErrors.InvalidArgumentVariableBuilder()
+                .variables(new CommonErrors.InvalidArgumentVariables()
                         .argumentName('test')
-                        .build())
+                        .get())
                 .build()
 
         then:

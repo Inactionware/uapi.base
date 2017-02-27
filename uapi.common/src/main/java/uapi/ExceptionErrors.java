@@ -43,12 +43,24 @@ public abstract class ExceptionErrors<T extends PropertiedException> {
      */
     protected abstract String getPropertiesFile(T exception);
 
-    protected interface IVariableBuilder<T> {
+    protected interface IVariables<T> {
 
-        T build();
+        T get();
     }
 
-    protected static abstract class NamedVariableBuilder implements IVariableBuilder<Map> { }
+    protected static abstract class NamedVariables implements IVariables<Map> { }
 
-    protected static abstract class IndexedVariableBuilder implements IVariableBuilder<Object[]> { }
+    protected static class IndexedVariables implements IVariables<Object[]> {
+
+        private Object[] _vars;
+
+        public void set(Object... vars) {
+            this._vars = vars;
+        }
+
+        @Override
+        public Object[] get() {
+            return this._vars;
+        }
+    }
 }
