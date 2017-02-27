@@ -155,6 +155,18 @@ public class PropertiedException extends UapiException {
             return (B) this;
         }
 
+        public B variables(ExceptionErrors.IVariables vars) {
+            Object v = vars.get();
+            if (v instanceof Object[]) {
+                this._indexedVars = (Object[]) v;
+            } else if (v instanceof Map) {
+                this._namedVars = (Map) v;
+            } else {
+                throw new GeneralException("Unsupported variables type - {}", v.getClass().getCanonicalName());
+            }
+            return (B) this;
+        }
+
         @Override
         protected void validate() throws InvalidArgumentException {
             if (this._category == -1) {
