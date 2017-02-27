@@ -77,7 +77,7 @@ class CommonExceptionTest extends Specification {
     static class TestErrors extends ExceptionErrors<TestException> {
 
         static {
-            mapCodeKey(1, 'aaa')
+            mapCodeKey(100, 'aaa')
         }
 
         @Override
