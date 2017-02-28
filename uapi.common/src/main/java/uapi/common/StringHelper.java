@@ -169,7 +169,7 @@ public final class StringHelper {
      */
     public static String makeString(
             final String stringTemplate,
-            Map<Object, Object> namedVariables,
+            Map namedVariables,
             Object... indexedVariables
     ) {
         if (Strings.isNullOrEmpty(stringTemplate)) {
