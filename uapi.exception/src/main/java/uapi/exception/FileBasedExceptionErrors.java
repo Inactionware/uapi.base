@@ -53,7 +53,7 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         }
         String msgTemp = null;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(PropertiedException.class.getResourceAsStream(propFile)))) {
+                new InputStreamReader(ParameterizedException.class.getResourceAsStream(propFile)))) {
             String line = reader.readLine();
             while (line != null) {
                 if (line.indexOf(propKey) != 0) {

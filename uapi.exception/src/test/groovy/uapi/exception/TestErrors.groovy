@@ -7,16 +7,14 @@
  * use the project into a commercial product
  */
 
-package uapi.common;
+package uapi.exception
 
-import uapi.ExceptionErrors;
-
-import java.util.Map;
+import uapi.common.MapHelper
 
 /**
- * The class define common errors
+ * Created by xquan on 3/1/2017.
  */
-public class CommonErrors extends ExceptionErrors<CommonException> {
+class TestErrors extends FileBasedExceptionErrors<TestException> {
 
     public static final int CATEGORY   = 0x0001;
 
@@ -27,14 +25,14 @@ public class CommonErrors extends ExceptionErrors<CommonException> {
     }
 
     @Override
-    protected String getPropertiesFile(CommonException exception) {
+    protected String getFile(TestException exception) {
         if (exception.category() == CATEGORY) {
-            return "/commonErrors.properties";
+            return "/testErrors.properties";
         }
         return null;
     }
 
-    public static final class InvalidArgumentVariables extends NamedVariables {
+    public static final class InvalidArgumentVariables extends NamedParameters {
 
         private static final String ARG_NAME    = "argumentName";
 
