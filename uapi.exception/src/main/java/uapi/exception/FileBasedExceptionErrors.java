@@ -24,14 +24,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         extends ExceptionErrors<E> {
 
-    private static final Map<Integer, String> codeKeyMapper = new ConcurrentHashMap<>();
-
-    protected static void mapCodeKey(int code, String key) {
-        if (codeKeyMapper.containsKey(code) && ! key.equals(codeKeyMapper.get(code))) {
-            throw new GeneralException("The code {} is mapped to key {} but it will be overridden to different key {}");
-        }
-        codeKeyMapper.put(code, key);
-    }
+//    private static final Map<Integer, String> codeKeyMapper = new ConcurrentHashMap<>();
+//
+//    protected static void mapCodeKey(int code, String key) {
+//        if (codeKeyMapper.containsKey(code) && ! key.equals(codeKeyMapper.get(code))) {
+//            throw new GeneralException("The code {} is mapped to key {} but it will be overridden to different key {}");
+//        }
+//        codeKeyMapper.put(code, key);
+//    }
 
     /**
      * Get error defined properties file based on category and other tags
@@ -42,9 +42,11 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
      */
     protected abstract String getFile(E exception);
 
+    protected abstract String getKey(E exception);
+
     @Override
     public String getMessageTemplate(E exception) {
-        String propKey = codeKeyMapper.get(exception.errorCode());
+        String propKey = getKey(exception);
         if (Strings.isNullOrEmpty(propKey)) {
             return null;
         }

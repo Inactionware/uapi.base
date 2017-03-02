@@ -85,13 +85,18 @@ class FileBasedExceptionTest extends Specification {
 
     static class TestErrors2 extends FileBasedExceptionErrors<TestException2> {
 
-        static {
-            mapCodeKey(100, 'aaa')
-        }
+//        static {
+//            mapCodeKey(100, 'aaa')
+//        }
 
         @Override
         protected String getFile(TestException2 exception) {
             return "/testError.properties"
+        }
+
+        @Override
+        protected String getKey(TestException2 exception) {
+            return 'aaa';
         }
     }
 

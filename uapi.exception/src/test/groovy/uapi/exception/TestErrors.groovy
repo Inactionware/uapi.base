@@ -19,10 +19,10 @@ class TestErrors extends FileBasedExceptionErrors<TestException> {
     public static final int CATEGORY   = 0x0001;
 
     public static final int INVALID_ARGUMENT    = 1;
-
-    static {
-        mapCodeKey(INVALID_ARGUMENT, "InvalidArgument");
-    }
+//
+//    static {
+//        mapCodeKey(INVALID_ARGUMENT, "InvalidArgument");
+//    }
 
     @Override
     protected String getFile(TestException exception) {
@@ -30,6 +30,11 @@ class TestErrors extends FileBasedExceptionErrors<TestException> {
             return "/testErrors.properties";
         }
         return null;
+    }
+
+    @Override
+    protected String getKey(TestException exception) {
+        return 'InvalidArgument'
     }
 
     public static final class InvalidArgumentVariables extends NamedParameters {
