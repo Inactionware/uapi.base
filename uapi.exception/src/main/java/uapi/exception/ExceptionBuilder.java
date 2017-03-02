@@ -24,8 +24,8 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     private int _errCode = -1;
     private int _category = -1;
     private final ExceptionErrors<E> _errors;
-    private Object[] _indexedVars;
-    private Map _namedVars;
+    private Object[] _indexedParams;
+    private Map _namedParams;
 
     public ExceptionBuilder(final int category, final ExceptionErrors<E> errors) {
         if (category < 0) {
@@ -56,21 +56,21 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     }
 
     public B variables(Object... vars) {
-        this._indexedVars = vars;
+        this._indexedParams = vars;
         return (B) this;
     }
 
     public B variables(Map vars) {
-        this._namedVars = vars;
+        this._namedParams = vars;
         return (B) this;
     }
 
     public B variables(IParameters vars) {
         Object v = vars.get();
         if (v instanceof Object[]) {
-            this._indexedVars = (Object[]) v;
+            this._indexedParams = (Object[]) v;
         } else if (v instanceof Map) {
-            this._namedVars = (Map) v;
+            this._namedParams = (Map) v;
         } else {
             throw new GeneralException("Unsupported variables type - {}", v.getClass().getCanonicalName());
         }
@@ -78,11 +78,11 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     }
 
     public Object[] indexedParameters() {
-        return this._indexedVars;
+        return this._indexedParams;
     }
 
     public Map namedParameters() {
-        return this._namedVars;
+        return this._namedParams;
     }
 
     @Override
