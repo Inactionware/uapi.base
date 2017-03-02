@@ -23,7 +23,7 @@ class TestException extends ParameterizedException {
     }
 
     public static class TestExceptionBuilder
-            extends ParameterizedException.ExceptionBuilder<TestException, TestExceptionBuilder> {
+            extends ExceptionBuilder<TestException, TestExceptionBuilder> {
 
         TestExceptionBuilder() {
             super(TestErrors.CATEGORY, new TestErrors());

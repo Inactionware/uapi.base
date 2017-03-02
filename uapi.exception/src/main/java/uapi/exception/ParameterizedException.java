@@ -94,91 +94,91 @@ public abstract class ParameterizedException extends UapiException {
         }
     }
 
-    public static abstract class ExceptionBuilder<E extends ParameterizedException, B extends ExceptionBuilder>
-            extends Builder<E> {
-
-        private int _errCode = -1;
-        private int _category = -1;
-        private final ExceptionErrors<E> _errors;
-        private Object[] _indexedVars;
-        private Map _namedVars;
-
-        public ExceptionBuilder(final int category, final ExceptionErrors<E> errors) {
-            if (category < 0) {
-                throw new GeneralException("The exception category cant be negative");
-            }
-            if (errors == null) {
-                throw new GeneralException("The ExceptionErrors is not specified");
-            }
-            this._category = category;
-            this._errors = errors;
-        }
-
-        public int category() {
-            return this._category;
-        }
-
-        public ExceptionErrors<E> errors() {
-            return this._errors;
-        }
-
-        public B errorCode(int errorCode) {
-            this._errCode = errorCode;
-            return (B) this;
-        }
-
-        public int errorCode() {
-            return this._errCode;
-        }
-
-        public B variables(Object... vars) {
-            this._indexedVars = vars;
-            return (B) this;
-        }
-
-        public B variables(Map vars) {
-            this._namedVars = vars;
-            return (B) this;
-        }
-
-        public B variables(IParameters vars) {
-            Object v = vars.get();
-            if (v instanceof Object[]) {
-                this._indexedVars = (Object[]) v;
-            } else if (v instanceof Map) {
-                this._namedVars = (Map) v;
-            } else {
-                throw new GeneralException("Unsupported variables type - {}", v.getClass().getCanonicalName());
-            }
-            return (B) this;
-        }
-
-        public Object[] indexedParameters() {
-            return this._indexedVars;
-        }
-
-        public Map namedParameters() {
-            return this._namedVars;
-        }
-
-        @Override
-        protected void validate() throws InvalidArgumentException {
-            if (this._category == -1) {
-                throw new InvalidArgumentException("The category must be provider");
-            }
-            if (this._errCode == -1) {
-                throw new InvalidArgumentException("The error code must be provider");
-            }
-        }
-
-        @Override
-        protected void beforeCreateInstance() {
-            // do nothing
-        }
-
-        @Override
-        protected void afterCreateInstance() {
-            // do nothing
-        }
-    }
+//    public static abstract class ExceptionBuilder<E extends ParameterizedException, B extends ExceptionBuilder>
+//            extends Builder<E> {
+//
+//        private int _errCode = -1;
+//        private int _category = -1;
+//        private final ExceptionErrors<E> _errors;
+//        private Object[] _indexedVars;
+//        private Map _namedVars;
+//
+//        public ExceptionBuilder(final int category, final ExceptionErrors<E> errors) {
+//            if (category < 0) {
+//                throw new GeneralException("The exception category cant be negative");
+//            }
+//            if (errors == null) {
+//                throw new GeneralException("The ExceptionErrors is not specified");
+//            }
+//            this._category = category;
+//            this._errors = errors;
+//        }
+//
+//        public int category() {
+//            return this._category;
+//        }
+//
+//        public ExceptionErrors<E> errors() {
+//            return this._errors;
+//        }
+//
+//        public B errorCode(int errorCode) {
+//            this._errCode = errorCode;
+//            return (B) this;
+//        }
+//
+//        public int errorCode() {
+//            return this._errCode;
+//        }
+//
+//        public B variables(Object... vars) {
+//            this._indexedVars = vars;
+//            return (B) this;
+//        }
+//
+//        public B variables(Map vars) {
+//            this._namedVars = vars;
+//            return (B) this;
+//        }
+//
+//        public B variables(IParameters vars) {
+//            Object v = vars.get();
+//            if (v instanceof Object[]) {
+//                this._indexedVars = (Object[]) v;
+//            } else if (v instanceof Map) {
+//                this._namedVars = (Map) v;
+//            } else {
+//                throw new GeneralException("Unsupported variables type - {}", v.getClass().getCanonicalName());
+//            }
+//            return (B) this;
+//        }
+//
+//        public Object[] indexedParameters() {
+//            return this._indexedVars;
+//        }
+//
+//        public Map namedParameters() {
+//            return this._namedVars;
+//        }
+//
+//        @Override
+//        protected void validate() throws InvalidArgumentException {
+//            if (this._category == -1) {
+//                throw new InvalidArgumentException("The category must be provider");
+//            }
+//            if (this._errCode == -1) {
+//                throw new InvalidArgumentException("The error code must be provider");
+//            }
+//        }
+//
+//        @Override
+//        protected void beforeCreateInstance() {
+//            // do nothing
+//        }
+//
+//        @Override
+//        protected void afterCreateInstance() {
+//            // do nothing
+//        }
+//    }
 }

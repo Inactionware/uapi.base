@@ -71,7 +71,7 @@ class FileBasedExceptionTest extends Specification {
         }
     }
 
-    static class TestExceptionBuilder2 extends ParameterizedException.ExceptionBuilder<TestException2, TestExceptionBuilder2> {
+    static class TestExceptionBuilder2 extends ExceptionBuilder<TestException2, TestExceptionBuilder2> {
 
         TestExceptionBuilder2(ExceptionErrors errors) {
             super(uapi.exception.TestErrors.CATEGORY, errors)
