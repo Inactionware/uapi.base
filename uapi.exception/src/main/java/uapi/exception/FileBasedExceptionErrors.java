@@ -60,6 +60,7 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
             String line = reader.readLine();
             while (line != null) {
                 if (line.indexOf(propKey) != 0) {
+                    line = reader.readLine();
                     continue;
                 }
                 int idx = line.indexOf("=");
