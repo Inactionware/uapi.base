@@ -71,25 +71,26 @@ public abstract class ParameterizedException extends UapiException {
 
     protected ParameterizedException(final ExceptionBuilder builder) {
         super();
-        checkCategory(builder._category, this.getClass());
+        checkCategory(builder.category(), this.getClass());
         this._builder = builder;
     }
 
     public int errorCode() {
-        return this._builder._errCode;
+        return this._builder.errorCode();
     }
 
     public int category() {
-        return this._builder._category;
+        return this._builder.category();
     }
 
     @Override
     public String getMessage() {
-        String msgTemp = this._builder._errors.getMessageTemplate(this);
+        String msgTemp = this._builder.errors().getMessageTemplate(this);
         if (msgTemp == null) {
             return super.getMessage();
         } else {
-            return StringHelper.makeString(msgTemp, this._builder._namedVars, this._builder._indexedVars);
+            return StringHelper.makeString(
+                    msgTemp, this._builder.namedParameters(), this._builder.indexedParameters());
         }
     }
 
@@ -113,9 +114,21 @@ public abstract class ParameterizedException extends UapiException {
             this._errors = errors;
         }
 
+        public int category() {
+            return this._category;
+        }
+
+        public ExceptionErrors<E> errors() {
+            return this._errors;
+        }
+
         public B errorCode(int errorCode) {
             this._errCode = errorCode;
             return (B) this;
+        }
+
+        public int errorCode() {
+            return this._errCode;
         }
 
         public B variables(Object... vars) {
@@ -138,6 +151,14 @@ public abstract class ParameterizedException extends UapiException {
                 throw new GeneralException("Unsupported variables type - {}", v.getClass().getCanonicalName());
             }
             return (B) this;
+        }
+
+        public Object[] indexedParameters() {
+            return this._indexedVars;
+        }
+
+        public Map namedParameters() {
+            return this._namedVars;
         }
 
         @Override
