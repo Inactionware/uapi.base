@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The exception messages are defined in one or more files (properties file)
@@ -23,7 +24,7 @@ import java.util.Map;
 public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         extends ExceptionErrors<E> {
 
-    private static final Map<Integer, String> codeKeyMapper = new HashMap<>();
+    private static final Map<Integer, String> codeKeyMapper = new ConcurrentHashMap<>();
 
     protected static void mapCodeKey(int code, String key) {
         if (codeKeyMapper.containsKey(code) && ! key.equals(codeKeyMapper.get(code))) {
