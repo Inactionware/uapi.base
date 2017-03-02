@@ -16,7 +16,7 @@ import uapi.common.Builder;
 import java.util.Map;
 
 /**
- * Created by xquan on 3/2/2017.
+ * The builder is used to create initialize and create exception instance
  */
 public abstract class ExceptionBuilder<E extends ParameterizedException, B extends ExceptionBuilder>
         extends Builder<E> {

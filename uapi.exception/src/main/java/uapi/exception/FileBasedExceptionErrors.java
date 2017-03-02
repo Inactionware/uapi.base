@@ -24,15 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         extends ExceptionErrors<E> {
 
-//    private static final Map<Integer, String> codeKeyMapper = new ConcurrentHashMap<>();
-//
-//    protected static void mapCodeKey(int code, String key) {
-//        if (codeKeyMapper.containsKey(code) && ! key.equals(codeKeyMapper.get(code))) {
-//            throw new GeneralException("The code {} is mapped to key {} but it will be overridden to different key {}");
-//        }
-//        codeKeyMapper.put(code, key);
-//    }
-
     /**
      * Get error defined properties file based on category and other tags
      *
@@ -56,10 +47,11 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         }
         String msgTemp = null;
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(ParameterizedException.class.getResourceAsStream(propFile)))) {
+                new InputStreamReader(this.getClass().getResourceAsStream(propFile)))) {
             String line = reader.readLine();
             while (line != null) {
-                if (line.indexOf(propKey) != 0) {
+                line = line.trim();
+                if (line.indexOf("#") == 0 || line.indexOf(propKey) != 0) {
                     line = reader.readLine();
                     continue;
                 }
