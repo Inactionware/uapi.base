@@ -39,4 +39,13 @@ public class Repository<K, V extends IIdentifiable<K>> {
     public V get(K id) {
         return this._store.get(id);
     }
+
+    /**
+     * Return stored data count
+     *
+     * @return  Stored data count
+     */
+    public int count() {
+        return this._store.size();
+    }
 }

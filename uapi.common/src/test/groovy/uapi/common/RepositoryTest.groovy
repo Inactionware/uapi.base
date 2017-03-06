@@ -14,6 +14,7 @@ class RepositoryTest extends Specification {
 
         then:
         noExceptionThrown()
+        repo.count() == 0
     }
 
     def 'Test get and set data'() {
@@ -28,6 +29,7 @@ class RepositoryTest extends Specification {
         then:
         noExceptionThrown()
         data.id == id
+        repo.count() == 1
 
         where:
         id      | placeholder
