@@ -126,4 +126,21 @@ class StringHelperTest extends Specification{
         'abc'   | ''
         'aaa'   | ' '
     }
+
+    def 'Test is null or empty string check'() {
+        when:
+        def result = StringHelper.isNullOrEmpty(str)
+
+        then:
+        result == expect
+
+        where:
+        str     | expect
+        null    | true
+        ''      | true
+        '  '    | true
+        ' a'    | false
+        'a '    | false
+        ' a '   | false
+    }
 }

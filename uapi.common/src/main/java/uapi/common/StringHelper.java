@@ -37,6 +37,16 @@ public final class StringHelper {
 
     private StringHelper() { }
 
+    public static boolean isNullOrEmpty(final String str) {
+        if (str == null) {
+            return true;
+        }
+        if (str.length() == 0 || str.trim().length() == 0) {
+            return true;
+        }
+        return false;
+    }
+
     public static String makeString(
             final String str,
             Object... args
