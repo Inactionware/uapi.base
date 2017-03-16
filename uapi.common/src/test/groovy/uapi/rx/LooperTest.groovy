@@ -95,6 +95,19 @@ class LooperTest extends Specification {
         3       | 1         | 2         | 3
     }
 
+    def 'Test iterator from Range'() {
+        when:
+        def list = []
+        Looper.on(uapi.common.Range.from(start).to(end)).foreach({item -> list.add(item)})
+
+        then:
+        list == result
+
+        where:
+        start   | end   | result
+        0       | 10    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    }
+
     @Ignore
     def 'test rv vx. rxJava'() {
         List<Integer> list = new ArrayList<>();

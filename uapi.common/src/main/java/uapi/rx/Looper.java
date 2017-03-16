@@ -10,6 +10,7 @@
 package uapi.rx;
 
 import uapi.common.ArgumentChecker;
+import uapi.common.Range;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -82,5 +83,13 @@ public class Looper {
             final Iterable<T> iterable
     ) {
         return on(iterable.iterator());
+    }
+
+
+    public static IMapper<Integer> on(
+            final Range range
+    ) {
+        ArgumentChecker.required(range, "range");
+        return new IteratorMapper<>(range.iterator());
     }
 }
