@@ -20,7 +20,7 @@ public final class Watcher {
     private static final IntervalTime DEFAULT_POLLING_INTERVAL  = IntervalTime.parse("100ms");
     private static final IntervalTime DEFAULT_DELAY_INTERVAL    = IntervalTime.parse("0ms");
 
-    static Watcher on(WatcherCondition condition) {
+    public static Watcher on(WatcherCondition condition) {
         return new Watcher(condition);
     }
 
