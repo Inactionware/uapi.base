@@ -40,13 +40,31 @@ public final class Watcher {
         return this;
     }
 
+    public Watcher timeout(IntervalTime timeout) {
+        ArgumentChecker.required(timeout, "timeout");
+        this._timeout = timeout;
+        return this;
+    }
+
     public Watcher polling(String pollingInterval) {
         this._pollingInterval = IntervalTime.parse(pollingInterval);
         return this;
     }
 
+    public Watcher polling(IntervalTime pollingInterval) {
+        ArgumentChecker.required(pollingInterval, "pollingInterval");
+        this._pollingInterval = pollingInterval;
+        return this;
+    }
+
     public Watcher delay(String delayInterval) {
         this._delayInterval = IntervalTime.parse(delayInterval);
+        return this;
+    }
+
+    public Watcher delay(IntervalTime delayInterval) {
+        ArgumentChecker.required(delayInterval, "delayInterval");
+        this._delayInterval = delayInterval;
         return this;
     }
 
