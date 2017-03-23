@@ -19,6 +19,7 @@ public final class Watcher {
     private static final IntervalTime DEFAULT_TIMEOUT           = IntervalTime.parse("5s");
     private static final IntervalTime DEFAULT_POLLING_INTERVAL  = IntervalTime.parse("100ms");
     private static final IntervalTime DEFAULT_DELAY_INTERVAL    = IntervalTime.parse("0ms");
+    private static final int DEFAULT_POLLING_LIMIT              = -1;
 
     public static Watcher on(WatcherCondition condition) {
         return new Watcher(condition);
@@ -27,6 +28,7 @@ public final class Watcher {
     private final WatcherCondition _condition;
 
     private IntervalTime _timeout           = DEFAULT_TIMEOUT;
+    private int _pollingLimit               = DEFAULT_POLLING_LIMIT;
     private IntervalTime _pollingInterval   = DEFAULT_POLLING_INTERVAL;
     private IntervalTime _delayInterval     = DEFAULT_DELAY_INTERVAL;
 
@@ -46,23 +48,28 @@ public final class Watcher {
         return this;
     }
 
-    public Watcher polling(String pollingInterval) {
+    public Watcher pollingLimit(int limit) {
+        this._pollingLimit = limit;
+        return this;
+    }
+
+    public Watcher pollingTime(String pollingInterval) {
         this._pollingInterval = IntervalTime.parse(pollingInterval);
         return this;
     }
 
-    public Watcher polling(IntervalTime pollingInterval) {
+    public Watcher pollingTime(IntervalTime pollingInterval) {
         ArgumentChecker.required(pollingInterval, "pollingInterval");
         this._pollingInterval = pollingInterval;
         return this;
     }
 
-    public Watcher delay(String delayInterval) {
+    public Watcher delayTime(String delayInterval) {
         this._delayInterval = IntervalTime.parse(delayInterval);
         return this;
     }
 
-    public Watcher delay(IntervalTime delayInterval) {
+    public Watcher delayTime(IntervalTime delayInterval) {
         ArgumentChecker.required(delayInterval, "delayInterval");
         this._delayInterval = delayInterval;
         return this;
@@ -83,22 +90,35 @@ public final class Watcher {
                 return;
             }
         }
-        long timeout = this._timeout.milliseconds();
-        if (System.currentTimeMillis() - startTime >= timeout) {
-            throw new GeneralException("The watcher is timed out");
-        }
+
+        int pollingCount = 1;
+        check(startTime, pollingCount);
         while (true) {
-            try {
-                Thread.sleep(this._pollingInterval.milliseconds());
-            } catch (InterruptedException ex) {
-                throw new GeneralException(ex);
+            if (this._pollingInterval.milliseconds() > 0) {
+                try {
+                    Thread.sleep(this._pollingInterval.milliseconds());
+                } catch (InterruptedException ex) {
+                    throw new GeneralException(ex);
+                }
             }
             if (this._condition.accept()) {
                 return;
             }
-            if (System.currentTimeMillis() - startTime >= timeout) {
-                throw new GeneralException("The watcher is timed out");
-            }
+            pollingCount++;
+            check(startTime, pollingCount);
+        }
+    }
+
+    private void check(long startTime, int pollingCount) {
+        long timeout = this._timeout.milliseconds();
+        if (System.currentTimeMillis() - startTime >= timeout) {
+            throw new GeneralException("The watcher is timed out");
+        }
+        if (this._pollingLimit <= 0) {
+            return;
+        }
+        if (pollingCount >= this._pollingLimit) {
+            throw new GeneralException("The watcher's polling count is reach to limit - {}", this._pollingLimit);
         }
     }
 

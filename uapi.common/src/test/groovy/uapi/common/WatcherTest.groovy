@@ -24,7 +24,7 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             2 * accept() >>> [ false, true ]
         }
-        def watcher = Watcher.on(condition).delay('100ms')
+        def watcher = Watcher.on(condition).delayTime('100ms')
 
         when:
         watcher.start()
@@ -38,7 +38,7 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             2 * accept() >>> [ false, true ]
         }
-        def watcher = Watcher.on(condition).delay(IntervalTime.parse('100ms'))
+        def watcher = Watcher.on(condition).delayTime(IntervalTime.parse('100ms'))
 
         when:
         watcher.start()
@@ -52,7 +52,7 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             3 * accept() >>> [ false, false, true ]
         }
-        def watcher = Watcher.on(condition).polling('50ms')
+        def watcher = Watcher.on(condition).pollingTime('50ms')
 
         when:
         watcher.start()
@@ -66,7 +66,7 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             3 * accept() >>> [ false, false, true ]
         }
-        def watcher = Watcher.on(condition).polling(IntervalTime.parse('50ms'))
+        def watcher = Watcher.on(condition).pollingTime(IntervalTime.parse('50ms'))
 
         when:
         watcher.start()
@@ -80,7 +80,7 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             11 * accept() >> false
         }
-        def watcher = Watcher.on(condition).polling("100ms").timeout("1s")
+        def watcher = Watcher.on(condition).pollingTime("100ms").timeout("1s")
 
         when:
         watcher.start()
@@ -94,7 +94,21 @@ class WatcherTest extends Specification {
         def condition = Mock(Watcher.WatcherCondition) {
             11 * accept() >> false
         }
-        def watcher = Watcher.on(condition).polling(IntervalTime.parse("100ms")).timeout(IntervalTime.parse("1s"))
+        def watcher = Watcher.on(condition).pollingTime(IntervalTime.parse("100ms")).timeout(IntervalTime.parse("1s"))
+
+        when:
+        watcher.start()
+
+        then:
+        thrown(GeneralException)
+    }
+
+    def 'Test polling limit'() {
+        given:
+        def condition = Mock(Watcher.WatcherCondition) {
+            accept() >> false
+        }
+        def watcher = Watcher.on(condition).pollingLimit(2).timeout('1s')
 
         when:
         watcher.start()
