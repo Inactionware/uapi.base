@@ -263,7 +263,7 @@ public class MethodMeta {
                     .filter(paramBuilder -> name.equals(paramBuilder.getName()))
                     .collect(Collectors.toList());
             if (params.size() == 0) {
-                throw new GeneralException("Can't found parameter named {} at method {}", name, this._name);
+                return null;
             } else if (params.size() > 1) {
                 throw new GeneralException("Find duplicate parameter named {} at method {}", name, this._name);
             }
