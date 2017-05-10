@@ -150,7 +150,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         for (ClassMeta.Builder classBuilder : classBuilders) {
-            implementGenerated(classBuilder, builderContext);
+            // All generated class must be implemented IGenerated interface
+            implementGenerated(classBuilder);
+
             Writer srcWriter = null;
             try {
 //                this._logger.info("Generate source for -> {}", classBuilder);
@@ -176,16 +178,16 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
     }
 
-    private void implementGenerated(
-            final ClassMeta.Builder classBuilder,
-            final BuilderContext builderContext
-    ) {
+    private void implementGenerated(final ClassMeta.Builder classBuilder) {
+        String codes = StringHelper.makeString(
+                "return {}.{}.class;", classBuilder.getPackageName(), classBuilder.getClassName());
+
         classBuilder.addImplement(IGenerated.class.getCanonicalName())
                 .addMethodBuilder(MethodMeta.builder()
                         .addAnnotationBuilder(AnnotationMeta.builder().setName(AnnotationMeta.OVERRIDE))
                         .setName("originalType")
                         .setReturnTypeName(Type.Q_CLASS)
                         .addCodeBuilder(CodeMeta.builder()
-                                .addRawCode(StringHelper.makeString("return {}.class", classBuilder.getClassName()))));
+                                .addRawCode(codes)));
     }
 }
