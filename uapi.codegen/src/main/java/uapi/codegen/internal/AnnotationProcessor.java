@@ -21,6 +21,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
@@ -185,6 +186,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         classBuilder.addImplement(IGenerated.class.getCanonicalName())
                 .addMethodBuilder(MethodMeta.builder()
                         .addAnnotationBuilder(AnnotationMeta.builder().setName(AnnotationMeta.OVERRIDE))
+                        .addModifier(Modifier.PUBLIC)
                         .setName("originalType")
                         .setReturnTypeName(Type.Q_CLASS)
                         .addCodeBuilder(CodeMeta.builder()
