@@ -39,6 +39,7 @@ public final class Type {
     public static final String STRING_ARRAY     = "String[]";
     public static final String STRING_LIST      = "java.util.List<java.lang.String>";
 
+    public static final String Q_CLASS          = Class.class.getCanonicalName();
     public static final String Q_OBJECT         = Object.class.getCanonicalName();
     public static final String Q_STRING         = String.class.getCanonicalName();
     public static final String Q_STRING_ARRAY   = String[].class.getCanonicalName();

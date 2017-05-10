@@ -11,9 +11,8 @@ package uapi.codegen.internal;
 
 import com.google.auto.service.AutoService;
 import freemarker.template.Template;
-import uapi.codegen.ClassMeta;
-import uapi.codegen.IAnnotationsHandler;
-import uapi.codegen.LogSupport;
+import uapi.Type;
+import uapi.codegen.*;
 import uapi.common.StringHelper;
 import uapi.rx.Looper;
 
@@ -151,6 +150,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         for (ClassMeta.Builder classBuilder : classBuilders) {
+            implementGenerated(classBuilder, builderContext);
             Writer srcWriter = null;
             try {
 //                this._logger.info("Generate source for -> {}", classBuilder);
@@ -174,5 +174,18 @@ public class AnnotationProcessor extends AbstractProcessor {
                 }
             }
         }
+    }
+
+    private void implementGenerated(
+            final ClassMeta.Builder classBuilder,
+            final BuilderContext builderContext
+    ) {
+        classBuilder.addImplement(IGenerated.class.getCanonicalName())
+                .addMethodBuilder(MethodMeta.builder()
+                        .addAnnotationBuilder(AnnotationMeta.builder().setName(AnnotationMeta.OVERRIDE))
+                        .setName("originalType")
+                        .setReturnTypeName(Type.Q_CLASS)
+                        .addCodeBuilder(CodeMeta.builder()
+                                .addRawCode(StringHelper.makeString("return {}.class", classBuilder.getClassName()))));
     }
 }
