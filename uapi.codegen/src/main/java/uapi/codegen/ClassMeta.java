@@ -86,10 +86,17 @@ public class ClassMeta {
                     classElement);
         }
 
+        StringBuilder classNameBuilder = new StringBuilder(classElement.getSimpleName().toString());
+        Element enclosingElemt = classElement.getEnclosingElement();
+        while (enclosingElemt != null && enclosingElemt.getKind() == ElementKind.CLASS) {
+            classNameBuilder.insert(0, ".").insert(0, enclosingElemt.getSimpleName().toString());
+            enclosingElemt = enclosingElemt.getEnclosingElement();
+        }
+
         PackageElement pkgElemt = builderContext.getElementUtils().getPackageOf(classElement);
         return builder()
                 .setPackageName(pkgElemt.getQualifiedName().toString())
-                .setClassName(classElement.getSimpleName().toString())
+                .setClassName(classNameBuilder.toString())
                 .setGeneratedClassName(classElement.getSimpleName().toString() + "_Generated");
 
     }

@@ -82,6 +82,42 @@ class ClassMetaTest extends Specification {
         'pkgName'   | 'clsName' | 'clsName_Generated'
     }
 
+    def 'Test build from innner Element'() {
+        def mockElemt = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getSimpleName() >> Mock(Name) {
+                toString() >> clsName
+            }
+            getEnclosingElement() >> Mock(Element) {
+                getKind() >> ElementKind.CLASS
+                getSimpleName() >> Mock(Name) {
+                    toString() >> outerClsName
+                }
+            }
+        }
+        def mockBudrCtx = Mock(IBuilderContext) {
+            getElementUtils() >> Mock(Elements) {
+                getPackageOf(_) >> Mock(PackageElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> pkgName
+                    }
+                }
+            }
+        }
+
+        when:
+        ClassMeta.Builder clsBudr = ClassMeta.builder(mockElemt, mockBudrCtx)
+
+        then:
+        clsBudr.getPackageName() == pkgName
+        clsBudr.getClassName() == finClsName
+        clsBudr.getGeneratedClassName() == genClsName
+
+        where:
+        pkgName     | clsName   | genClsName            | outerClsName      | finClsName
+        'pkgName'   | 'clsName' | 'clsName_Generated'   | 'outerClsName'    | 'outerClsName.clsName'
+    }
+
     def mockAnnoMeta = Mock(AnnotationMeta)
     def mockFieldMeta = Mock(FieldMeta)
     def mockMethodMeta = Mock(MethodMeta)
