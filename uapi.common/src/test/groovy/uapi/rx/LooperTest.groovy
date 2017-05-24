@@ -108,6 +108,25 @@ class LooperTest extends Specification {
         0       | 10    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     }
 
+    def 'Test on enumeration'() {
+        setup:
+        Enumeration<String> enumeration = Mock(Enumeration) {
+            hasMoreElements() >>> [true, true, true, true, true, true, false]
+            nextElement() >>> [item1, item2, item3, item4]
+        }
+
+        when:
+        def list = []
+        Looper.on(enumeration).foreach({item -> list.add(item)})
+
+        then:
+        list == result
+
+        where:
+        item1   | item2 | item3 | item4 | result
+        '1'     | '2'   | '3'   | null  | ['1', '2', '3']
+    }
+
     @Ignore
     def 'test rv vx. rxJava'() {
         List<Integer> list = new ArrayList<>();

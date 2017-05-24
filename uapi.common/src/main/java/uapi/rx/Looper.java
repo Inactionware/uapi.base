@@ -13,6 +13,7 @@ import uapi.common.ArgumentChecker;
 import uapi.common.Range;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
@@ -86,10 +87,30 @@ public class Looper {
     }
 
 
+    /**
+     * Construct IMapper on Range object
+     *
+     * @param   range
+     *          A object represent a range
+     * @return  The operator which can emit data and combine other operator
+     */
     public static IMapper<Integer> on(
             final Range range
     ) {
         ArgumentChecker.required(range, "range");
         return new IteratorMapper<>(range.iterator());
+    }
+
+    /**
+     * Construct IMapper on Enumeration object
+     *
+     * @param   enumeration
+     *          An enumeration object
+     * @return  The operator which can emit data and combine other operator
+     */
+    public static <T> IMapper<T> on(
+            final Enumeration<T> enumeration
+    ) {
+        return new EnumerationMapper<>(enumeration);
     }
 }
