@@ -48,7 +48,26 @@ public interface IBuilderContext {
 
     Template loadTemplate(String templatePath);
 
+    /**
+     * Find class builder based on specific class element, it will create new class builder if no builder for
+     * specific class element.
+     *
+     * @param   classElement
+     *          The class element which class builder is based on it
+     * @return  The class builder if it is found or create new class builder if it was not found
+     */
     ClassMeta.Builder findClassBuilder(Element classElement);
+
+    /**
+     * Create new class builder for specific class name under specific package
+     *
+     * @param   classPackage
+     *          The class package
+     * @param   className
+     *          The class name
+     * @return  The class builder
+     */
+    ClassMeta.Builder newClassBuilder(String classPackage, String className);
 
     void putHelper(IHandlerHelper helper);
 

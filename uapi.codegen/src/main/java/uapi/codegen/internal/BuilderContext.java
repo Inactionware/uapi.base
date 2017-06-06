@@ -145,6 +145,23 @@ public class BuilderContext implements IBuilderContext {
     }
 
     @Override
+    public ClassMeta.Builder newClassBuilder(final String classPackage, final String className) {
+        ArgumentChecker.required(classPackage, "classPackage");
+        ArgumentChecker.required(className, "className");
+        ClassMeta.Builder duplicatedCls = Looper.on(this._clsBuilders)
+                .filter(clsBuilder -> clsBuilder.getPackageName().equals(classPackage))
+                .filter(clsBuilder -> clsBuilder.getClassName().equals(className))
+                .first(null);
+        if (duplicatedCls != null) {
+            throw new GeneralException("Found duplicated class {} was defined under package {}",
+                    classPackage, className);
+        }
+        ClassMeta.Builder newBuilder = ClassMeta.builder();
+        this._clsBuilders.add(newBuilder);
+        return newBuilder.setPackageName(classPackage).setClassName(className);
+    }
+
+    @Override
     public void checkModifiers(
             final Element element,
             final Class<? extends Annotation> annotation,

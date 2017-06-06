@@ -423,4 +423,45 @@ class BuilderContextTest extends Specification {
         typeClass       | typeName
         String.class    | String.canonicalName
     }
+
+    def 'Test create new class builder'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def budr = budrCtx.newClassBuilder(pkg, cls)
+
+        then:
+        noExceptionThrown()
+        budr != null
+        budr.getPackageName() == pkg
+        budr.getClassName() == cls
+        budrCtx.builders.size() == 1
+
+        where:
+        pkg         | cls
+        'com.test'  | 'Test'
+    }
+
+    def 'Test create duplicated new class builder'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+        budrCtx.newClassBuilder(pkg, cls)
+
+        when:
+        def budr = budrCtx.newClassBuilder(pkg, cls)
+
+        then:
+        thrown(GeneralException)
+        budr == null
+        budrCtx.builders.size() == 1
+
+        where:
+        pkg         | cls
+        'com.test'  | 'Test'
+    }
 }
