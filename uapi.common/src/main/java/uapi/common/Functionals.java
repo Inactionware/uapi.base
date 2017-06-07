@@ -65,6 +65,16 @@ public interface Functionals {
         boolean accept(T in);
     }
 
+    /**
+     * Select one item from multiple items
+     *
+     * @param   <T>
+     *          Item type
+     */
+    interface FilterOne<T> {
+        boolean accept(T in, T selected);
+    }
+
     @FunctionalInterface
     interface Evaluator {
         boolean accept(IAttributed in);

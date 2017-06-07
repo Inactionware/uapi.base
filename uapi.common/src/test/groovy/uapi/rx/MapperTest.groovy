@@ -203,6 +203,18 @@ class MapperTest extends Specification {
         res == ['1': '2']
     }
 
+    def 'Test select'() {
+        given:
+        TestOp op = new TestOp()
+        op.item = 1
+
+        when:
+        def res = op.select({item, selected -> true})
+
+        then:
+        res == 1
+    }
+
     class TestOp extends Mapper {
 
         Object item

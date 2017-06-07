@@ -168,4 +168,6 @@ public interface IMapper<T> {
      * @return  An array contains all element
      */
     T[] toArray();
+
+    T select(Functionals.FilterOne<T> operation);
 }
