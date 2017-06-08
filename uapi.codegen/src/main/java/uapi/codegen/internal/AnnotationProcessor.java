@@ -155,14 +155,16 @@ public class AnnotationProcessor extends AbstractProcessor {
             try {
                 // All generated class must be implemented IGenerated interface
                 implementGenerated(classBuilder);
-                this._logger.info("Generate source for -> {}", classBuilder);
+                this._logger.info("Generate source for -> {}.{}",
+                        classBuilder.getPackageName(),
+                        classBuilder.getGeneratedClassName());
                 ClassMeta classMeta = classBuilder.build();
                 JavaFileObject fileObj = builderContext.getFiler().createSourceFile(
                         StringHelper.makeString("{}.{}", classMeta.getPackageName(), classMeta.getGeneratedClassName())
                 );
                 srcWriter = fileObj.openWriter();
                 temp.process(classMeta, srcWriter);
-                this._logger.info("Done generate source for " + classMeta.getClassName());
+                this._logger.info("Done generate source for " + classMeta.getGeneratedClassName());
             } catch (Exception ex) {
                 this._logger.error(ex);
                 return;
