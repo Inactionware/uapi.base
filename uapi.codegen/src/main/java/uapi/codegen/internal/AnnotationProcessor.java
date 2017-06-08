@@ -159,13 +159,19 @@ public class AnnotationProcessor extends AbstractProcessor {
                         classBuilder.getPackageName(),
                         classBuilder.getGeneratedClassName());
                 ClassMeta classMeta = classBuilder.build();
+                this._logger.info("p1");
                 JavaFileObject fileObj = builderContext.getFiler().createSourceFile(
                         StringHelper.makeString("{}.{}", classMeta.getPackageName(), classMeta.getGeneratedClassName())
                 );
+                this._logger.info("p2");
                 srcWriter = fileObj.openWriter();
+                this._logger.info("p3");
                 temp.process(classMeta, srcWriter);
                 this._logger.info("Done generate source for " + classMeta.getGeneratedClassName());
             } catch (Exception ex) {
+                this._logger.error("Error is arisen when generate source for - {}.{}",
+                        classBuilder.getPackageName(),
+                        classBuilder.getGeneratedClassName());
                 this._logger.error(ex);
                 return;
             } finally {
