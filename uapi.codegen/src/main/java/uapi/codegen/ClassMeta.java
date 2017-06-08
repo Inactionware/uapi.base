@@ -333,7 +333,7 @@ public class ClassMeta {
         @Override
         protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._pkgName, "packageName");
-            ArgumentChecker.notEmpty(this._className, "className");
+//            ArgumentChecker.notEmpty(this._className, "className");
             ArgumentChecker.notEmpty(this._generatedClassName, "generatedClassName");
             this._annoBuilders.forEach(AnnotationMeta.Builder::validate);
             this._fieldBuilders.forEach(FieldMeta.Builder::validate);

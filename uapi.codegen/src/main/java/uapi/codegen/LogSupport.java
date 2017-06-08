@@ -111,8 +111,8 @@ public class LogSupport {
         this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
         StackTraceElement[] sts = t.getStackTrace();
         Looper.on(sts)
-                .next(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, "\t"))
-                .foreach(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
+                .map(st -> "\t" + st.toString())
+                .foreach(msg -> this._msger.printMessage(Diagnostic.Kind.ERROR, msg));
 //        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
     }
 }
