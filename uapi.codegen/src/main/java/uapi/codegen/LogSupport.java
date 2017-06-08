@@ -10,7 +10,6 @@
 package uapi.codegen;
 
 import uapi.common.ArgumentChecker;
-import uapi.common.ExceptionHelper;
 import uapi.common.StringHelper;
 import uapi.rx.Looper;
 
@@ -19,8 +18,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * Support log in compile time
@@ -111,8 +108,11 @@ public class LogSupport {
     public void error(
             final Throwable t
     ) {
+        this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
         StackTraceElement[] sts = t.getStackTrace();
-        Looper.on(sts).foreach(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
+        Looper.on(sts)
+                .next(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, "\t"))
+                .foreach(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
 //        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
     }
 }
