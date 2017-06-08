@@ -9,6 +9,7 @@
 
 package uapi.codegen
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.annotation.processing.Messager
@@ -106,6 +107,7 @@ class LogSupportTest extends Specification {
         'a b c d'   | null
     }
 
+    @Ignore
     def 'Test error with throwable'() {
         given:
         def msger = Mock(Messager)
