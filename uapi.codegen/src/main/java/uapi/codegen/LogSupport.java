@@ -12,6 +12,7 @@ package uapi.codegen;
 import uapi.common.ArgumentChecker;
 import uapi.common.ExceptionHelper;
 import uapi.common.StringHelper;
+import uapi.rx.Looper;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -110,8 +111,8 @@ public class LogSupport {
     public void error(
             final Throwable t
     ) {
-
-        t.printStackTrace();
+        StackTraceElement[] sts = t.getStackTrace();
+        Looper.on(sts).next(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
 //        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
     }
 }

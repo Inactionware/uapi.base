@@ -169,9 +169,10 @@ public class AnnotationProcessor extends AbstractProcessor {
                 temp.process(classMeta, srcWriter);
                 this._logger.info("Done generate source for " + classMeta.getGeneratedClassName());
             } catch (Exception ex) {
-                this._logger.error("Error is risen when generate source for - {}.{}",
+                this._logger.error("An error was risen when generate source for - {}.{}, error - {}",
                         classBuilder.getPackageName(),
-                        classBuilder.getGeneratedClassName());
+                        classBuilder.getGeneratedClassName(),
+                        ex.getMessage());
                 this._logger.error(ex);
                 return;
             } finally {
