@@ -108,11 +108,18 @@ public class LogSupport {
     public void error(
             final Throwable t
     ) {
+        printException(t);
+//        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
+    }
+
+    public void printException(final Throwable t) {
         this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
         StackTraceElement[] sts = t.getStackTrace();
         Looper.on(sts)
                 .map(st -> "\t" + st.toString())
                 .foreach(msg -> this._msger.printMessage(Diagnostic.Kind.ERROR, msg));
-//        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
+        if (t.getCause() != null) {
+            printException(t.getCause());
+        }
     }
 }
