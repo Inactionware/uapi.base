@@ -112,7 +112,7 @@ public class LogSupport {
             final Throwable t
     ) {
         StackTraceElement[] sts = t.getStackTrace();
-        Looper.on(sts).next(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
+        Looper.on(sts).foreach(st -> this._msger.printMessage(Diagnostic.Kind.ERROR, st.toString()));
 //        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
     }
 }
