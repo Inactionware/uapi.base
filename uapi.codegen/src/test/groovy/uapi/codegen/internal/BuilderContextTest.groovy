@@ -437,7 +437,7 @@ class BuilderContextTest extends Specification {
         noExceptionThrown()
         budr != null
         budr.getPackageName() == pkg
-        budr.getClassName() == cls
+        budr.getGeneratedClassName() == cls
         budrCtx.builders.size() == 1
 
         where:

@@ -150,7 +150,7 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.required(className, "className");
         ClassMeta.Builder duplicatedCls = Looper.on(this._clsBuilders)
                 .filter(clsBuilder -> clsBuilder.getPackageName().equals(classPackage))
-                .filter(clsBuilder -> clsBuilder.getClassName().equals(className))
+                .filter(clsBuilder -> clsBuilder.getGeneratedClassName().equals(className))
                 .first(null);
         if (duplicatedCls != null) {
             throw new GeneralException("Found duplicated class {} was defined under package {}",
