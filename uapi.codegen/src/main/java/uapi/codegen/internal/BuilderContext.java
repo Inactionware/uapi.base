@@ -158,7 +158,7 @@ public class BuilderContext implements IBuilderContext {
         }
         ClassMeta.Builder newBuilder = ClassMeta.builder();
         this._clsBuilders.add(newBuilder);
-        return newBuilder.setPackageName(classPackage).setClassName(className);
+        return newBuilder.setPackageName(classPackage).setGeneratedClassName(className);
     }
 
     @Override

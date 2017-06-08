@@ -8,7 +8,9 @@ ${import};
 @${annotation.name}(<#list annotation.arguments as argument>${argument.name}=<#if argument.isString>"${argument.value}"<#else>${argument.value}</#if></#list>)
 </#list>
 public final class ${generatedClassName}
+<#if className??>
 extends ${className}
+</#if>
 <#list implements>implements <#items as implement>${implement}<#sep>, </#sep></#items></#list> {
 
 <#list fields as field>
