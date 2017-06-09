@@ -7,7 +7,7 @@ ${import};
 <#list annotations as annotation>
 @${annotation.name}(<#list annotation.arguments as argument>${argument.name}=<#if argument.isString>"${argument.value}"<#else>${argument.value}</#if></#list>)
 </#list>
-public final class ${generatedClassName}
+public class ${generatedClassName}
 <#if className??>
 extends ${className}
 </#if>
