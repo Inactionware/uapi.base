@@ -41,7 +41,7 @@ public class CompileTimeTemplateLoader implements TemplateLoader {
     ) throws IOException {
         ArgumentChecker.required(name, "name");
         FileObject fileObj = this._builderCtx.getFiler().getResource(
-                StandardLocation.CLASS_PATH, this._basePkgPath, name);
+                StandardLocation.CLASS_OUTPUT, this._basePkgPath, name);
         return new TemplateSource(fileObj);
     }
 
