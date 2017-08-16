@@ -272,7 +272,6 @@ class BuilderContextTest extends Specification {
         String.class.canonicalName  | String.class
     }
 
-    @Ignore
     def 'Test load template'() {
         given:
         def filer = Mock(Filer) {

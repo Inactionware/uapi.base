@@ -9,7 +9,6 @@
 
 package uapi.codegen.internal
 
-import spock.lang.Ignore
 import spock.lang.Specification
 import uapi.GeneralException
 
@@ -30,7 +29,6 @@ class CompileTimeTemplateLoaderTest extends Specification {
         noExceptionThrown()
     }
 
-    @Ignore
     def 'Test find template source'() {
         when:
         def budrCtx = Mock(BuilderContext) {
