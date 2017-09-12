@@ -106,6 +106,17 @@ public class ArgumentChecker {
     }
 
     /**
+     * Check the argument is null or not.
+     *
+     * @param   argument
+     *          The argument which will be checked
+     * @return  True means the argument is null otherwise return false
+     */
+    public static boolean isNull(final Object argument) {
+        return argument == null;
+    }
+
+    /**
      * Ensure the argument is not emptyArray, if it is emptyArray then the exception will be thrown
      *
      * @param   argument

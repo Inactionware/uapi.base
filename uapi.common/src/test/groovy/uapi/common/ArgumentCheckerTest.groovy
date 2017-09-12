@@ -60,6 +60,18 @@ class ArgumentCheckerTest extends Specification {
         null    | "test"    | InvalidArgumentException
     }
 
+    def 'Test is null argument'() {
+        expect:
+        ArgumentChecker.isNull(arg) == result
+
+        where:
+        arg         | result
+        null        | true
+        'a'         | false
+        ""          | false
+        " "         | false
+    }
+
     def 'Test notEmpty method'() {
         when:
         ArgumentChecker.notEmpty(arg, argName)

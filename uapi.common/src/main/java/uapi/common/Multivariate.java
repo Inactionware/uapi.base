@@ -48,4 +48,8 @@ public class Multivariate {
     public void clear() {
         Looper.on(this._items).foreachWithIndex((index, item) -> this._items[index] = null);
     }
+
+    public boolean hasValue() {
+        return Looper.on(this._items).filter(item -> ! ArgumentChecker.isNull(item)).first(null) != null;
+    }
 }

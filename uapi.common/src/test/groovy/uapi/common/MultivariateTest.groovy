@@ -103,4 +103,15 @@ class MultivariateTest extends Specification {
         inst.get(1) == null
         inst.get(2) == null
     }
+
+    def 'Test has value'() {
+        when:
+        def inst = new Multivariate(2)
+        def inst2 = new Multivariate(1)
+        inst2.put(0, 'a')
+
+        then:
+        ! inst.hasValue()
+        inst2.hasValue()
+    }
 }
