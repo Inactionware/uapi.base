@@ -114,4 +114,14 @@ class MultivariateTest extends Specification {
         ! inst.hasValue()
         inst2.hasValue()
     }
+
+    def 'Test has value by index'() {
+        when:
+        def inst = new Multivariate(2)
+        inst.put(1, 'a')
+
+        then:
+        ! inst.hasValue(0)
+        inst.hasValue(1)
+    }
 }

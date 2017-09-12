@@ -52,4 +52,8 @@ public class Multivariate {
     public boolean hasValue() {
         return Looper.on(this._items).filter(item -> ! ArgumentChecker.isNull(item)).first(null) != null;
     }
+
+    public boolean hasValue(int index) {
+        return this._items[index] != null;
+    }
 }
