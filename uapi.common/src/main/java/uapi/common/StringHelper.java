@@ -261,6 +261,28 @@ public final class StringHelper {
     }
 
     /**
+     * Duplicate specific string by specific count
+     *
+     * @param   str
+     *          The string
+     * @param   count
+     *          Duplicated count
+     * @return  The result string
+     */
+    public static String duplicate(final String str, final int count) {
+        ArgumentChecker.notNull(str, "str");
+        ArgumentChecker.checkInt(count, "count", 0, Integer.MAX_VALUE);
+        if (str.length() == 0) {
+            return StringHelper.EMPTY;
+        }
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            buffer.append(str);
+        }
+        return buffer.toString();
+    }
+
+    /**
      * Make MD5 string based string array items
      *
      * @param   strs
