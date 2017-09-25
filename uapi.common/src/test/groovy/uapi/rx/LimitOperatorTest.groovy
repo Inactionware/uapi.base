@@ -28,7 +28,7 @@ class LimitOperatorTest extends Specification {
         expect:
         opt.getItem() == "1"
         opt.getItem() == null
-        opt.getItem() == null
+//        opt.getItem() == null
         ! opt.hasItem()
     }
 
@@ -42,7 +42,7 @@ class LimitOperatorTest extends Specification {
         LimitMapper opt = new LimitMapper(preOpt, 0)
 
         expect:
-        opt.getItem() == null
+//        opt.getItem() == null
         ! opt.hasItem()
     }
 }

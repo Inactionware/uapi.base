@@ -40,7 +40,7 @@ class FlatMapMapper<I, T> extends Mapper<T> {
     @Override
     public T getItem() {
         if (! hasItem()) {
-            return null;
+            throw new NoItemException();
         }
         if (this._currently != null && this._currently.hasItem()) {
             return this._currently.getItem();

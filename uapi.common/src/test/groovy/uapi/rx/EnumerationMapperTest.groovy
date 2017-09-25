@@ -21,7 +21,7 @@ class EnumerationMapperTest extends Specification {
         enumMapper.getItem() == item1
         enumMapper.getItem() == item2
         enumMapper.getItem() == item3
-        enumMapper.getItem() == null
+//        enumMapper.getItem() == null
 
         where:
         item1   | item2 | item3 | item4

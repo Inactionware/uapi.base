@@ -38,7 +38,7 @@ class CollectionMapper<T> extends Mapper<T> {
         if (hasItem()) {
             return this._itemsIte.next();
         }
-        return null;
+        throw new NoItemException();
     }
 
     @Override

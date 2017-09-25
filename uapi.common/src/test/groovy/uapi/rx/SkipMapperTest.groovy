@@ -39,4 +39,18 @@ class SkipMapperTest extends Specification {
         opt.getItem() == null
         ! opt.hasItem()
     }
+
+    def 'Test get item when only 1 item'() {
+        def preOpt = Mock(Mapper) {
+            hasItem() >>> [true, false]
+            getItem() >>> ["1"]
+        }
+
+        when:
+        SkipMapper opt = new SkipMapper(preOpt, 1)
+        opt.getItem()
+
+        then:
+        thrown(NoItemException)
+    }
 }

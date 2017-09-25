@@ -26,7 +26,7 @@ class EnumerationMapper<T> extends Mapper<T> {
         if (hasItem()) {
             return this._itemEnum.nextElement();
         }
-        return null;
+        throw new NoItemException();
     }
 
     @Override

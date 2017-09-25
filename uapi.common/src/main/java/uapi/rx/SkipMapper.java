@@ -22,13 +22,13 @@ public class SkipMapper<T> extends Mapper<T> {
     public T getItem() throws NoItemException {
         while (this._skipCount < this._count) {
             if (! hasItem()) {
-                return null;
+                throw new NoItemException();
             }
             getPreviously().getItem();
             this._skipCount++;
         }
         if (! hasItem()) {
-            return null;
+            throw new NoItemException();
         }
         return (T) getPreviously().getItem();
     }

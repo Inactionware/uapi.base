@@ -38,7 +38,7 @@ class LimitMapper<T> extends Mapper<T> {
     @Override
     public T getItem() {
         if (! hasItem()) {
-            return null;
+            throw new NoItemException();
         }
         this._count++;
         return (T) getPreviously().getItem();

@@ -50,7 +50,7 @@ class OrderedMapper<T> extends Mapper<T> {
             this._pos++;
             return this._items.get(this._pos);
         }
-        return null;
+        throw new NoItemException();
     }
 
     @Override
