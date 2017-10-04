@@ -47,4 +47,31 @@ class TypeTest extends Specification {
         Type.DOUBLE     | Type.Q_DOUBLE
         'ABC'           | 'ABC'
     }
+
+    def 'Test to array type'() {
+        expect:
+        Type.toArrayType(itemType) == arrType
+
+        where:
+        itemType        | arrType
+        String.class    | 'java.lang.String[]'
+    }
+
+    def 'Test to list type'() {
+        expect:
+        Type.toListType(itemType) == listType
+
+        where:
+        itemType        | listType
+        String.class    | 'java.util.List<java.lang.String>'
+    }
+
+    def 'Test to map type'() {
+        expect:
+        Type.toMapType(itemType) == mapType
+
+        where:
+        itemType        | mapType
+        String.class    | 'java.util.Map<java.lang.String>'
+    }
 }
