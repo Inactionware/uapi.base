@@ -10,6 +10,7 @@
 package uapi;
 
 import uapi.common.ArgumentChecker;
+import uapi.common.StringHelper;
 
 import java.util.ArrayList;
 
@@ -96,5 +97,20 @@ public final class Type {
         } else {
             return qualifiedType;
         }
+    }
+
+    public static String toArrayType(final Class<?> itemType) {
+        ArgumentChecker.required(itemType, "itemType");
+        return itemType.getCanonicalName() + "[]";
+    }
+
+    public static String toListType(final Class<?> itemType) {
+        ArgumentChecker.required(itemType, "itemType");
+        return StringHelper.makeString("java.util.List<{}>", itemType.getCanonicalName());
+    }
+
+    public static String toMapType(final Class<?> itemType) {
+        ArgumentChecker.required(itemType, "itemType");
+        return StringHelper.makeString("java.util.Map<{}>", itemType.getCanonicalName());
     }
 }
