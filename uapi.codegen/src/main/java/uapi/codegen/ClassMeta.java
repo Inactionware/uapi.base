@@ -45,6 +45,10 @@ public class ClassMeta {
         return this._builder._generatedClassName;
     }
 
+    public String getQulifiedClassName() {
+        return this._builder.getQulifiedClassName();
+    }
+
     public List<String> getImports() {
         return this._builder._imports;
     }
@@ -139,6 +143,10 @@ public class ClassMeta {
 
         public String getClassName() {
             return this._className;
+        }
+
+        public String getQulifiedClassName() {
+            return this._pkgName + "." + this._generatedClassName;
         }
 
         public Builder setGeneratedClassName(

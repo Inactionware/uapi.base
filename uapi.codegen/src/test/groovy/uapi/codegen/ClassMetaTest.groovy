@@ -41,6 +41,7 @@ class ClassMetaTest extends Specification {
         clsMeta.getPackageName() == pkgName
         clsMeta.getClassName() == clsName
         clsMeta.getGeneratedClassName() == genClsName
+        clsMeta.getQulifiedClassName() == qClsName
         clsMeta.getAnnotations().size() == 1
         clsMeta.getFields().size() == 1
         clsMeta.getImplements().size() == 1
@@ -48,8 +49,8 @@ class ClassMetaTest extends Specification {
         clsMeta.getMethods().size() == 1
 
         where:
-        pkgName     | clsName   | genClsName    | impl      | impot
-        'pkgName'   | 'clsName' | 'clsName_gen' | 'Test'    | 'abc'
+        pkgName     | clsName   | genClsName    | impl      | impot     | qClsName
+        'pkgName'   | 'clsName' | 'clsName_gen' | 'Test'    | 'abc'     | 'pkgName.clsName_gen'
     }
 
     def 'Test build from Element'() {
