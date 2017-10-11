@@ -58,6 +58,8 @@ public interface IBuilderContext {
      */
     ClassMeta.Builder findClassBuilder(Element classElement);
 
+    ClassMeta.Builder findClassBuilder(String packageName, String className, boolean isCreate);
+
     /**
      * Create new class builder for specific class name under specific package
      *

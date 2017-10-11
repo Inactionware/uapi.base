@@ -141,6 +141,64 @@ class BuilderContextTest extends Specification {
         'AAA'   | 'com.test'
     }
 
+    def 'Test find class build by package and class name'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+        budrCtx.newClassBuilder(pkgName, className)
+
+        when:
+        def found = budrCtx.findClassBuilder(pkgName, className, isCreate)
+
+        then:
+        found != null
+        found.getPackageName() == pkgName
+        found.getClassName() == null
+        found.getGeneratedClassName() == className
+
+        where:
+        pkgName     | className | isCreate
+        'a.b.c'     | 'Test'    | false
+    }
+
+    def 'Test find class build by un-existing name'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def found = budrCtx.findClassBuilder(pkgName, className, isCreate)
+
+        then:
+        found == null
+
+        where:
+        pkgName     | className | isCreate
+        'a.b.c'     | 'Test'    | false
+    }
+
+    def 'Test find class build by create flag'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def found = budrCtx.findClassBuilder(pkgName, className, isCreate)
+
+        then:
+        found != null
+        found.getPackageName() == pkgName
+        found.getClassName() == null
+        found.getGeneratedClassName() == className
+
+        where:
+        pkgName     | className | isCreate
+        'a.b.c'     | 'Test'    | true
+    }
+
     def 'Test check modifiers'() {
         given:
         def mockElemt = Mock(Element) {

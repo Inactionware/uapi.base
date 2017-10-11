@@ -145,6 +145,27 @@ public class BuilderContext implements IBuilderContext {
     }
 
     @Override
+    public ClassMeta.Builder findClassBuilder(String packageName, String className, boolean isCreate) {
+        List<ClassMeta.Builder> matchedClassBuilders = Looper.on(this._clsBuilders)
+                .filter(clsBuilder -> clsBuilder.getPackageName().equals(packageName))
+                .filter(clsBuilder -> clsBuilder.getGeneratedClassName().equals(className))
+                .toList();
+        if (matchedClassBuilders.size() == 0) {
+            if (isCreate) {
+                return newClassBuilder(packageName, className);
+            } else {
+                return null;
+            }
+        } else if (matchedClassBuilders.size() == 1) {
+            return matchedClassBuilders.get(0);
+        } else {
+            throw new GeneralException(
+                    "Expect found only 1 class builder for {}, but found {}",
+                    packageName + "." + className, matchedClassBuilders.size());
+        }
+    }
+
+    @Override
     public ClassMeta.Builder newClassBuilder(final String classPackage, final String className) {
         ArgumentChecker.required(classPackage, "classPackage");
         ArgumentChecker.required(className, "className");
