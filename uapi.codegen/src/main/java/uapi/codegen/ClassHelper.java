@@ -11,6 +11,7 @@ package uapi.codegen;
 
 import com.google.common.base.Strings;
 import uapi.InvalidArgumentException;
+import uapi.common.ArgumentChecker;
 import uapi.common.WordHelper;
 
 import java.lang.reflect.ParameterizedType;
@@ -22,6 +23,7 @@ public final class ClassHelper {
 
     private static final String FIELD_PREFIX    = "_";
     private static final String SETTER_PREFIX   = "set";
+    private static final String GETTER_PREFIX   = "get";
     private static final String ADD_PREFIX      = "add";
     private static final String PUT_PREFIX      = "put";
 
@@ -50,6 +52,19 @@ public final class ClassHelper {
             setterName = SETTER_PREFIX + propName.substring(0, 1).toUpperCase() + propName.substring(1, propName.length());
         }
         return setterName;
+    }
+
+    public static String makeGetterName(
+            final String fieldName
+    ) {
+        ArgumentChecker.required(fieldName, "fieldName");
+        String propName;
+        if (fieldName.startsWith(FIELD_PREFIX)) {
+            propName = fieldName.substring(1);
+        } else {
+            propName = fieldName;
+        }
+        return GETTER_PREFIX + propName.substring(0, 1).toUpperCase() + propName.substring(1, propName.length());
     }
 
     public static Class<?>[] getInterfaceParameterizedClasses(

@@ -24,6 +24,24 @@ extends ${className}
 
 </#list>
 
+<#list properties as property>
+    <#if property.generateField()>
+    private ${property.fieldType()} ${property.fieldName()};
+    </#if>
+
+    <#if property.generateSetter()>
+    public void ${property.setterName()}(final ${property.fieldType()} value) {
+        this.${property.fieldName()} = value;
+    }
+    </#if>
+
+    <#if property.generateGetter()>
+    public ${property.fieldType()} ${property.getterName()}() {
+        return this.${property.fieldName()};
+    }
+    </#if>
+</#list>
+
 <#list methods as methodInfo>
     <#list methodInfo.annotations as annotation>
     @${annotation.name}<#list annotation.arguments>(<#items as argument>${argument.name}=<#if argument.isString>"${argument.value}"<#else>${argument.value}</#if></#items>)</#list>
