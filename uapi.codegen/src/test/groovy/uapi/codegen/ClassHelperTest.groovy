@@ -45,6 +45,16 @@ class ClassHelperTest extends Specification {
         ''          | true          | false     | InvalidArgumentException
     }
 
+    def 'Test make getter name'() {
+        expect:
+        ClassHelper.makeGetterName(prop) == getterName
+
+        where:
+        prop        | getterName
+        'message'   | 'getMessage'
+        "_msg"      | 'getMsg'
+    }
+
     def  'test GetInterfaceParameterizedClasses'() {
         given:
         Class<?>[] paramTypes = ClassHelper.getInterfaceParameterizedClasses(FakeService.class, IFakeInterface.class);

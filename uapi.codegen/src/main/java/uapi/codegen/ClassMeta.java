@@ -69,6 +69,10 @@ public class ClassMeta {
         return this._builder._methods;
     }
 
+    public List<PropertyMeta> getProperties() {
+        return this._builder._properties;
+    }
+
     @Override
     public String toString() {
         return this._builder.toString();
@@ -118,6 +122,8 @@ public class ClassMeta {
         private List<FieldMeta.Builder> _fieldBuilders = new ArrayList<>();
         private List<MethodMeta> _methods = new ArrayList<>();
         private List<MethodMeta.Builder> _methodBuilders = new ArrayList<>();
+        private List<PropertyMeta> _properties = new ArrayList<>();
+        private List<PropertyMeta.Builder> _propBuilders = new ArrayList<>();
 
         private Builder() { }
 
@@ -242,6 +248,17 @@ public class ClassMeta {
             return this;
         }
 
+        public Builder addPropertyBuilder(
+                final PropertyMeta.Builder propertyMetaBuilder
+        ) throws GeneralException {
+            checkStatus();
+            ArgumentChecker.notNull(propertyMetaBuilder, "propertyMetaBuilder");
+            if (! this._propBuilders.contains(propertyMetaBuilder)) {
+                this._propBuilders.add(propertyMetaBuilder);
+            }
+            return this;
+        }
+
         public String getGeneratedClassName() {
             return this._generatedClassName;
         }
@@ -346,6 +363,7 @@ public class ClassMeta {
             this._annoBuilders.forEach(AnnotationMeta.Builder::validate);
             this._fieldBuilders.forEach(FieldMeta.Builder::validate);
             this._methodBuilders.forEach(MethodMeta.Builder::validate);
+            this._propBuilders.forEach(PropertyMeta.Builder::validate);
         }
 
         @Override
@@ -361,6 +379,10 @@ public class ClassMeta {
             this._methodBuilders.forEach(methodBuilder -> {
                 methodBuilder.initProperties();
                 this._methods.add(methodBuilder.createInstance());
+            });
+            this._propBuilders.forEach(propertyBuilder -> {
+                propertyBuilder.initProperties();
+                this._properties.add(propertyBuilder.createInstance());
             });
         }
 
@@ -379,7 +401,8 @@ public class ClassMeta {
                             "annotations={}, " +
                             "fields={}, " +
                             "fieldBuilders={}, " +
-                            "methods={}]",
+                            "methods={}, " +
+                            "properties={}]",
                     this._pkgName,
                     this._className,
                     this._generatedClassName,
@@ -387,7 +410,8 @@ public class ClassMeta {
                     this._annoBuilders,
                     this._fields,
                     this._fieldBuilders,
-                    this._methodBuilders);
+                    this._methodBuilders,
+                    this._propBuilders);
         }
 
         @Override

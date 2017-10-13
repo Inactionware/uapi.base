@@ -265,12 +265,22 @@ class ClassMetaTest extends Specification {
         methodBudr.setName('abc')
         def methodBudr2 = new MockMethodBuilder()
         methodBudr2.setName('abc')
-        ClassMeta.Builder clsBudr = ClassMeta.builder();
+        ClassMeta.Builder clsBudr = ClassMeta.builder()
 
         expect:
         clsBudr.addMethodBuilderIfAbsent(methodBudr) == methodBudr
         clsBudr.findMethodBuilder('abc') != null
         clsBudr.addMethodBuilderIfAbsent(methodBudr2) == methodBudr
+    }
+
+    def 'Test add property builder'() {
+        when:
+        def propBudr = Mock(PropertyMeta.Builder)
+        ClassMeta.Builder clsBudr = ClassMeta.builder()
+        clsBudr.addPropertyBuilder(propBudr)
+
+        then:
+        noExceptionThrown()
     }
 
     def 'Test override method builder'() {
@@ -302,7 +312,7 @@ class ClassMetaTest extends Specification {
 
         where:
         pkgName     | className | generatedClassName    | string
-        'pkgname'   | 'clsname' | 'genclassname'        | 'ClassMeta[packageName=pkgname, className=clsname, generatedClassName=genclassname, implements=[], annotations=[], fields=[], fieldBuilders=[], methods=[]]'
+        'pkgname'   | 'clsname' | 'genclassname'        | 'ClassMeta[packageName=pkgname, className=clsname, generatedClassName=genclassname, implements=[], annotations=[], fields=[], fieldBuilders=[], methods=[], properties=[]]'
     }
 
     def 'Test equals'() {

@@ -15,13 +15,31 @@ extends ${className}
 
 <#list fields as field>
     <#if field.isList>
-    ${field.modifiers} java.util.List<${field.typeName}> ${field.name} = new java.util.ArrayList<>();
+    ${field.modifiers} java.util.List<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.ArrayList<>()</#if>;
     <#elseif field.isMap>
-    ${field.modifiers} java.util.Map<${field.typeName}> ${field.name} = new java.util.HashMap<>();
+    ${field.modifiers} java.util.Map<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.HashMap<>()</#if>;
     <#else>
-    ${field.modifiers} ${field.typeName} ${field.name};
+    ${field.modifiers} ${field.typeName} ${field.name}<#if field.value??> = ${field.value}</#if>;
     </#if>
 
+</#list>
+
+<#list properties as property>
+    <#if property.generateField()>
+    private ${property.fieldType()} ${property.fieldName()};
+    </#if>
+
+    <#if property.generateSetter()>
+    public void ${property.setterName()}(final ${property.fieldType()} value) {
+        this.${property.fieldName()} = value;
+    }
+    </#if>
+
+    <#if property.generateGetter()>
+    public ${property.fieldType()} ${property.getterName()}() {
+        return this.${property.fieldName()};
+    }
+    </#if>
 </#list>
 
 <#list methods as methodInfo>
