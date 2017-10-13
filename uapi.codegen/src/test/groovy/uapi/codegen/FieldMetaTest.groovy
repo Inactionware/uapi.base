@@ -25,6 +25,7 @@ class FieldMetaTest extends Specification {
                 .setIsMap(isMap)
                 .setName(name)
                 .setTypeName(type)
+                .setValue(value)
                 .addModifier(modify1)
                 .addModifier(modify2)
                 .build()
@@ -37,8 +38,8 @@ class FieldMetaTest extends Specification {
         fieldMeta.getModifiers() == modifies
 
         where:
-        name    | type      | modify1         | modify2        | modifies       | isList    | isMap
-        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false
+        name    | type      | modify1         | modify2        | modifies       | isList    | isMap     | value
+        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false     | 'a'
     }
 
     def 'Test equals and hashcode'() {
@@ -92,7 +93,7 @@ class FieldMetaTest extends Specification {
 
         where:
         name    | type      | modify1         | modify2        | modifies       | isList    | isMap | string
-        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, isList=true, isMap=false, modifiers=[public, final]'
+        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, value=, isList=true, isMap=false, modifiers=[public, final]'
     }
 
     def 'Test toString'() {
@@ -111,6 +112,6 @@ class FieldMetaTest extends Specification {
 
         where:
         name    | type      | modify1         | modify2        | modifies       | isList    | isMap | string
-        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, isList=true, isMap=false, modifiers=[public, final]'
+        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, value=, isList=true, isMap=false, modifiers=[public, final]'
     }
 }

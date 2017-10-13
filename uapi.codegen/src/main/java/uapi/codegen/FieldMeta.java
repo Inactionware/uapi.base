@@ -38,6 +38,10 @@ public class FieldMeta {
         return this._builder._typeName;
     }
 
+    public String getValue() {
+        return this._builder.getValue();
+    }
+
     public boolean getIsList() {
         return this._builder._isList;
     }
@@ -68,6 +72,7 @@ public class FieldMeta {
         private String _typeName;
         private boolean _isList;
         private boolean _isMap;
+        private String _value;
         private List<Modifier> _modifiers = new ArrayList<>();
 
         public Builder setName(
@@ -92,6 +97,18 @@ public class FieldMeta {
 
         public String getTypeName() {
             return this._typeName;
+        }
+
+        public Builder setValue(
+                String value
+        ) {
+            checkStatus();
+            this._value = value;
+            return this;
+        }
+
+        public String getValue() {
+            return this._value;
         }
 
         public Builder setIsList(
@@ -146,6 +163,7 @@ public class FieldMeta {
             if (_isList != builder._isList) return false;
             if (_isMap != builder._isMap) return false;
             if (!_name.equals(builder._name)) return false;
+            if (_value != null && !_value.equals(builder._value)) return false;
             if (!_typeName.equals(builder._typeName)) return false;
             return _modifiers.equals(builder._modifiers);
 
@@ -154,6 +172,9 @@ public class FieldMeta {
         @Override
         public int hashCode() {
             int result = _name.hashCode();
+            if (_value != null) {
+                result = 31 * result + _value.hashCode();
+            }
             result = 31 * result + _typeName.hashCode();
             result = 31 * result + (_isList ? 1 : 0);
             result = 31 * result + (_isMap ? 1 : 0);
@@ -164,8 +185,8 @@ public class FieldMeta {
         @Override
         public String toString() {
             return StringHelper.makeString(
-                    "FieldMeta[name={}, typeName={}, isList={}, isMap={}, modifiers={}",
-                    this._name, this._typeName, this._isList, this._isMap, this._modifiers);
+                    "FieldMeta[name={}, typeName={}, value={}, isList={}, isMap={}, modifiers={}",
+                    this._name, this._typeName, this._value, this._isList, this._isMap, this._modifiers);
         }
     }
 }

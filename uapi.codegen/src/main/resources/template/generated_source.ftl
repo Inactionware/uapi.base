@@ -15,11 +15,11 @@ extends ${className}
 
 <#list fields as field>
     <#if field.isList>
-    ${field.modifiers} java.util.List<${field.typeName}> ${field.name} = new java.util.ArrayList<>();
+    ${field.modifiers} java.util.List<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.ArrayList<>()</#if>;
     <#elseif field.isMap>
-    ${field.modifiers} java.util.Map<${field.typeName}> ${field.name} = new java.util.HashMap<>();
+    ${field.modifiers} java.util.Map<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.HashMap<>()</#if>;
     <#else>
-    ${field.modifiers} ${field.typeName} ${field.name};
+    ${field.modifiers} ${field.typeName} ${field.name}<#if field.value??> = ${field.value}</#if>;
     </#if>
 
 </#list>
