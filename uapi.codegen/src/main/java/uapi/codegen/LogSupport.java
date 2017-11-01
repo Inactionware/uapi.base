@@ -113,7 +113,9 @@ public class LogSupport {
     }
 
     public void printException(final Throwable t) {
-        this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
+        if (t.getMessage() != null) {
+            this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
+        }
         StackTraceElement[] sts = t.getStackTrace();
         Looper.on(sts)
                 .map(st -> "\t" + st.toString())

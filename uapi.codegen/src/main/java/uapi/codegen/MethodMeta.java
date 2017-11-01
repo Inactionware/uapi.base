@@ -273,7 +273,8 @@ public class MethodMeta {
         @Override
         protected void validate() throws InvalidArgumentException {
             ArgumentChecker.notEmpty(this._name, "name");
-            ArgumentChecker.notEmpty(this._rtnTypeName, "returnTypeName");
+            // For constructor return type is not necessary
+//            ArgumentChecker.notEmpty(this._rtnTypeName, "returnTypeName");
             this._annoBuilders.forEach(AnnotationMeta.Builder::validate);
             this._paramBuilders.forEach(ParameterMeta.Builder::validate);
             this._codeBuilders.forEach(CodeMeta.Builder::validate);
