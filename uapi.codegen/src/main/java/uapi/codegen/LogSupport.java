@@ -115,11 +115,15 @@ public class LogSupport {
     public void printException(final Throwable t) {
         if (t.getMessage() != null) {
             this._msger.printMessage(Diagnostic.Kind.ERROR, t.getMessage());
+        } else {
+            this._msger.printMessage(Diagnostic.Kind.ERROR, t.getClass().getCanonicalName());
         }
         StackTraceElement[] sts = t.getStackTrace();
+        StringBuilder buffer = new StringBuilder();
         Looper.on(sts)
-                .map(st -> "\t" + st.toString())
-                .foreach(msg -> this._msger.printMessage(Diagnostic.Kind.ERROR, msg));
+                .map(st -> StringHelper.makeString("\t{}\n", st.toString()))
+                .foreach(buffer::append);
+        this._msger.printMessage(Diagnostic.Kind.ERROR, buffer.toString());
         if (t.getCause() != null) {
             printException(t.getCause());
         }

@@ -175,7 +175,7 @@ public class BuilderContext implements IBuilderContext {
                 .first(null);
         if (duplicatedCls != null) {
             throw new GeneralException("Found duplicated class {} was defined under package {}",
-                    classPackage, className);
+                    className, classPackage);
         }
         ClassMeta.Builder newBuilder = ClassMeta.builder();
         this._clsBuilders.add(newBuilder);
