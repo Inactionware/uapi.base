@@ -17,7 +17,7 @@ extends ${className}
     <#if field.isList>
     ${field.modifiers} java.util.List<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.ArrayList<>()</#if>;
     <#elseif field.isMap>
-    ${field.modifiers} java.util.Map<${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.HashMap<>()</#if>;
+    ${field.modifiers} java.util.Map<${field.keyTypeName}, ${field.typeName}> ${field.name} = new <#if field.value??>${field.value}<#else>java.util.HashMap<>()</#if>;
     <#else>
     ${field.modifiers} ${field.typeName} ${field.name}<#if field.value??> = ${field.value}</#if>;
     </#if>
@@ -46,7 +46,7 @@ extends ${className}
     <#list methodInfo.annotations as annotation>
     @${annotation.name}<#list annotation.arguments>(<#items as argument>${argument.name}=<#if argument.isString>"${argument.value}"<#else>${argument.value}</#if></#items>)</#list>
     </#list>
-    ${methodInfo.modifiers} ${methodInfo.returnTypeName} ${methodInfo.name} (
+    ${methodInfo.modifiers} <#if methodInfo.returnTypeName??>${methodInfo.returnTypeName}</#if> ${methodInfo.name} (
     <#list methodInfo.parameters as parameter>
             ${parameter.modifiers} ${parameter.type} ${parameter.name}<#sep>, </#sep>
     </#list>

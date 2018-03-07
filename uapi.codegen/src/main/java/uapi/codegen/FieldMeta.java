@@ -14,6 +14,7 @@ import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
 import uapi.common.CollectionHelper;
 import uapi.common.StringHelper;
+import uapi.rx.Looper;
 
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class FieldMeta {
 
     public String getTypeName() {
         return this._builder._typeName;
+    }
+
+    public String getKeyTypeName() {
+        return this._builder._keyTypeName;
     }
 
     public String getValue() {
@@ -70,6 +75,7 @@ public class FieldMeta {
 
         private String _name;
         private String _typeName;
+        private String _keyTypeName;    // Only for Map type
         private boolean _isList;
         private boolean _isMap;
         private String _value;
@@ -97,6 +103,18 @@ public class FieldMeta {
 
         public String getTypeName() {
             return this._typeName;
+        }
+
+        public Builder setKeyTypeName(
+                final String typeName
+        ) throws GeneralException {
+            checkStatus();
+            this._keyTypeName = typeName;
+            return this;
+        }
+
+        public String getKeyTypeName() {
+            return this._keyTypeName;
         }
 
         public Builder setValue(
@@ -128,19 +146,23 @@ public class FieldMeta {
         }
 
         public Builder addModifier(
-                final Modifier modifier
+                final Modifier... modifiers
         ) throws GeneralException {
             checkStatus();
-            ArgumentChecker.notNull(modifier, "modifier");
-            this._modifiers.add(modifier);
+            ArgumentChecker.notNull(modifiers, "modifiers");
+            if (modifiers.length > 0) {
+                Looper.on(modifiers).foreach(this._modifiers::add);
+            }
             return this;
         }
-
 
         @Override
         protected void validate() throws InvalidArgumentException {
             ArgumentChecker.required(this._name, "fieldName");
             ArgumentChecker.required(this._typeName, "fieldTypeName");
+            if (this._isMap) {
+                ArgumentChecker.required(this._keyTypeName, "mapKeyTypeName");
+            }
         }
 
         @Override
@@ -165,6 +187,9 @@ public class FieldMeta {
             if (!_name.equals(builder._name)) return false;
             if (_value != null && !_value.equals(builder._value)) return false;
             if (!_typeName.equals(builder._typeName)) return false;
+            if (_isMap) {
+                if (!_keyTypeName.equals(builder._keyTypeName)) return false;
+            }
             return _modifiers.equals(builder._modifiers);
 
         }
@@ -176,6 +201,9 @@ public class FieldMeta {
                 result = 31 * result + _value.hashCode();
             }
             result = 31 * result + _typeName.hashCode();
+            if (_isMap) {
+                result = 31 * result + _keyTypeName.hashCode();
+            }
             result = 31 * result + (_isList ? 1 : 0);
             result = 31 * result + (_isMap ? 1 : 0);
             result = 31 * result + _modifiers.hashCode();
@@ -185,8 +213,8 @@ public class FieldMeta {
         @Override
         public String toString() {
             return StringHelper.makeString(
-                    "FieldMeta[name={}, typeName={}, value={}, isList={}, isMap={}, modifiers={}",
-                    this._name, this._typeName, this._value, this._isList, this._isMap, this._modifiers);
+                    "FieldMeta[name={}, typeName={}, keyTypeName={}, value={}, isList={}, isMap={}, modifiers={}",
+                    this._name, this._typeName, this._keyTypeName, this._value, this._isList, this._isMap, this._modifiers);
         }
     }
 }

@@ -105,6 +105,39 @@ class BuilderContextTest extends Specification {
         'AAA'   | 'com.test'
     }
 
+    def 'Test find class builder by element and do not create'() {
+        given:
+        def mockElemt = Mock(Element) {
+            getKind() >> ElementKind.CLASS
+            getSimpleName() >> Mock(Name) {
+                toString() >> clsName
+            }
+        }
+        def procEnv = Mock(ProcessingEnvironment) {
+            getElementUtils() >> Mock(Elements) {
+                getPackageOf(mockElemt) >> Mock(PackageElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> pkgName
+                    }
+                }
+            }
+        }
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def found = budrCtx.findClassBuilder(mockElemt, false)
+        def found2 = budrCtx.getBuilders()
+
+        then:
+        found == null
+        found2.size() == 0
+
+        where:
+        clsName | pkgName
+        'AAA'   | 'com.test'
+    }
+
     def 'Test find class builder by duplicated element'() {
         given:
         def mockElemt = Mock(Element) {

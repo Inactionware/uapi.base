@@ -93,6 +93,17 @@ public class CodeMeta {
             return this;
         }
 
+        public Builder addRawCode(
+                final String codeTemplate,
+                final Object... params
+        ) {
+            checkStatus();
+            ArgumentChecker.notEmpty(codeTemplate, "codeTemplate");
+            String code = StringHelper.makeString(codeTemplate, params);
+            addRawCode(code);
+            return this;
+        }
+
         public String getTemplateSourceName() {
             return this._temp == null ? null : this._temp.getSourceName();
         }

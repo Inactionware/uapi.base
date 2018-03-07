@@ -124,15 +124,40 @@ public class BuilderContext implements IBuilderContext {
 
     @Override
     public ClassMeta.Builder findClassBuilder(Element classElement) {
+//        ArgumentChecker.notNull(classElement, "classElement");
+//        final ClassMeta.Builder expectedBuilder = ClassMeta.builder(classElement, this);
+//        List<ClassMeta.Builder> matchedClassBuilders = this._clsBuilders.parallelStream()
+//                .filter(existing -> existing.equals(expectedBuilder))
+//                .collect(Collectors.toList());
+//        ClassMeta.Builder clsBuilder;
+//        if (matchedClassBuilders.size() == 0) {
+//            this._clsBuilders.add(expectedBuilder);
+//            clsBuilder = expectedBuilder;
+//        } else if (matchedClassBuilders.size() == 1) {
+//            clsBuilder = matchedClassBuilders.get(0);
+//        } else {
+//            throw new GeneralException(
+//                    "Expect found only 1 class builder for {}, but found {}",
+//                    expectedBuilder.getPackageName() + "." + expectedBuilder.getClassName(),
+//                    matchedClassBuilders.size());
+//        }
+//        return clsBuilder;
+        return findClassBuilder(classElement, true);
+    }
+
+    @Override
+    public ClassMeta.Builder findClassBuilder(Element classElement, boolean create) {
         ArgumentChecker.notNull(classElement, "classElement");
         final ClassMeta.Builder expectedBuilder = ClassMeta.builder(classElement, this);
         List<ClassMeta.Builder> matchedClassBuilders = this._clsBuilders.parallelStream()
                 .filter(existing -> existing.equals(expectedBuilder))
                 .collect(Collectors.toList());
-        ClassMeta.Builder clsBuilder;
+        ClassMeta.Builder clsBuilder = null;
         if (matchedClassBuilders.size() == 0) {
-            this._clsBuilders.add(expectedBuilder);
-            clsBuilder = expectedBuilder;
+            if (create) {
+                this._clsBuilders.add(expectedBuilder);
+                clsBuilder = expectedBuilder;
+            }
         } else if (matchedClassBuilders.size() == 1) {
             clsBuilder = matchedClassBuilders.get(0);
         } else {
