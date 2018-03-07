@@ -51,6 +51,21 @@ class CodeMetaTest extends Specification {
         'abc'   | 'def' | 'abcdef'
     }
 
+    def 'Test build with code template'() {
+        when:
+        CodeMeta codeMeta = CodeMeta.builder()
+                .addRawCode(code1, code1Param)
+                .addRawCode(code2, code2Param)
+                .build()
+
+        then:
+        codeMeta.getCode() == codes
+
+        where:
+        code1   | code1Param    | code2     | code2Param    | codes
+        'abc{}' | 1             | 'def{}'   | '2'           | 'abc1def2'
+    }
+
     def 'Test equals'() {
         def tmp = Mock(Template) {
             getSourceName() >> "abc"

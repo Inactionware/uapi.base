@@ -58,6 +58,19 @@ public interface IBuilderContext {
      */
     ClassMeta.Builder findClassBuilder(Element classElement);
 
+    /**
+     * Find class builder based on specific class element, it will create new class builder if create is set to
+     * true, otherwise return null.
+     *
+     * @param   classElement
+     *          The class element which class builder is based on it
+     * @param   create
+     *          Create new class builder if no matched class builder is found when create set to true, otherwise
+     *          do not create new class builder and return null
+     * @return  The class builder if it is found or create new class builder if it was not found
+     */
+    ClassMeta.Builder findClassBuilder(Element classElement, boolean create);
+
     ClassMeta.Builder findClassBuilder(String packageName, String className, boolean isCreate);
 
     /**
