@@ -46,7 +46,7 @@ extends ${className}
     <#list methodInfo.annotations as annotation>
     @${annotation.name}<#list annotation.arguments>(<#items as argument>${argument.name}=<#if argument.isString>"${argument.value}"<#else>${argument.value}</#if></#items>)</#list>
     </#list>
-    ${methodInfo.modifiers} ${methodInfo.returnTypeName} ${methodInfo.name} (
+    ${methodInfo.modifiers} <#if methodInfo.returnTypeName??>${methodInfo.returnTypeName}</#if> ${methodInfo.name} (
     <#list methodInfo.parameters as parameter>
             ${parameter.modifiers} ${parameter.type} ${parameter.name}<#sep>, </#sep>
     </#list>
