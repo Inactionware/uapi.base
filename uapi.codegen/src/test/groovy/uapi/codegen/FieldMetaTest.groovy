@@ -93,7 +93,7 @@ class FieldMetaTest extends Specification {
 
         where:
         name    | type      | modify1         | modify2        | modifies       | isList    | isMap | string
-        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, value=, isList=true, isMap=false, modifiers=[public, final]'
+        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, keyTypeName=, value=, isList=true, isMap=false, modifiers=[public, final]'
     }
 
     def 'Test toString'() {
@@ -112,6 +112,6 @@ class FieldMetaTest extends Specification {
 
         where:
         name    | type      | modify1         | modify2        | modifies       | isList    | isMap | string
-        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, value=, isList=true, isMap=false, modifiers=[public, final]'
+        'Test'  | 'String'  | Modifier.PUBLIC | Modifier.FINAL | "public final" | true      | false | 'FieldMeta[name=Test, typeName=String, keyTypeName=, value=, isList=true, isMap=false, modifiers=[public, final]'
     }
 }
