@@ -162,12 +162,5 @@ public interface IMapper<T> {
      */
     <KT, VT> Map<KT, VT> toMap();
 
-    /**
-     * Return all element to an array, emptyArray array will be returned if no element
-     *
-     * @return  An array contains all element
-     */
-    T[] toArray();
-
     T select(Functionals.FilterOne<T> operation);
 }
