@@ -145,14 +145,6 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     @Override
-    public T[] toArray() {
-        ToArrayReducer<T> operator = new ToArrayReducer<>(this);
-        T[] result = operator.getItem();
-        operator.end();
-        return result;
-    }
-
-    @Override
     public T select(Functionals.FilterOne<T> filter) {
         SelectReducer<T> operator = new SelectReducer<>(this, filter);
         T result = operator.getItem();
