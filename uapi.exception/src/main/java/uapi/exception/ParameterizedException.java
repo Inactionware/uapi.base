@@ -79,6 +79,10 @@ public abstract class ParameterizedException extends UapiException {
         return this._builder.errorCode();
     }
 
+    public boolean hasErrorCode() {
+        return this._builder.hasErrorCode();
+    }
+
     public int category() {
         return this._builder.category();
     }
@@ -92,5 +96,10 @@ public abstract class ParameterizedException extends UapiException {
             return StringHelper.makeString(
                     msgTemp, this._builder.namedParameters(), this._builder.indexedParameters());
         }
+    }
+
+    @Override
+    public Throwable getCause() {
+        return this._builder.cause();
     }
 }

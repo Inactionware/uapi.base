@@ -24,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         extends ExceptionErrors<E> {
 
+    private static final String TEMP_UNKNOWN    = "Unknown error";
+
     /**
      * Get error defined properties file based on category and other tags
      *
@@ -37,6 +39,10 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
 
     @Override
     public String getMessageTemplate(E exception) {
+        if (! exception.hasErrorCode()) {
+            return TEMP_UNKNOWN;
+        }
+
         String propKey = getKey(exception);
         if (Strings.isNullOrEmpty(propKey)) {
             return null;

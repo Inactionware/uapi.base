@@ -33,6 +33,30 @@ class FileBasedExceptionTest extends Specification {
         ex.message == 'The argument is invalid - test'
     }
 
+    def 'Test create non-error code instance'() {
+        when:
+        def ex = TestException.builder().build()
+
+        then:
+        noExceptionThrown()
+        ex != null
+        ex.message == 'Unknown error'
+    }
+
+    def 'Test create instance with a cause'() {
+        given:
+        def cause = new Exception()
+
+        when:
+        def ex = TestException.builder().cause(cause).build()
+
+        then:
+        noExceptionThrown()
+        ex != null
+        ex.message == 'Unknown error'
+        ex.cause == cause
+    }
+
     def 'Test create instance with conflict category'() {
         when:
         TestException.builder().errorCode(TestErrors.INVALID_ARGUMENT).build()
