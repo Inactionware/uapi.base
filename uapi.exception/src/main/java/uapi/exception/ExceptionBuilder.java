@@ -26,6 +26,7 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     private final ExceptionErrors<E> _errors;
     private Object[] _indexedParams;
     private Map _namedParams;
+    private Throwable _cause;
 
     public ExceptionBuilder(final int category, final ExceptionErrors<E> errors) {
         if (category < 0) {
@@ -47,12 +48,19 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     }
 
     public B errorCode(int errorCode) {
+        if (errorCode < 0) {
+            throw new GeneralException("The error code must be more than 0 - {}", errorCode);
+        }
         this._errCode = errorCode;
         return (B) this;
     }
 
     public int errorCode() {
         return this._errCode;
+    }
+
+    public boolean hasErrorCode() {
+        return this._errCode >= 0;
     }
 
     public B variables(Object... vars) {
@@ -77,6 +85,15 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
         return (B) this;
     }
 
+    public B cause(Throwable t) {
+        this._cause = t;
+        return (B) this;
+    }
+
+    public Throwable cause() {
+        return this._cause;
+    }
+
     public Object[] indexedParameters() {
         return this._indexedParams;
     }
@@ -89,9 +106,6 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     protected void validate() throws InvalidArgumentException {
         if (this._category == -1) {
             throw new InvalidArgumentException("The category must be provider");
-        }
-        if (this._errCode == -1) {
-            throw new InvalidArgumentException("The error code must be provider");
         }
     }
 
