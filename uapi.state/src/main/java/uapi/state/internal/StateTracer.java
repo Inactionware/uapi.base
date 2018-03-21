@@ -12,10 +12,7 @@ package uapi.state.internal;
 import uapi.GeneralException;
 import uapi.common.ArgumentChecker;
 import uapi.rx.Looper;
-import uapi.state.IOperation;
-import uapi.state.IShifter;
-import uapi.state.IStateTracer;
-import uapi.state.IStateListener;
+import uapi.state.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,15 +25,21 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class StateTracer<T> implements IStateTracer<T> {
 
     private T _state;
-    private IShifter<T> _shifter;
+    private final IChecker<T> _checker;
+    private final IShifter<T> _shifter;
 
     private final List<IStateListener<T>> _listeners = new LinkedList<>();
     private final Lock _lock = new ReentrantLock();
 
     public StateTracer(final IShifter<T> shifter, final T initState) {
+        this(shifter, initState, null);
+    }
+
+    public StateTracer(final IShifter<T> shifter, final T initState, final IChecker<T> checker) {
         ArgumentChecker.required(shifter, "shifter");
         ArgumentChecker.notNull(initState, "initState");
 
+        this._checker = checker;
         this._state = initState;
         this._shifter = shifter;
     }
@@ -72,17 +75,35 @@ public final class StateTracer<T> implements IStateTracer<T> {
         ArgumentChecker.required(operation, "operation");
         this._lock.lock();
         T newState;
+        T temporaryState;
+        T oldState = this._state;
         try {
+            if (this._checker != null) {
+                temporaryState = this._checker.check(this._state, operation);
+                if (temporaryState != null) {
+                    this._state = temporaryState;
+                } else {
+                    throw new GeneralException(
+                            "The operation {} cannot be applied on current state - {}",
+                            operation.type(), this._state);
+                }
+            }
+
             newState = this._shifter.shift(this._state, operation);
+
+            if (newState == null) {
+                throw new GeneralException("The shifter does not return a valid state - {}", this._shifter);
+            }
+
+            this._state = newState;
+        } catch (Exception ex) {
+            this._state = oldState;
+            throw ex;
         } finally {
             this._lock.unlock();
         }
-        if (newState == null) {
-            throw new GeneralException("The shifter does not return a valid state - {}", this._shifter);
-        }
-        T oldState = this._state;
-        this._state = newState;
-        if (! newState.equals(oldState)) {
+
+        if (! oldState.equals(newState)) {
             Looper.on(this._listeners).foreach(listener -> listener.stateChanged(oldState, newState));
         }
     }

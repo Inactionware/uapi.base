@@ -20,5 +20,9 @@ public class StateCreator {
         return new StateTracer<>(shifter, initState);
     }
 
+    public static <T> IStateTracer<T> createTracer(IShifter<T> shifter, T initState, IChecker<T> checker) {
+        return new StateTracer<>(shifter, initState, checker);
+    }
+
     private StateCreator() { }
 }

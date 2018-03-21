@@ -12,6 +12,7 @@ package uapi.state.internal
 import junit.extensions.TestSetup
 import spock.lang.Specification
 import uapi.GeneralException
+import uapi.state.IChecker
 import uapi.state.IOperation
 import uapi.state.IShifter
 import uapi.state.IStateListener
@@ -28,6 +29,21 @@ class StateTracerTest extends Specification {
     def testShift() {
         given:
         IStateTracer<TestSetup> state = new StateTracer(new Shifter(), TestState.INIT)
+
+        when:
+        state.shift(toState)
+
+        then:
+        state.get() == expectedState
+
+        where:
+        toState         | expectedState
+        STATE_ACTIVE    | TestState.ACTIVED
+    }
+
+    def testCheck() {
+        given:
+        IStateTracer<TestSetup> state = new StateTracer(new Shifter(), TestState.INIT, new Checker())
 
         when:
         state.shift(toState)
@@ -121,6 +137,19 @@ class Shifter implements IShifter<TestState> {
     }
 }
 
+class Checker implements IChecker<TestState> {
+
+    @Override
+    TestState check(TestState currentState, IOperation operation) {
+        switch (operation.type()) {
+            case StateTracerTest.STATE_ACTIVE:
+                return TestState.ACTIVATING;
+            default:
+                throw new GeneralException("unsupported state")
+        }
+    }
+}
+
 enum TestState {
-    INIT, ACTIVED, DEACTIVED
+    INIT, ACTIVED, ACTIVATING, DEACTIVED
 }
