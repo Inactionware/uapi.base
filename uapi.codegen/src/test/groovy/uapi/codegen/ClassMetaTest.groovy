@@ -41,7 +41,7 @@ class ClassMetaTest extends Specification {
         clsMeta.getPackageName() == pkgName
         clsMeta.getClassName() == clsName
         clsMeta.getGeneratedClassName() == genClsName
-        clsMeta.getQulifiedClassName() == qClsName
+        clsMeta.getQualifiedClassName() == qClsName
         clsMeta.getAnnotations().size() == 1
         clsMeta.getFields().size() == 1
         clsMeta.getImplements().size() == 1

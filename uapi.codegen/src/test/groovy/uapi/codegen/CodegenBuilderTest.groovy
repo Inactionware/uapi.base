@@ -32,6 +32,21 @@ class CodegenBuilderTest extends Specification {
         'test'      | 'obj'     | 'obj'
     }
 
+    def 'Test get default transience'() {
+        given:
+        def builder = new FakeBuilder()
+
+        when:
+        def value = builder.getTransience(objName, defaultValue)
+
+        then:
+        value == result
+
+        where:
+        objName     | obj       | result    | defaultValue
+        'test'      | 'obj'     | 'obj'     | 'obj'
+    }
+
     def 'Test create transience item if absent'() {
         given:
         def builder = new FakeBuilder()

@@ -57,6 +57,25 @@ public abstract class CodegenBuilder<T> {
 
     /**
      * Receive previously saved transience object by its name
+     * The default value will be returned if no such transience object
+     *
+     * @param   name
+     *          The name of transience object
+     * @param   defaultValue
+     *          Default value
+     * @param   <E>
+     *          The type of transience object
+     * @return  The transience object or null
+     */
+    public <E> E getTransience(
+            final String name,
+            final E defaultValue) {
+        E value = getTransience(name);
+        return value == null ? defaultValue : value;
+    }
+
+    /**
+     * Receive previously saved transience object by its name
      * The creator will be invoked if the related transience object is absent
      *
      * @param   name

@@ -12,10 +12,7 @@ package uapi.codegen.internal;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import uapi.GeneralException;
-import uapi.codegen.ClassMeta;
-import uapi.codegen.IBuilderContext;
-import uapi.codegen.IHandlerHelper;
-import uapi.codegen.LogSupport;
+import uapi.codegen.*;
 import uapi.common.ArgumentChecker;
 import uapi.common.CollectionHelper;
 import uapi.common.StringHelper;
@@ -167,6 +164,17 @@ public class BuilderContext implements IBuilderContext {
                     matchedClassBuilders.size());
         }
         return clsBuilder;
+    }
+
+    @Override
+    public ClassMeta.Builder findClassBuilder(
+            final String qualifiedClassName,
+            final boolean isCreate
+    ) {
+        ArgumentChecker.required(qualifiedClassName, "qualifiedClassName");
+        String packageName = ClassHelper.getPackageName(qualifiedClassName);
+        String className = ClassHelper.getClassName(qualifiedClassName);
+        return findClassBuilder(packageName, className, isCreate);
     }
 
     @Override
