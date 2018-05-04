@@ -45,8 +45,8 @@ public class ClassMeta {
         return this._builder._generatedClassName;
     }
 
-    public String getQulifiedClassName() {
-        return this._builder.getQulifiedClassName();
+    public String getQualifiedClassName() {
+        return this._builder.getQualifiedClassName();
     }
 
     public List<String> getImports() {
@@ -151,7 +151,7 @@ public class ClassMeta {
             return this._className;
         }
 
-        public String getQulifiedClassName() {
+        public String getQualifiedClassName() {
             return this._pkgName + "." + this._generatedClassName;
         }
 

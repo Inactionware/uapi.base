@@ -10,6 +10,7 @@
 package uapi.codegen
 
 import spock.lang.Specification
+import uapi.GeneralException
 import uapi.InvalidArgumentException
 
 import java.lang.annotation.Annotation
@@ -62,6 +63,36 @@ class ClassHelperTest extends Specification {
         expect:
         paramTypes.length == 1
         paramTypes[0] == TestAnno.class
+    }
+
+    def 'get package name and class name'() {
+        when:
+        def pkgname = ClassHelper.getPackageName(qClassName)
+        def clsname = ClassHelper.getClassName(qClassName)
+
+        then:
+        pkgname == expectedPkgname
+        clsname == expectedClsname
+
+        where:
+        qClassName      | expectedPkgname   | expectedClsname
+        'a.Text'        | 'a'               | 'Text'
+        'a.b.c.Class'   | 'a.b.c'           | 'Class'
+    }
+
+    def 'get package name and class name with invalid qualified class name'() {
+        when:
+        def pkgname = ClassHelper.getPackageName(qClassName)
+        def clsname = ClassHelper.getClassName(qClassName)
+
+        then:
+        thrown(GeneralException)
+
+        where:
+        qClassName      | placeholder
+        null            | null
+        ''              | null
+        'Class'         | null
     }
 
 //    def 'test GetElementType' () {

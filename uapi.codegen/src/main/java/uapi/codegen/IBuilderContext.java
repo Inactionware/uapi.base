@@ -71,6 +71,30 @@ public interface IBuilderContext {
      */
     ClassMeta.Builder findClassBuilder(Element classElement, boolean create);
 
+    /**
+     * Find class builder based on specific qualified class name, it will create new class build if no class
+     * builder is matched and isCreate argument is set to true.
+     *
+     * @param   qualifiedClassName
+     *          The qualified class name
+     * @param   isCreate
+     *          Create new class builder if no matched class builder
+     * @return  Matched class builder of new class builder if isCreate is set to true
+     */
+    ClassMeta.Builder findClassBuilder(String qualifiedClassName, boolean isCreate);
+
+    /**
+     * Find class builder based on specific package name and class name, it will create new class build if no class
+     * builder is matched and isCreate argument is set to true.
+     *
+     * @param   packageName
+     *          The package name
+     * @param   className
+     *          The class name
+     * @param   isCreate
+     *          Create new class builder if no matched class builder
+     * @return  Matched class builder of new class builder if isCreate is set to true
+     */
     ClassMeta.Builder findClassBuilder(String packageName, String className, boolean isCreate);
 
     /**

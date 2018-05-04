@@ -10,6 +10,7 @@
 package uapi.codegen;
 
 import com.google.common.base.Strings;
+import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
 import uapi.common.WordHelper;
@@ -91,5 +92,21 @@ public final class ClassHelper {
             }
         }
         return paramClasses;
+    }
+
+    public static String getPackageName(final String qualifiedClassName) {
+        ArgumentChecker.required(qualifiedClassName, "qualifiedClassName");
+        if (! qualifiedClassName.contains(".")) {
+            throw new GeneralException("Not valid qualified class name: {}", qualifiedClassName);
+        }
+        return qualifiedClassName.substring(0, qualifiedClassName.lastIndexOf("."));
+    }
+
+    public static String getClassName(final String qualifiedClassName) {
+        ArgumentChecker.required(qualifiedClassName, "qualifiedClassName");
+        if (! qualifiedClassName.contains(".")) {
+            throw new GeneralException("Not valid qualified class name: {}", qualifiedClassName);
+        }
+        return qualifiedClassName.substring(qualifiedClassName.lastIndexOf(".") + 1, qualifiedClassName.length());
     }
 }

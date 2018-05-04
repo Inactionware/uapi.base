@@ -174,6 +174,27 @@ class BuilderContextTest extends Specification {
         'AAA'   | 'com.test'
     }
 
+    def 'Test find class build by qualified class name'() {
+        given:
+        def procEnv = Mock(ProcessingEnvironment)
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+        budrCtx.newClassBuilder(pkgName, className)
+
+        when:
+        def found = budrCtx.findClassBuilder(qClassName, isCreate)
+
+        then:
+        found != null
+        found.getPackageName() == pkgName
+        found.getClassName() == null
+        found.getGeneratedClassName() == className
+
+        where:
+        qClassName      | pkgName   | className     | isCreate
+        'a.b.c.Test'    |'a.b.c'    | 'Test'        | false
+    }
+
     def 'Test find class build by package and class name'() {
         given:
         def procEnv = Mock(ProcessingEnvironment)
