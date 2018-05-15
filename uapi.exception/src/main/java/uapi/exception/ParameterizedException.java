@@ -67,7 +67,7 @@ public abstract class ParameterizedException extends UapiException {
         });
     }
 
-    private final ExceptionBuilder _builder;
+    protected final ExceptionBuilder _builder;
 
     protected ParameterizedException(final ExceptionBuilder builder) {
         super();
