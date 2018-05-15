@@ -75,10 +75,6 @@ public abstract class ParameterizedException extends UapiException {
         this._builder = builder;
     }
 
-    protected ExceptionBuilder builder() {
-        return this._builder;
-    }
-
     public int errorCode() {
         return this._builder.errorCode();
     }
