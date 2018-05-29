@@ -108,7 +108,10 @@ public class IntervalTime {
         this._unit = TimeUnit.DAYS;
     }
 
-    public IntervalTime(final long interval, TimeUnit unit) {
+    public IntervalTime(
+            final long interval,
+            final TimeUnit unit
+    ) {
         ArgumentChecker.checkLong(interval, "interval", 0L, Long.MAX_VALUE);
         ArgumentChecker.required(unit, "unit");
         this._interval = interval;
