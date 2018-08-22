@@ -1,4 +1,4 @@
- ```
+```
 ._  _.  _  .___.___
 | || | / \ | _ | |
 | || |/ _ \| __| |
@@ -11,6 +11,7 @@
 [![Build Status](https://travis-ci.org/Inactionware/uapi.base.svg?branch=master)](https://travis-ci.org/Inactionware/uapi.base.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4daefd51d8be456382d351d508b4be1c)](https://www.codacy.com/app/Inactionware/uapi-base?utm_source=github.com&utm_medium=referral&utm_content=Inactionware/uapi.base&utm_campaign=badger)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4daefd51d8be456382d351d508b4be1c)](https://www.codacy.com/app/Inactionware/uapi-base?utm_source=github.com&utm_medium=referral&utm_content=Inactionware/uapi.base&utm_campaign=Badge_Coverage)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FInactionware%2Fuapi.base.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FInactionware%2Fuapi.base?ref=badge_shield)
 
 ## The uapi.base component contains below modules:
 
@@ -18,3 +19,7 @@
 * uapi.state - Provide state management for UAPI framework
 * uapi.codegen - Provide annotation based code generation framework for UAPI framework
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FInactionware%2Fuapi.base.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FInactionware%2Fuapi.base?ref=badge_large)
