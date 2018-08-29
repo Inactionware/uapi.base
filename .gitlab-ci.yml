@@ -1,12 +1,12 @@
 image: java:openjdk-8
 
-states:
-  - test
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
   - apt-get update -y
+  - export GRADLE_USER_HOME=`pwd`/.gradle
 
-test_async:
-  state: test
-  script:
-    - ./gradlew clean build --info
+build:
+  stage: build
+  script: ./gradlew clean build --info
