@@ -1,0 +1,12 @@
+image: java:openjdk-8
+
+states:
+  - test
+
+before_script:
+  - apt-get update -y
+
+test_async:
+  state: test
+  script:
+    - ./gradlew clean build --info
