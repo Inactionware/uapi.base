@@ -9,4 +9,9 @@ before_script:
 
 build:
   stage: build
-  script: ./gradlew clean build --info
+  script: ./gradlew jacocoRootReport --stacktrace
+
+upload_lib:
+  stage: deploy
+  script: ./gradlew bintrayUpload
+  when: on_success
