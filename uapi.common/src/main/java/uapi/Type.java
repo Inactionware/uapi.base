@@ -46,6 +46,7 @@ public final class Type {
     public static final String Q_STRING_ARRAY   = String[].class.getCanonicalName();
     public static final String Q_ARRAY_LIST     = ArrayList.class.getCanonicalName();
 
+    public static final Class<Void>     T_VOID      = Void.class;
     public static final Class<Boolean>  T_BOOLEAN   = Boolean.class;
     public static final Class<Integer>  T_INTEGER   = Integer.class;
     public static final Class<Long>     T_LONG      = Long.class;
