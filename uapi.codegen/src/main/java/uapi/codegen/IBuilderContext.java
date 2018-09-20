@@ -162,5 +162,14 @@ public interface IBuilderContext {
      * @return  True means the first type can be assigned to second type, otherwise return false
      */
     boolean isAssignable(final String type1, final String type2);
+
+    /**
+     * Return package name of specific class element
+     *
+     * @param   classElement
+     *          The class element
+     * @return  The package name of the class element
+     */
+    String packageName(final Element classElement);
 }
 

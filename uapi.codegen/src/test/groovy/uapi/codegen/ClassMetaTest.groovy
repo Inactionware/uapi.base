@@ -53,6 +53,39 @@ class ClassMetaTest extends Specification {
         'pkgName'   | 'clsName' | 'clsName_gen' | 'Test'    | 'abc'     | 'pkgName.clsName_gen'
     }
 
+    def 'Test build by class'() {
+        def mockAnnoBudr = new MockAnnotationBuilder()
+        def mockFieldBudr = new MockFieldBuilder()
+        def mockMethodBudr = new MockMethodBuilder()
+
+        when:
+        ClassMeta clsMeta = ClassMeta.builder()
+                .setPackageName(pkgName)
+                .setClassName(clsName)
+                .setGeneratedClassName(genClsName)
+                .addAnnotationBuilder(mockAnnoBudr)
+                .addFieldBuilder(mockFieldBudr)
+                .addImplement(impl)
+                .addImport(impot)
+                .addMethodBuilder(mockMethodBudr)
+                .build()
+
+        then:
+        clsMeta.getPackageName() == pkgName
+        clsMeta.getClassName() == clsName
+        clsMeta.getGeneratedClassName() == genClsName
+        clsMeta.getQualifiedClassName() == qClsName
+        clsMeta.getAnnotations().size() == 1
+        clsMeta.getFields().size() == 1
+        clsMeta.getImplements().size() == 1
+        clsMeta.getImports().size() == 1
+        clsMeta.getMethods().size() == 1
+
+        where:
+        pkgName     | clsName   | genClsName    | impl              | impot     | qClsName
+        'pkgName'   | 'clsName' | 'clsName_gen' | Cloneable.class   | 'abc'     | 'pkgName.clsName_gen'
+    }
+
     def 'Test build from Element'() {
         def mockElemt = Mock(Element) {
             getKind() >> ElementKind.CLASS

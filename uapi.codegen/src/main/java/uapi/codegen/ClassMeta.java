@@ -173,6 +173,14 @@ public class ClassMeta {
         }
 
         public Builder addImplement(
+                final Class<?> clazz
+        ) throws GeneralException {
+            checkStatus();
+            ArgumentChecker.notNull(clazz, "clazz");
+            return addImplement(clazz.getCanonicalName());
+        }
+
+        public Builder addImplement(
                 final String implement
         ) throws GeneralException {
             checkStatus();
