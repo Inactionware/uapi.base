@@ -576,4 +576,66 @@ class BuilderContextTest extends Specification {
         pkg         | cls
         'com.test'  | 'Test'
     }
+
+    def 'Test get package name on class element'() {
+        given:
+        def element = Mock(Element) {
+            getKind() >> elementType
+        }
+        def procEnv = Mock(ProcessingEnvironment) {
+            getElementUtils() >> Mock(Elements) {
+                getPackageOf(element) >> Mock(PackageElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> excpectedPkgName
+                    }
+                }
+            }
+        }
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def pkgName = budrCtx.packageName(element)
+
+        then:
+        noExceptionThrown()
+        pkgName == excpectedPkgName
+
+        where:
+        excpectedPkgName    | elementType
+        'com.test'          | ElementKind.CLASS
+    }
+
+    def 'Test get package name on non-class element'() {
+        given:
+        def element = Mock(Element) {
+            getKind() >> elementType
+            getSimpleName() >> Mock(Name) {
+                toString() >> 'TestClass'
+            }
+        }
+        def procEnv = Mock(ProcessingEnvironment) {
+            getElementUtils() >> Mock(Elements) {
+                getPackageOf(element) >> Mock(PackageElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> excpectedPkgName
+                    }
+                }
+            }
+        }
+        def roundEnv = Mock(RoundEnvironment)
+        def budrCtx = new BuilderContext(procEnv, roundEnv)
+
+        when:
+        def pkgName = budrCtx.packageName(element)
+
+        then:
+        thrown(GeneralException)
+
+        where:
+        excpectedPkgName    | elementType
+        'com.test'          | ElementKind.ENUM
+        'com.test'          | ElementKind.FIELD
+        'com.test'          | ElementKind.INTERFACE
+    }
 }

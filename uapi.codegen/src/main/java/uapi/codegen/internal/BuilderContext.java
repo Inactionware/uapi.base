@@ -307,4 +307,14 @@ public class BuilderContext implements IBuilderContext {
         DeclaredType elemtType2 = typeUtils.getDeclaredType(typeElemt2);
         return typeUtils.isAssignable(elemtType1, elemtType2);
     }
+
+    @Override
+    public String packageName(final Element classElement) {
+        ArgumentChecker.required(classElement, "classElement");
+        if (classElement.getKind() != ElementKind.CLASS) {
+            throw new GeneralException(
+                    "Only support get package name from class element - {}", classElement.getSimpleName().toString());
+        }
+        return getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
+    }
 }
