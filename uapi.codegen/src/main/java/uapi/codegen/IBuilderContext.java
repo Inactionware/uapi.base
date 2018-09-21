@@ -110,7 +110,7 @@ public interface IBuilderContext {
 
     void putHelper(IHandlerHelper helper);
 
-    IHandlerHelper getHelper(String name);
+    <T extends IHandlerHelper> T getHelper(String name);
 
     void checkModifiers(
             final Element element,
