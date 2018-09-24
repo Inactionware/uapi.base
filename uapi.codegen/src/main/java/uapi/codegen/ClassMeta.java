@@ -143,6 +143,10 @@ public class ClassMeta {
                 final String serviceClassName
         ) throws GeneralException {
             checkStatus();
+            if (this._className != null) {
+                throw new GeneralException(
+                        "The class {} is already has super class - {}", this._generatedClassName, this._className);
+            }
             this._className = serviceClassName;
             return this;
         }
