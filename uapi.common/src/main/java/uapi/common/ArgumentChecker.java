@@ -10,6 +10,7 @@
 package uapi.common;
 
 import com.google.common.base.Strings;
+import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.InvalidArgumentException.InvalidArgumentType;
 
@@ -83,6 +84,12 @@ public class ArgumentChecker {
                     argName,
                     "The argument mut be more than {} and less than {}",
                     minValue, maxValue);
+        }
+    }
+
+    public static void checkType(Object argument, String argumentName, Class<?> type) {
+        if (! type.isInstance(argument)) {
+            throw new InvalidArgumentException(argumentName, InvalidArgumentType.CAST);
         }
     }
 
