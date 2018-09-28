@@ -199,4 +199,10 @@ class CollectionHelperTest extends Specification {
         array                   | result
         [1, 2, 3] as Integer[]  | '1,2,3'
     }
+
+    def 'Test create new object array'() {
+        expect:
+        CollectionHelper.newObjectArray('1', 2) == ['1', 2] as Object[]
+        CollectionHelper.newObjectArray() == [] as Object[]
+    }
 }
