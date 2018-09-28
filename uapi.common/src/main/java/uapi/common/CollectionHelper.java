@@ -417,4 +417,15 @@ public final class CollectionHelper {
         list.clear();
         list.addAll(set);
     }
+
+    /**
+     * Create new object array by specific items
+     *
+     * @param   items
+     *          Object items
+     * @return  Object array
+     */
+    public static Object[] newObjectArray(Object... items) {
+        return items;
+    }
 }
