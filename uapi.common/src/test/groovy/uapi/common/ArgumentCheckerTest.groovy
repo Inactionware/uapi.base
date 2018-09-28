@@ -47,6 +47,36 @@ class ArgumentCheckerTest extends Specification {
         -3l                     | "test"    | -2l               | -1l               | InvalidArgumentException
     }
 
+    def 'test checkType'() {
+        when: ArgumentChecker.checkType(arg, argName, argType)
+
+        then:
+        noExceptionThrown()
+
+        where:
+        arg     | argName   | argType
+        'abc'   | 'test'    | String
+        1       | 'test'    | Integer
+        1L      | 'test'    | Long
+        new B() | 'test'    | A
+        new C() | 'test'    | A
+        new C() | 'test'    | B
+    }
+
+    def 'test checkType with incorrect type'() {
+        when: ArgumentChecker.checkType(arg, argName, argType)
+
+        then:
+        def e = thrown(InvalidArgumentException)
+        e.type() == InvalidArgumentException.InvalidArgumentType.CAST
+
+        where:
+        arg     | argName   | argType
+        'abc'   | 'test'    | Integer
+        1       | 'test'    | Long
+        new B() | 'test'    | C
+    }
+
     def 'Test notNull method'() {
         when:
         ArgumentChecker.notNull(arg, argName)
@@ -198,4 +228,10 @@ class ArgumentCheckerTest extends Specification {
         null    | "Test"    | InvalidArgumentException
         []      | "Test"    | InvalidArgumentException
     }
+
+    interface A { }
+
+    class B implements A { }
+
+    class C extends B { }
 }

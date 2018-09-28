@@ -14,8 +14,11 @@ package uapi;
  */
 public class InvalidArgumentException extends GeneralException {
 
+    private InvalidArgumentType _type;
+
     public InvalidArgumentException(String argumentName, InvalidArgumentType type) {
         this("The argument is invalid - {}, cause - {}", argumentName, type.name());
+        this._type = type;
     }
 
     public InvalidArgumentException(String message, Object... args) {
@@ -26,8 +29,12 @@ public class InvalidArgumentException extends GeneralException {
         super(t);
     }
 
+    public InvalidArgumentType type() {
+        return this._type == null ? InvalidArgumentType.UNKNOWN : this._type;
+    }
+
     public enum InvalidArgumentType {
 
-        EMPTY, FORMAT
+        UNKNOWN, EMPTY, FORMAT, CAST
     }
 }
