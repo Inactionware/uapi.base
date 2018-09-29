@@ -184,10 +184,16 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void implementGenerated(final ClassMeta.Builder classBuilder) {
-        String codes = StringHelper.makeString(
-                "return {}.{}.class;",
-                classBuilder.getPackageName(),
-                classBuilder.getClassName() == null ? classBuilder.getGeneratedClassName() : classBuilder.getClassName());
+        String codes;
+        if (classBuilder.getParentClassName() != null) {
+            codes = StringHelper.makeString(
+                    "return {}.class;", classBuilder.getParentClassName());
+        } else {
+            codes = StringHelper.makeString(
+                    "return {}.{}.class;",
+                    classBuilder.getPackageName(),
+                    classBuilder.getClassName() == null ? classBuilder.getGeneratedClassName() : classBuilder.getClassName());
+        }
 
         classBuilder.addImplement(IGenerated.class.getCanonicalName())
                 .addMethodBuilder(MethodMeta.builder()

@@ -24,7 +24,7 @@ class AnnotationsHandlerTest extends Specification {
 
     def handler = new AnnotationsHandler() {
 
-        int handleCount = 0;
+        int handleCount = 0
 
         @Override
         protected Class<? extends Annotation>[] getOrderedAnnotations() {
@@ -230,7 +230,9 @@ class AnnotationsHandlerTest extends Specification {
 
     def 'Test handle'() {
         def budrCtx = Mock(IBuilderContext) {
-            getElementsAnnotatedWith(_) >> Mock(Set)
+            getElementsAnnotatedWith(_) >> Mock(Set) {
+                size() >> 1
+            }
         }
 
         when:
