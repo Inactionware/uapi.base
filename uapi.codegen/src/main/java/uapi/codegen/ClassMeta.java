@@ -41,6 +41,8 @@ public class ClassMeta {
         return this._builder._className;
     }
 
+    public String getParentClassName() { return this._builder._parentClassName; }
+
     public String getGeneratedClassName() {
         return this._builder._generatedClassName;
     }
@@ -113,6 +115,7 @@ public class ClassMeta {
 
         private String _pkgName;
         private String _className;
+        private String _parentClassName;
         private String _generatedClassName;
         private List<String> _imports = new ArrayList<>();
         private List<String> _implements = new ArrayList<>();
@@ -139,6 +142,7 @@ public class ClassMeta {
             return this._pkgName;
         }
 
+        @Deprecated
         public Builder setClassName(
                 final String serviceClassName
         ) throws GeneralException {
@@ -151,8 +155,25 @@ public class ClassMeta {
             return this;
         }
 
+        @Deprecated
         public String getClassName() {
             return this._className;
+        }
+
+        public Builder setParentClassName(
+                final String className
+        ) throws GeneralException {
+            checkStatus();
+            if (this._className != null) {
+                throw new GeneralException(
+                        "The class {} is already has super class - {}", this._generatedClassName, this._className);
+            }
+            this._parentClassName = className;
+            return this;
+        }
+
+        public String getParentClassName() {
+            return this._parentClassName;
         }
 
         public String getQualifiedClassName() {

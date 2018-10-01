@@ -124,7 +124,8 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
             final IBuilderContext builderContext
     ) throws GeneralException {
         Looper.on(getOrderedAnnotations())
-                .map((annotation) -> new Pair<>(annotation, builderContext.getElementsAnnotatedWith(annotation)))
+                .map(annotation -> new Pair<>(annotation, builderContext.getElementsAnnotatedWith(annotation)))
+                .filter(pair -> pair.getRightValue().size() > 0)
                 .foreach(pair -> handleAnnotatedElements(builderContext, pair.getLeftValue(), pair.getRightValue()));
     }
 
