@@ -13,10 +13,16 @@ buildscript {
     }
 }
 
+apply from: rootProject.getRootDir().getAbsolutePath() + "/${project_config_file}"
 apply plugin: 'jacoco'
 
 ext.project_version = getProjectVersion()
 ext.publish_repo    = getMavenRepo()
+ext.build_time = getBuildTime()
+
+// def baseVer = rootProject.ext.base_v1
+def base = rootProject.ext.base
+def projects = base.v1
 
 allprojects {
     buildscript {
@@ -123,6 +129,50 @@ task uploadCoverageToCodacy(type: JavaExec) {
             "-r",
             "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
     ]
+}
+
+task outputVersionInfo() {
+    // println version('base', '1.0', 'common')
+    // println base.name
+    // println base.v1.common.type
+    // println projects.common.version
+    // println project.name
+    projects.each { key, value ->
+        if (project.name != value.name) {
+            println 'aaaa'
+        }
+        println project.name
+        println value.name
+    }
+    println build_time
+    println getProjectVersion()
+}
+
+// def getProjectVersion() {
+//     def isRelease = false
+//     def prjVer = null
+//     println project
+//     println getBuildTime()
+//     // projects.each { key, value -> 
+//     //     if (value.name == project.name) {
+//     //         prjVer = value.version
+//     //         if (value.type == 'release') {
+//     //             isRelease = true
+//     //         }
+//     //     }
+//     // }
+//     // if (isRelease) {
+//     //     prjVer = "${prjVer}-release"
+//     // } else {
+//     //     prjVer = "${prjVer}-${build_time}"
+//     // }
+//     return prjVer
+// }
+
+def getBuildTime() {
+    def timestampFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
+    timestampFormat.timeZone = TimeZone.getTimeZone("UTC")
+    return timestampFormat.format(new Date())
 }
 
 def getProjectVersion() {
