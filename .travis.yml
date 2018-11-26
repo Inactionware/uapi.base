@@ -2,7 +2,7 @@ language: java
 jdk:
     - oraclejdk8
 install:
-  - ./setup-env.sh
+  - ./setup-env.sh < io.dat
 script:
   - ./gradlew jacocoRootReport --stacktrace
 after_success:
