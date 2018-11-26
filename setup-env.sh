@@ -1,9 +1,9 @@
 #! /bin/bash
 
-echo "Host gitlab.com\n" >> ~/.ssh/config
-echo "    HostName gitlab.com\n" >> ~/.ssh/config
-echo "    User git\n" >> ~/.ssh/config
-echo "    StrictHostKeyChecking no\n" >> ~/.ssh/config
+echo -e "Host gitlab.com\n" >> ~/.ssh/config
+echo -e "    HostName gitlab.com\n" >> ~/.ssh/config
+echo -e "    User git\n" >> ~/.ssh/config
+echo -e "    StrictHostKeyChecking no\n" >> ~/.ssh/config
 
 # Check out build configuration repo from remote
 rm -rf .config
