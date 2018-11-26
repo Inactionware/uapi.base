@@ -1,13 +1,14 @@
 language: java
 jdk:
     - oraclejdk8
+before_script:
+  - ./setup-env.sh
 script:
-    - ./setup-env.sh
-    - ./gradlew jacocoRootReport --stacktrace
+  - ./gradlew jacocoRootReport --stacktrace
 after_success:
-    - ./gradlew bintrayUpload
-    - ./gradlew uploadCoverageToCodacy
-#    - bash <(curl -s https://codecov.io/bash)
+  - ./gradlew bintrayUpload
+  - ./gradlew uploadCoverageToCodacy
+# - bash <(curl -s https://codecov.io/bash)
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
