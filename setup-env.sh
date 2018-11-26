@@ -1,5 +1,10 @@
 #! /bin/bash
 
+echo "Host gitlab.com\n" >> ~/.ssh/config
+echo "\tHostName gitlab.com\n" >> ~/.ssh/config
+echo "\tUser git\n" >> ~/.ssh/config
+echo "\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 # Check out build configuration repo from remote
 rm -rf .config
 mkdir .config
