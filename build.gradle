@@ -13,14 +13,21 @@ buildscript {
     }
 }
 
-apply from: rootProject.getRootDir().getAbsolutePath() + "/${project_config_file}"
+apply from: '.config/uapi/all.config.gradle'
+apply from: '.config/uapi/base.config.v1.gradle'
+apply from: '.config/uapi/utils.gradle'
 apply plugin: 'jacoco'
 
-def repo = rootProject.ext.base
-def subProjects = repo.projects
+// def allCfg = rootProject.ext.all
+// def deps = allCfg.dependencies
+
+ext.allCfg = rootProject.ext.all
+ext.libs = allCfg.dependencies
+
+ext.repoCfg = rootProject.ext.base
+ext.subProjects = repoCfg.projects
 
 ext.build_time      = getBuildTime()
-ext.publish_repo    = getMavenRepo()
 
 allprojects {
     buildscript {
@@ -45,10 +52,8 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
-    ext.project_version = getBuildVersion(project.name, subProjects)
-
-    group = "${project_group}"
-    version = "${project_version}"
+    group = "${allCfg.group}"
+    version = getBuildVersion(project.name)
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
@@ -58,11 +63,11 @@ subprojects {
 
     dependencies {
         testCompile (
-                "org.spockframework:spock-core:${spock_version}"
+                libs.spock.coordinate
         )
         testRuntime (
-                "cglib:cglib-nodep:${cglib_version}",           // allows mocking of classes (in addition to interfaces)
-                "org.objenesis:objenesis:${objenesis_version}"  // allows mocking of classes without default constructor (together with CGLIB)
+                libs.cglib.coordinate,      // allows mocking of classes (in addition to interfaces)
+                libs.objenesis.coordinate   // allows mocking of classes without default constructor (together with CGLIB)
         )
     }
 
@@ -81,14 +86,14 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "${jacoco_version}"
+        toolVersion = libs.jacoco.version
     }
 
     build.dependsOn jacocoTestReport
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "${gradle_version}"
+    gradleVersion = libs.gradle.version
 }
 
 def publishedProjects = subprojects.findAll { it.path != ':uapi.sample' }
@@ -131,9 +136,9 @@ task uploadCoverageToCodacy(type: JavaExec) {
     ]
 }
 
-def getBuildVersion(projectName, projectMetas) {
+def getBuildVersion(projectName) {
     def buildVersion = null
-    def matchedMeta = projectMetas.find { it.value.name == projectName }?.value
+    def matchedMeta = subProjects.find { it.value.name == projectName }?.value
     if (matchedMeta != null) {
         buildVersion = matchedMeta.version
         if (matchedMeta.type == 'stable') {
@@ -155,8 +160,9 @@ def getBuildTime() {
     return timestampFormat.format(new Date())
 }
 
-def getMavenRepo() {
-    if (project.project_release.toBoolean()) {
+def getMavenRepo(projectName) {
+    def prjCfg = subProjects.find { it.value.name == projectName }?.value
+    if (prjCfg.type == 'stable') {
         return 'maven-release'
     } else {
         return 'maven-snapshot'
