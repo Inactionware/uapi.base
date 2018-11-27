@@ -15,18 +15,16 @@ buildscript {
 
 apply from: '.config/uapi/all.config.gradle'
 apply from: '.config/uapi/base.config.v1.gradle'
+apply from: '.config/uapi/functions.gradle'
+
 apply plugin: 'jacoco'
 
-// def allCfg = rootProject.ext.all
-// def deps = allCfg.dependencies
-
-ext.allCfg = rootProject.ext.all
-ext.libs = allCfg.dependencies
-
-ext.repoCfg = rootProject.ext.base
+ext.allCfg      = rootProject.ext.all
+ext.libs        = allCfg.dependencies
+ext.repoCfg     = rootProject.ext.base
 ext.subProjects = repoCfg.projects
 
-ext.build_time      = getBuildTime()
+ext.buildTime  = getBuildTime()
 
 allprojects {
     buildscript {
@@ -133,37 +131,4 @@ task uploadCoverageToCodacy(type: JavaExec) {
             "-r",
             "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
     ]
-}
-
-def getBuildVersion(projectName) {
-    def buildVersion = null
-    def matchedMeta = subProjects.find { it.value.name == projectName }?.value
-    if (matchedMeta != null) {
-        buildVersion = matchedMeta.version
-        if (matchedMeta.type == 'stable') {
-            buildVersion = "${buildVersion}-${matchedMeta.type}"
-        } else if (matchedMeta.type == 'alpha' || matchedMeta.type == 'beta' || matchedMeta.type == 'rc') {
-            buildVersion = "${buildVersion}-${matchedMeta.type}${matchedMeta.no}"
-        } else {
-            buildVersion = "${buildVersion}-${build_time}"
-        }
-    } else {
-        throw new Exception("No project configuration for project ${projectName}");
-    }
-    return buildVersion
-}
-
-def getBuildTime() {
-    def timestampFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
-    timestampFormat.timeZone = TimeZone.getTimeZone("UTC")
-    return timestampFormat.format(new Date())
-}
-
-def getMavenRepo(projectName) {
-    def prjCfg = subProjects.find { it.value.name == projectName }?.value
-    if (prjCfg.type == 'stable') {
-        return 'maven-release'
-    } else {
-        return 'maven-snapshot'
-    }
 }
