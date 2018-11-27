@@ -15,7 +15,6 @@ buildscript {
 
 apply from: '.config/uapi/all.config.gradle'
 apply from: '.config/uapi/base.config.v1.gradle'
-apply from: '.config/uapi/utils.gradle'
 apply plugin: 'jacoco'
 
 // def allCfg = rootProject.ext.all
