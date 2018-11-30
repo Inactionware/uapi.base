@@ -14,7 +14,7 @@ buildscript {
 }
 
 apply from: '.config/uapi/all.config.gradle'
-apply from: '.config/uapi/base.config.v1.gradle'
+apply from: '.config/uapi/base.config.gradle'
 apply from: '.config/uapi/functions.gradle'
 
 apply plugin: 'jacoco'
