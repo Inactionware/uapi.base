@@ -13,18 +13,22 @@ buildscript {
     }
 }
 
+ext {
+    thisRepo = 'base'
+}
+
 apply from: '.config/uapi/all.config.gradle'
 apply from: '.config/uapi/base.config.gradle'
 apply from: '.config/uapi/functions.gradle'
 
 apply plugin: 'jacoco'
 
-ext.allCfg      = rootProject.ext.all
-ext.libs        = allCfg.dependencies
-ext.repoCfg     = rootProject.ext.base
-ext.subProjects = repoCfg.projects
+// ext.allCfg      = rootProject.ext.all
+// ext.libs        = allCfg.dependencies
+// ext.repoCfg     = rootProject.ext.base
+// ext.subProjects = repoCfg.projects
 
-ext.buildTime  = getBuildTime()
+// ext.buildTime  = getBuildTime()
 
 allprojects {
     buildscript {
