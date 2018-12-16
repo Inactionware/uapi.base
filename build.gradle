@@ -23,13 +23,6 @@ apply from: '.config/uapi/functions.gradle'
 
 apply plugin: 'jacoco'
 
-// ext.allCfg      = rootProject.ext.all
-// ext.libs        = allCfg.dependencies
-// ext.repoCfg     = rootProject.ext.base
-// ext.subProjects = repoCfg.projects
-
-// ext.buildTime  = getBuildTime()
-
 allprojects {
     buildscript {
         repositories {
