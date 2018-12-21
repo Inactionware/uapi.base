@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     compile (
-            libs.guava.coordinate
+        coordinate(libs.guava)
     )
 }
 
