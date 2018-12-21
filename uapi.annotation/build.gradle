@@ -14,8 +14,8 @@ plugins {
 dependencies {
     compile project(':uapi.codegen')
 
-    compile libs.auto_service.coordinate
-    compile libs.freemarker.coordinate
+    compile coordinate(libs.auto_service)
+    compile coordinate(libs.freemarker)
 }
 
 publishing {

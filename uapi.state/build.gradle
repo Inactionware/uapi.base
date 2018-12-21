@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     compile (
-            project(':uapi.common')
+        project(':uapi.common')
     )
 }
 

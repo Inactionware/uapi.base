@@ -14,7 +14,7 @@ plugins {
 dependencies {
     compile project(':uapi.common')
 
-    compile libs.guava.coordinate
+    compile coordinate(libs.guava)
 }
 
 publishing {
