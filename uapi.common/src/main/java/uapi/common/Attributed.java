@@ -37,9 +37,10 @@ public class Attributed implements IAttributed {
     }
 
     @Override
-    public Object get(Object key) {
+    @SuppressWarnings("unchecked")
+    public <T> T get(Object key) {
         ArgumentChecker.required(key, "key");
-        return this._attributes.get(key);
+        return (T) this._attributes.get(key);
     }
 
     @Override
