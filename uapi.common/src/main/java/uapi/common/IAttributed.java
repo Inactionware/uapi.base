@@ -23,7 +23,7 @@ public interface IAttributed {
      *          The attribute key which associated with attribute value
      * @return  The attribute value or null if no attribute value associated with the key
      */
-    Object get(Object key);
+    <T> T get(Object key);
 
     /**
      * Check this object contains specific attribute key and value
