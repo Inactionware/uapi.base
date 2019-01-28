@@ -191,6 +191,18 @@ class MapperTest extends Specification {
         res == [1]
     }
 
+    def 'Test toArray'() {
+        given:
+        TestOp op = new TestOp()
+        op.item = 1
+
+        when:
+        def res = op.toArray()
+
+        then:
+        res == [1] as Integer[]
+    }
+
     def 'Test toMap'() {
         given:
         TestOp op = new TestOp()

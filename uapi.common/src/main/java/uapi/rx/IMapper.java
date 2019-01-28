@@ -151,6 +151,8 @@ public interface IMapper<T> {
      */
     List<T> toList();
 
+    T[] toArray();
+
     /**
      * Return all element to a map
      *
