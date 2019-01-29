@@ -89,6 +89,22 @@ class MapperTest extends Specification {
         newOp instanceof NextMapper
     }
 
+    def 'Test terminate'() {
+        given:
+        TestOp3 op = new TestOp3()
+        op.items = ['1', '2', '3'] as String[]
+
+        when:
+        def newOp = op.terminate({it -> it == '2'})
+        newOp.getItem() == '1'
+        newOp.getItem()
+
+        then:
+        newOp != null
+        newOp instanceof TerminateMapper
+        thrown(NoItemException)
+    }
+
     def 'Test foreach'() {
         given:
         TestOp op = new TestOp()
@@ -273,5 +289,24 @@ class MapperTest extends Specification {
 
         @Override
         void end() { }
+    }
+
+    class TestOp3 extends Mapper<String> {
+
+        String[] items
+        int idx = 0
+
+        @Override
+        String getItem() throws NoItemException {
+            if (idx > items.length) {
+                return items[idx]
+            }
+            idx++
+        }
+
+        @Override
+        boolean hasItem() {
+            return ! (idx > items.length)
+        }
     }
 }
