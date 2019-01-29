@@ -62,6 +62,11 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
         return new NextMapper<>(this, operator);
     }
 
+    @Override
+    public IMapper<T> terminate(Functionals.Filter<T> validator) {
+        return new TerminateMapper<>(this, validator);
+    }
+
     // ----------------------------------------------------
     // Terminated mapper
     // ----------------------------------------------------
@@ -91,6 +96,22 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     @Override
     public T first(T defaultValue) {
         FirstOperator<T> operator = new FirstOperator<>(this, defaultValue);
+        T result = operator.getItem();
+        operator.end();
+        return result;
+    }
+
+    @Override
+    public T last() {
+        LastReducer<T> operator = new LastReducer<>(this);
+        T result = operator.getItem();
+        operator.end();
+        return result;
+    }
+
+    @Override
+    public T last(T defaultValue) {
+        LastReducer<T> operator = new LastReducer<>(this, defaultValue);
         T result = operator.getItem();
         operator.end();
         return result;

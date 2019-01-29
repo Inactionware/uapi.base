@@ -76,6 +76,15 @@ public interface IMapper<T> {
     IMapper<T> next(Functionals.Action<T> operator);
 
     /**
+     * Terminate loop when validator is satisfied
+     *
+     * @param   validator
+     *          The validator
+     * @return  The item when it is not satisfied by validator
+     */
+    IMapper<T> terminate(Functionals.Filter<T> validator);
+
+    /**
      * Iterate all of input data by specific logic
      *
      * @param   action
@@ -95,6 +104,8 @@ public interface IMapper<T> {
      * Return first element of data
      *
      * @return  The first element
+     * @throws  NoItemException
+     *          If no items
      */
     T first() throws NoItemException;
 
@@ -106,6 +117,24 @@ public interface IMapper<T> {
      * @return  The first element or default value
      */
     T first(T defaultValue);
+
+    /**
+     * Return last element of items
+     *
+     * @return  The last element
+     * @throws  NoItemException
+     *          If no items
+     */
+    T last() throws NoItemException;
+
+    /**
+     * Return last element of data or return default value if no element is reached
+     *
+     * @param   defaultValue
+     *          Default value if no element is reached
+     * @return  The last element or default value
+     */
+    T last(T defaultValue);
 
     /**
      * Except return only one element of input data
@@ -145,12 +174,17 @@ public interface IMapper<T> {
     int count();
 
     /**
-     * Return all element to a list, emptyArray list will be returned if no element
+     * Return all element to a list, empty list will be returned if no element
      *
      * @return  A list contains all element
      */
     List<T> toList();
 
+    /**
+     * Return all element to an array, empty array will be returned if no element
+     *
+     * @return  An array contains all element
+     */
     T[] toArray();
 
     /**
