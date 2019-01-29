@@ -24,7 +24,25 @@ class TerminateMapperTest extends Specification {
 
         when:
         opt.getItem() == "1"
-        opt.getItem()
+        opt.getItem() == null
+
+        then:
+        thrown(NoItemException)
+        ! opt.hasItem()
+    }
+
+    def 'Test return failed item'() {
+        Mapper<String> preOpt = Mock(Mapper) {
+            hasItem() >>> [true, true, true, true, false]
+            getItem() >>> ["1", '2', "3", null]
+        }
+
+        given:
+        TerminateMapper opt = new TerminateMapper(preOpt, { it == '2' })
+
+        when:
+        opt.getItem() == "1"
+        opt.getItem() == '2'
 
         then:
         thrown(NoItemException)
