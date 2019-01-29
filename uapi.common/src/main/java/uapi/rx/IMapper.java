@@ -84,6 +84,8 @@ public interface IMapper<T> {
      */
     IMapper<T> terminate(Functionals.Filter<T> validator);
 
+    IMapper<T> terminate(Functionals.Filter<T> validator, boolean returnFailedItem);
+
     /**
      * Iterate all of input data by specific logic
      *

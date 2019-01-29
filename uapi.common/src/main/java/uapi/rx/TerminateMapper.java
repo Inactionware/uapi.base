@@ -16,14 +16,24 @@ class TerminateMapper<T> extends Mapper<T> {
 
     private final Functionals.Filter<T> _validator;
     private boolean _terminated = false;
+    private boolean _returnFailedItem = false;
 
     TerminateMapper(
             final Mapper<T> previously,
             final Functionals.Filter<T> validator
     ) {
+        this(previously, validator, false);
+    }
+
+    TerminateMapper(
+            final Mapper<T> previously,
+            final Functionals.Filter<T> validator,
+            final boolean returnFailedItem
+    ) {
         super(previously);
         ArgumentChecker.required(validator, "validator");
         this._validator = validator;
+        this._returnFailedItem = returnFailedItem;
     }
 
     @Override
@@ -41,7 +51,11 @@ class TerminateMapper<T> extends Mapper<T> {
             return item;
         } else {
             this._terminated = true;
-            throw new NoItemException();
+            if (this._returnFailedItem) {
+                return item;
+            } else {
+                throw new NoItemException();
+            }
         }
     }
 }
