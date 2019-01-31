@@ -95,13 +95,13 @@ class MapperTest extends Specification {
         op.items = ['1', '2', '3'] as String[]
 
         when:
-        def newOp = op.terminate({it -> it == '2'})
+        def newOp = op.breakOn({ it -> it == '2'})
         newOp.getItem() == '1'
         newOp.getItem()
 
         then:
         newOp != null
-        newOp instanceof TerminateMapper
+        newOp instanceof BreakOnMapper
         thrown(NoItemException)
     }
 
@@ -298,10 +298,10 @@ class MapperTest extends Specification {
 
         @Override
         String getItem() throws NoItemException {
-            if (idx > items.length) {
+            if (idx < items.length) {
+                idx++
                 return items[idx]
             }
-            idx++
         }
 
         @Override
