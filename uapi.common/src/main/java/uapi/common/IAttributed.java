@@ -44,4 +44,6 @@ public interface IAttributed {
      * @return  True means this object contains specific attributes otherwise return false
      */
     boolean contains(Map<Object, Object> attributes);
+
+    int count();
 }

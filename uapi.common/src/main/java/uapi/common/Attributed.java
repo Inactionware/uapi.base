@@ -63,4 +63,9 @@ public class Attributed implements IAttributed {
                 .count();
         return matchedCount == map.size();
     }
+
+    @Override
+    public int count() {
+        return this._attributes.size();
+    }
 }

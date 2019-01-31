@@ -12,22 +12,22 @@ package uapi.rx;
 import uapi.common.ArgumentChecker;
 import uapi.common.Functionals;
 
-class TerminateMapper<T> extends Mapper<T> {
+class BreakOnMapper<T> extends Mapper<T> {
 
-    private final Functionals.Filter<T> _validator;
+    private final Functionals.Validator<T> _validator;
     private boolean _terminated = false;
     private boolean _returnFailedItem = false;
 
-    TerminateMapper(
+    BreakOnMapper(
             final Mapper<T> previously,
-            final Functionals.Filter<T> validator
+            final Functionals.Validator<T> validator
     ) {
         this(previously, validator, false);
     }
 
-    TerminateMapper(
+    BreakOnMapper(
             final Mapper<T> previously,
-            final Functionals.Filter<T> validator,
+            final Functionals.Validator<T> validator,
             final boolean returnFailedItem
     ) {
         super(previously);
@@ -48,14 +48,14 @@ class TerminateMapper<T> extends Mapper<T> {
     public T getItem() throws NoItemException {
         T item = ((Mapper<T>) getPreviously()).getItem();
         if (this._validator.accept(item)) {
-            return item;
-        } else {
             this._terminated = true;
             if (this._returnFailedItem) {
                 return item;
             } else {
                 throw new NoItemException();
             }
+        } else {
+            return item;
         }
     }
 }

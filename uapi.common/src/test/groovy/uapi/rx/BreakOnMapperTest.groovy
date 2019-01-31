@@ -11,7 +11,7 @@ package uapi.rx
 
 import spock.lang.Specification
 
-class TerminateMapperTest extends Specification {
+class BreakOnMapperTest extends Specification {
 
     def 'Test get item'() {
         Mapper<String> preOpt = Mock(Mapper) {
@@ -20,7 +20,7 @@ class TerminateMapperTest extends Specification {
         }
 
         given:
-        TerminateMapper opt = new TerminateMapper(preOpt, { it == '2' })
+        BreakOnMapper opt = new BreakOnMapper(preOpt, { it == '2' })
 
         when:
         opt.getItem() == "1"
@@ -38,7 +38,7 @@ class TerminateMapperTest extends Specification {
         }
 
         given:
-        TerminateMapper opt = new TerminateMapper(preOpt, { it == '2' })
+        BreakOnMapper opt = new BreakOnMapper(preOpt, { it == '2' })
 
         when:
         opt.getItem() == "1"

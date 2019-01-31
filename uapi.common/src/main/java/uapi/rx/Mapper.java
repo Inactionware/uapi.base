@@ -63,13 +63,13 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     @Override
-    public IMapper<T> terminate(Functionals.Filter<T> validator) {
-        return new TerminateMapper<>(this, validator);
+    public IMapper<T> breakOn(Functionals.Validator<T> validator) {
+        return new BreakOnMapper<>(this, validator);
     }
 
     @Override
-    public IMapper<T> terminate(Functionals.Filter<T> validator, boolean returnFailedItem) {
-        return new TerminateMapper<>(this, validator, returnFailedItem);
+    public IMapper<T> breakOn(Functionals.Validator<T> validator, boolean returnFailedItem) {
+        return new BreakOnMapper<>(this, validator, returnFailedItem);
     }
 
     // ----------------------------------------------------

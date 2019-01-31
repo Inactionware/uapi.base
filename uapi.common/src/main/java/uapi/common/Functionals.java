@@ -66,6 +66,17 @@ public interface Functionals {
     }
 
     /**
+     * Validate input data by specific logic
+     *
+     * @param   <T>
+     *          input data type
+     */
+    @FunctionalInterface
+    interface Validator<T> {
+        boolean accept(T in);
+    }
+
+    /**
      * Select one item from multiple items
      *
      * @param   <T>

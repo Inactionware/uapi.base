@@ -82,9 +82,9 @@ public interface IMapper<T> {
      *          The validator
      * @return  The item when it is not satisfied by validator
      */
-    IMapper<T> terminate(Functionals.Filter<T> validator);
+    IMapper<T> breakOn(Functionals.Validator<T> validator);
 
-    IMapper<T> terminate(Functionals.Filter<T> validator, boolean returnFailedItem);
+    IMapper<T> breakOn(Functionals.Validator<T> validator, boolean returnFailedItem);
 
     /**
      * Iterate all of input data by specific logic
