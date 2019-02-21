@@ -11,12 +11,12 @@ then
     if [ $USER == "min" ] && [ $host == "min-vm-elementary" ]       # At Linux VM host development
     then
         export JAVA_HOME="/home/min/Dev/zuluJdk-8.0.192/"
-    elif [ $USER == "xxx" ]                                         # At MacOS host development
+    elif [ $USER == "xiaoming" ] && [ $host == "min-home.local" ]   # At MacOS host development
     then
         export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
     else
-        echo "Unsupported user - $USER@$host, please reconfig the user"
-        return 1
+        echo -e "\nUnsupported user - $USER@$host, please reconfig the user"
+        exit 1
     fi
     export PATH=$JAVA_HOME/bin:$PATH
     echo "Done"
