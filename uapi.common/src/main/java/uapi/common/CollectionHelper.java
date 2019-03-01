@@ -406,6 +406,32 @@ public final class CollectionHelper {
     }
 
     /**
+     * Compare two array, make sure two array has same items and same order
+     *
+     * @param   a1
+     *          First array which will be compared
+     * @param   a2
+     *          Second array which will be compared
+     * @param   <T>
+     *          Array item type
+     * @return  true means two array is equals and otherwise return false
+     */
+    public static <T> boolean equals(T[] a1, T[] a2) {
+        if (a1 == null || a2 == null) {
+            return false;
+        }
+        if (a1.length != a2.length) {
+            return false;
+        }
+        for (int i = 0; i < a1.length; i++) {
+            if (! a1[i].equals(a2[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Remove duplicated item in the list
      *
      * @param   list

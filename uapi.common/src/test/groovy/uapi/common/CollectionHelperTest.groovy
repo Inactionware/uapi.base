@@ -180,6 +180,22 @@ class CollectionHelperTest extends Specification {
         ["1", "2"] as Set   | ["1", "2", "3"] as Set    | false
     }
 
+    def 'Test equals on array'() {
+        expect:
+        CollectionHelper.equals(a1, a2) == result
+
+        where:
+        a1                      | a2                        | result
+        null                    | ['1'] as String[]         | false
+        ['1'] as String[]       | null                      | false
+        ['1', '2'] as String[]  | ['1', '2'] as String[]    | true
+        ['2', '1'] as String[]  | ['1', '2'] as String[]    | false
+        [1, 2] as Integer[]     | [1, 2] as Integer[]           | true
+        [2, 1] as Integer[]     | [1, 2] as Integer[]           | false
+        ['1', 2] as Object[]    | ['1', 2] as Object[]      | true
+        [1, 2] as Object[]      | ['1', 2] as Object[]      | false
+    }
+
     def 'Test array as string'() {
         expect:
         CollectionHelper.asString(array, sep) == result
