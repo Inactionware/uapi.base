@@ -16,6 +16,12 @@ import java.util.Map;
 
 public class Attributed implements IAttributed {
 
+    public static Attributed apply(Functionals.Apply apply) {
+        Attributed attr = new Attributed();
+        apply.accept(attr);
+        return attr;
+    }
+
     private final Map<Object, Object> _attributes;
 
     protected Attributed() {

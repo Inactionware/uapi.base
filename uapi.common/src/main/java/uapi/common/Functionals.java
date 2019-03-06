@@ -90,4 +90,12 @@ public interface Functionals {
     interface Evaluator {
         boolean accept(IAttributed in);
     }
+
+    /**
+     * Use to apply any object to an IAttributed instance by specific logic
+     */
+    @FunctionalInterface
+    interface Apply {
+        void accept(Attributed in);
+    }
 }
