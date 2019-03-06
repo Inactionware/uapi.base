@@ -77,4 +77,18 @@ class AttributedTest extends Specification {
         k1  | v1    | k2    | v2    | k3    | v3
         'a' | 'A'   | 'b'   | 'B'   | 'c'   | 'C'
     }
+
+    def 'Test apply'() {
+        when:
+        def attr = Attributed.apply({ newAttr -> newAttr.set(key, value) })
+
+        then:
+        attr != null
+        attr.count() == 1
+        attr.contains(key, value)
+
+        where:
+        key     | value
+        'a'     | 'b'
+    }
 }
