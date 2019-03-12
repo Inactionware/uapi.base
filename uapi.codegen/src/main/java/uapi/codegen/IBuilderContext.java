@@ -17,6 +17,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
@@ -171,5 +172,14 @@ public interface IBuilderContext {
      * @return  The package name of the class element
      */
     String packageName(final Element classElement);
+
+    /**
+     * Return generic types which is defined on specific element
+     *
+     * @param   element
+     *          The element which has generic type is defined on
+     * @return  The generic type list
+     */
+    List<? extends TypeMirror> getGenericTypes(Element element);
 }
 
