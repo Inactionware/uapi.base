@@ -26,6 +26,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
@@ -316,5 +317,12 @@ public class BuilderContext implements IBuilderContext {
                     "Only support get package name from class element - {}", classElement.getSimpleName().toString());
         }
         return getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
+    }
+
+    @Override
+    public List<? extends TypeMirror> getGenericTypes(final Element element) {
+        ArgumentChecker.required(element, "element");
+        DeclaredType declaredType = (DeclaredType) element.asType();
+        return declaredType.getTypeArguments();
     }
 }
