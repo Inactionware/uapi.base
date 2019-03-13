@@ -9,6 +9,7 @@
 
 package uapi
 
+
 import spock.lang.Specification
 
 /**
@@ -73,5 +74,21 @@ class TypeTest extends Specification {
         where:
         itemType        | mapType
         String.class    | 'java.util.Map<java.lang.String>'
+    }
+
+    def 'Test type is assignable'() {
+        expect:
+        Type.isAssignable(fromType, toType) == result
+
+        where:
+        fromType                | toType            | result
+        int.class               | Integer.class     | true
+        Integer.class           | int.class         | true
+        Float.class             | float.class       | true
+        int.class               | long.class        | false
+        String.class            | Object.class      | true
+        Object.class            | String.class      | false
+        IIdentifiable.class     | IPartibleIdentify | false
+        IPartibleIdentify.class | IIdentifiable     | true
     }
 }

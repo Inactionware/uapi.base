@@ -9,10 +9,14 @@
 
 package uapi;
 
+import jdk.nashorn.internal.ir.Assignment;
 import uapi.common.ArgumentChecker;
+import uapi.common.Pair;
 import uapi.common.StringHelper;
+import uapi.rx.Looper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A utility class for type definition
@@ -54,7 +58,23 @@ public final class Type {
     public static final Class<Float>    T_FLOAT     = Float.class;
     public static final Class<Double>   T_DOUBLE    = Double.class;
 
+    public static final Class           NT_BOOLEAN  = boolean.class;
+    public static final Class           NT_INTEGER  = int.class;
+    public static final Class           NT_LONG     = long.class;
+    public static final Class           NT_SHORT    = short.class;
+    public static final Class           NT_FLOAT    = float.class;
+    public static final Class           NT_DOUBLE   = double.class;
+
     public static final Class<String>   T_STRING    = String.class;
+
+    public static final Pair<Class<?>, Class<?>>[] nativeClassPairs = new Pair[] {
+            new Pair(NT_BOOLEAN, T_BOOLEAN),
+            new Pair(NT_INTEGER, T_INTEGER),
+            new Pair(NT_SHORT, T_SHORT),
+            new Pair(NT_LONG, T_LONG),
+            new Pair(NT_FLOAT, T_FLOAT),
+            new Pair(NT_DOUBLE, T_DOUBLE)
+    };
 
     private Type() { }
 
@@ -114,4 +134,18 @@ public final class Type {
         ArgumentChecker.required(itemType, "itemType");
         return StringHelper.makeString("java.util.Map<{}>", itemType.getCanonicalName());
     }
+
+    public static boolean isAssignable(final Class<?> fromType, final Class<?> toType) {
+        ArgumentChecker.required(fromType, "fromType");
+        ArgumentChecker.required(toType, "toType");
+        // Check native type
+        Pair<Class<?>, Class<?>> found = Looper.on(nativeClassPairs)
+                .filter(pair -> pair.hasOne(fromType) && pair.hasOne(toType))
+                .first(null);
+        if (found != null) {
+            return true;
+        }
+        return toType.isAssignableFrom(fromType);
+    }
+
 }
