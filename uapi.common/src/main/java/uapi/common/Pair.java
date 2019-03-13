@@ -69,6 +69,11 @@ public class Pair<L, R> {
         return this._rValue;
     }
 
+    public boolean hasOne(final Object object) {
+        ArgumentChecker.required(object, "object");
+        return this._lValue.equals(object) || this._rValue.equals(object);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
