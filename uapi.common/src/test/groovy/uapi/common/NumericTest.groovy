@@ -15,6 +15,18 @@ class NumericTest extends Specification {
         mInt.value() == 1
     }
 
+    def 'Test get and increase mutable integer'() {
+        given:
+        def mInt = Numeric.mutableInteger()
+
+        when:
+        def oldValue = mInt.getAndIncrease()
+
+        then:
+        oldValue == 0
+        mInt.value() == 1
+    }
+
     def 'Test decrease mutable integer'() {
         given:
         def mInt = Numeric.mutableInteger()
@@ -23,6 +35,18 @@ class NumericTest extends Specification {
         mInt.decrease()
 
         then:
+        mInt.value() == -1
+    }
+
+    def 'Test get and decrease mutable integer'() {
+        given:
+        def mInt = Numeric.mutableInteger()
+
+        when:
+        def oldValue = mInt.getAndDecrease()
+
+        then:
+        oldValue == 0
         mInt.value() == -1
     }
 

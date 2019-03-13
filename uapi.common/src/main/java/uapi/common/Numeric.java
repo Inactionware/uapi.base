@@ -30,8 +30,16 @@ public class Numeric {
             this._value++;
         }
 
+        public int getAndIncrease() {
+            return this._value++;
+        }
+
         public void decrease() {
             this._value--;
+        }
+
+        public int getAndDecrease() {
+            return this._value--;
         }
     }
 }
