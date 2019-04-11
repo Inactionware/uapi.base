@@ -182,12 +182,14 @@ public interface IMapper<T> {
      */
     List<T> toList();
 
+    Object[] toArray();
+
     /**
      * Return all element to an array, empty array will be returned if no element
      *
      * @return  An array contains all element
      */
-    T[] toArray();
+    T[] toArray(T[] t);
 
     /**
      * Return all element to a map

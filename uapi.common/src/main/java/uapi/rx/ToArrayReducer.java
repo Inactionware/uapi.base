@@ -9,9 +9,14 @@ import java.util.List;
 public class ToArrayReducer<T> extends Reducer<T[]> {
 
     private List<T> _list;
+    private final T[] _temp;
 
-    ToArrayReducer(Mapper<T> previously) {
+    ToArrayReducer(Mapper<T> previously, T[] t) {
         super(previously);
+        if (t == null) {
+            t = (T[]) new Object[0];
+        }
+        this._temp = t;
     }
 
     @Override
@@ -29,6 +34,6 @@ public class ToArrayReducer<T> extends Reducer<T[]> {
         }
         List<T> result = this._list;
         this._list = null;
-        return result.toArray((T[]) new Object[result.size()]);
+        return result.toArray(this._temp);
     }
 }
