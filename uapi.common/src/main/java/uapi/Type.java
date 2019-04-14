@@ -9,14 +9,12 @@
 
 package uapi;
 
-import jdk.nashorn.internal.ir.Assignment;
 import uapi.common.ArgumentChecker;
 import uapi.common.Pair;
 import uapi.common.StringHelper;
 import uapi.rx.Looper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A utility class for type definition
