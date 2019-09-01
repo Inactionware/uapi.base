@@ -116,7 +116,7 @@ configurations {
 }
 
 dependencies {
-    codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
+    codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.10'
 }
 
 task uploadCoverageToCodacy(type: JavaExec) {
