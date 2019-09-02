@@ -115,17 +115,17 @@ configurations {
     codacy
 }
 
-dependencies {
-    codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.10'
-}
+// dependencies {
+//     codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.10'
+// }
 
-task uploadCoverageToCodacy(type: JavaExec) {
-    main = "com.codacy.CodacyCoverageReporter"
-    classpath = configurations.codacy
-    args = [
-            "-l",
-            "Java",
-            "-r",
-            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
-    ]
-}
+// task uploadCoverageToCodacy(type: JavaExec) {
+//     main = "com.codacy.CodacyCoverageReporter"
+//     classpath = configurations.codacy
+//     args = [
+//             "-l",
+//             "Java",
+//             "-r",
+//             "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+//     ]
+// }
