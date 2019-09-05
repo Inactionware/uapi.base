@@ -92,23 +92,23 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
     dependsOn(publishedProjects.test)
 
-    // getAdditionalSourceDirs().from(files(publishedProjects.sourceSets.main.allSource.srcDirs))
-    // getSourceDirectories().from(publishedProjects.sourceSets.main.allSource.srcDirs)
-    // getClassDirectories().from(publishedProjects.sourceSets.main.output)
-    // getExecutionData().from(publishedProjects.jacocoTestReport.executionData)
-    additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(publishedProjects.sourceSets.main.output)
-    executionData = files(publishedProjects.jacocoTestReport.executionData)
+    // additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    // sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    // classDirectories = files(publishedProjects.sourceSets.main.output)
+    // executionData = files(publishedProjects.jacocoTestReport.executionData)
+    getAdditionalSourceDirs().from(files(publishedProjects.sourceSets.main.allSource.srcDirs))
+    getSourceDirectories().from(publishedProjects.sourceSets.main.allSource.srcDirs)
+    getClassDirectories().from(publishedProjects.sourceSets.main.output)
+    getExecutionData().from(files(subprojects.jacocoTestReport.executionData).filter { f -> f.exists() })
 
     reports {
         html.enabled = true // human readable
         xml.enabled = true // required by coveralls
     }
 
-    doFirst {
-        executionData = files(executionData.findAll { it.exists() })
-    }
+    // doFirst {
+    //     executionData = files(executionData.findAll { it.exists() })
+    // }
 }
 
 configurations {
