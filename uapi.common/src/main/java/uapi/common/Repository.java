@@ -25,7 +25,7 @@ public class Repository<K, V extends IIdentifiable<K>> {
      */
     public V put(final V data) {
         ArgumentChecker.required(data, "data");
-        K key = data.getId();
+        var key = data.getId();
         return this._store.put(key, data);
     }
 

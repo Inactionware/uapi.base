@@ -26,11 +26,12 @@ class FilterMapper<T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         if (! hasItem()) {
             return null;
         }
-        T item = (T) getPreviously().getItem();
+        var item = (T) getPreviously().getItem();
         while (true) {
             boolean matched = this._filter.accept(item);
             if (matched) {

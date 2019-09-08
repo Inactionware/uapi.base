@@ -54,12 +54,12 @@ public final class NotNullHandler extends AnnotationsHandler {
             Element methodElement = paramElement.getEnclosingElement();
             builderCtx.checkModifiers(methodElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
 
-            Element classElement = methodElement.getEnclosingElement();
+            var classElement = methodElement.getEnclosingElement();
             builderCtx.checkModifiers(classElement, NotNull.class, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL);
 
-            ClassMeta.Builder clsBuilder = builderCtx.findClassBuilder(classElement);
-            MethodMeta.Builder methodBuilder = clsBuilder.findMethodBuilder(methodElement, builderCtx);
-            ParameterMeta.Builder paramBuilder = methodBuilder.findParameterBuilder(paramElement, builderCtx);
+            var clsBuilder = builderCtx.findClassBuilder(classElement);
+            var methodBuilder = clsBuilder.findMethodBuilder(methodElement, builderCtx);
+            var paramBuilder = methodBuilder.findParameterBuilder(paramElement, builderCtx);
 
             String codes = StringHelper.makeString(
                     "{}.notNull({}, \"{}\");\n",

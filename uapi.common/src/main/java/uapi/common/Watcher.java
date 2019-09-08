@@ -57,7 +57,7 @@ public final class Watcher {
 
     public void start() {
         long startTime = System.currentTimeMillis();
-        ConditionResult result = this._condition.accept();
+        var result = this._condition.accept();
         if (! result.isDenied()) {
             return;
         }
@@ -69,8 +69,8 @@ public final class Watcher {
     }
 
     private void doAwait(long startTime, IAwaiting notifier) {
-        long restTime = this._timeout.milliseconds() - (System.currentTimeMillis() - startTime);
-        boolean notified = notifier.await(restTime);
+        var restTime = this._timeout.milliseconds() - (System.currentTimeMillis() - startTime);
+        var notified = notifier.await(restTime);
         ConditionResult result = null;
         if (notified) {
             result = this._condition.accept();
@@ -95,7 +95,7 @@ public final class Watcher {
                 throw new GeneralException(ex);
             }
         }
-        ConditionResult result = this._condition.accept();
+        var result = this._condition.accept();
         if (! result.isDenied()) {
             return;
         }
@@ -108,7 +108,7 @@ public final class Watcher {
     }
 
     private void check(long startTime) {
-        long timeout = this._timeout.milliseconds();
+        var timeout = this._timeout.milliseconds();
         if (System.currentTimeMillis() - startTime >= timeout) {
             throw new GeneralException("The watcher is timed out");
         }

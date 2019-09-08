@@ -324,7 +324,7 @@ public final class CollectionHelper {
             return StringHelper.EMPTY;
         }
         int sepLen = separator == null ? 0 : separator.length();
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         Looper.on(array).foreach(item -> {
             if (item != null) {
                 sb.append(item.toString()).append(separator);
@@ -365,7 +365,7 @@ public final class CollectionHelper {
             return StringHelper.EMPTY;
         }
         int sepLen = separator == null ? 0 : separator.length();
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         collection.forEach(item -> {
             if (item != null) {
                 sb.append(item.toString()).append(separator);

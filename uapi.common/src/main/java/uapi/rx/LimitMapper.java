@@ -36,6 +36,7 @@ class LimitMapper<T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         if (! hasItem()) {
             throw new NoItemException();

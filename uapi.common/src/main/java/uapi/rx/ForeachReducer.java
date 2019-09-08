@@ -26,9 +26,10 @@ class ForeachReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         try {
-            boolean hasItem = hasItem();
+            var hasItem = hasItem();
             while (hasItem) {
                 Object item = getPreviously().getItem();
                 this._action.accept(item);

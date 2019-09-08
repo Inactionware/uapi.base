@@ -74,7 +74,7 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
     ) throws GeneralException {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
-        List<String> types = Looper.on(annotation.getElementValues().entrySet())
+        var types = Looper.on(annotation.getElementValues().entrySet())
                 .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
                 .map(Map.Entry::getValue)
                 .map(annoValue -> (DeclaredType) annoValue.getValue())
@@ -107,7 +107,7 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
     ) {
         ArgumentChecker.notNull(annotation, "annotation");
         ArgumentChecker.notEmpty(fieldName, "fieldName");
-        List<String> types = new ArrayList<>();
+        var types = new ArrayList<String>();
             Looper.on(annotation.getElementValues().entrySet())
                     .filter(entry -> fieldName.equals(entry.getKey().getSimpleName().toString()))
                     .map(Map.Entry::getValue)

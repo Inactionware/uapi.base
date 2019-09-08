@@ -17,11 +17,12 @@ class ToMapReducer<K, V> extends Reducer<Map<K, V>> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Map<K, V> getItem() throws NoItemException {
-        Map<K, V> items = new HashMap<>();
+        var items = new HashMap<K, V>();
         while (hasItem()) {
             try {
-                Pair<K, V> item = (Pair<K, V>) getPreviously().getItem();
+                var item = (Pair<K, V>) getPreviously().getItem();
                 if (item == null) {
                     continue;
                 }

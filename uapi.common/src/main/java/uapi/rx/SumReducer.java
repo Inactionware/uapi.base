@@ -27,6 +27,7 @@ public class SumReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
         while (hasItem()) {
             try {

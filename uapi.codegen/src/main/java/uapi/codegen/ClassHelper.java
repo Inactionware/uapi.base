@@ -76,16 +76,16 @@ public final class ClassHelper {
             throw new InvalidArgumentException("type", InvalidArgumentException.InvalidArgumentType.EMPTY);
         }
         Class<?>[] paramClasses = null;
-        List<Type> intfTypes = Arrays.asList(type.getGenericInterfaces());
+        var intfTypes = type.getGenericInterfaces();
         for (Type intfType : intfTypes) {
             if (! (intfType instanceof ParameterizedType)) {
                 continue;
             }
-            Type rowType = ((ParameterizedType) intfType).getRawType();
+            var rowType = ((ParameterizedType) intfType).getRawType();
             if (! rowType.equals(interfaceType)) {
                 continue;
             }
-            Type[] paramTypes = ((ParameterizedType) intfType).getActualTypeArguments();
+            var paramTypes = ((ParameterizedType) intfType).getActualTypeArguments();
             paramClasses = new Class<?>[paramTypes.length];
             for (int i = 0; i < paramTypes.length; i++) {
                 paramClasses[i] = (Class<?>) paramTypes[i];

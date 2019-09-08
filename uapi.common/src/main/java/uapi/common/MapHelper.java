@@ -54,7 +54,7 @@ public class MapHelper {
     public static String asString(Map<?, ?> map) {
         ArgumentChecker.required(map, "map");
 
-        StringBuilder buffer = new StringBuilder();
+        var buffer = new StringBuilder();
         buffer.append("{");
         Looper.on(map.entrySet())
                 .foreach(entry -> {

@@ -96,14 +96,14 @@ public class ClassMeta {
                     classElement);
         }
 
-        StringBuilder classNameBuilder = new StringBuilder(classElement.getSimpleName().toString());
-        Element enclosingElemt = classElement.getEnclosingElement();
+        var classNameBuilder = new StringBuilder(classElement.getSimpleName().toString());
+        var enclosingElemt = classElement.getEnclosingElement();
         while (enclosingElemt != null && enclosingElemt.getKind() == ElementKind.CLASS) {
             classNameBuilder.insert(0, ".").insert(0, enclosingElemt.getSimpleName().toString());
             enclosingElemt = enclosingElemt.getEnclosingElement();
         }
 
-        PackageElement pkgElemt = builderContext.getElementUtils().getPackageOf(classElement);
+        var pkgElemt = builderContext.getElementUtils().getPackageOf(classElement);
         return builder()
                 .setPackageName(pkgElemt.getQualifiedName().toString())
                 .setClassName(classNameBuilder.toString())
@@ -229,7 +229,7 @@ public class ClassMeta {
                 final FieldMeta.Builder fieldMetaBuilder
         ) throws GeneralException {
             ArgumentChecker.notNull(fieldMetaBuilder, "fieldMetaBuilder");
-            List<FieldMeta.Builder> matchedBuilders = this._fieldBuilders.parallelStream()
+            var matchedBuilders = this._fieldBuilders.parallelStream()
                     .filter(existing -> existing.equals(fieldMetaBuilder))
                     .collect(Collectors.toList());
             if (matchedBuilders.size() > 1) {
@@ -255,7 +255,7 @@ public class ClassMeta {
                 final FieldMeta.Builder fieldMetaBuilder
         ) throws GeneralException {
             checkStatus();
-            FieldMeta.Builder fieldBuilder = findFieldBuilder(fieldMetaBuilder);
+            var fieldBuilder = findFieldBuilder(fieldMetaBuilder);
             if (fieldBuilder == null) {
                 addFieldBuilder(fieldMetaBuilder);
             }
@@ -301,8 +301,8 @@ public class ClassMeta {
                 final IBuilderContext builderContext
         ) throws GeneralException {
             ArgumentChecker.notNull(methodElement, "methodElement");
-            MethodMeta.Builder methodBuilder = MethodMeta.builder(methodElement, builderContext);
-            List<MethodMeta.Builder> matchedBuilders = this._methodBuilders.parallelStream()
+            var methodBuilder = MethodMeta.builder(methodElement, builderContext);
+            var matchedBuilders = this._methodBuilders.parallelStream()
                     .filter(existing -> existing.equals(methodBuilder))
                     .collect(Collectors.toList());
             if (matchedBuilders.size() > 1) {
@@ -346,7 +346,7 @@ public class ClassMeta {
                 final MethodMeta.Builder methodBuilder
         ) throws InvalidArgumentException {
             ArgumentChecker.notNull(methodBuilder, "methodBuilder");
-            List<MethodMeta.Builder> matchedMethods = this._methodBuilders.parallelStream()
+            var matchedMethods = this._methodBuilders.parallelStream()
                     .filter(existing -> existing.equals(methodBuilder))
                     .collect(Collectors.toList());
             if (matchedMethods.size() == 0) {
@@ -362,7 +362,7 @@ public class ClassMeta {
                 final MethodMeta.Builder methodBuilder
         ) throws InvalidArgumentException {
             checkStatus();
-            MethodMeta.Builder foundBuilder = findMethodBuilder(methodBuilder);
+            var foundBuilder = findMethodBuilder(methodBuilder);
             if (foundBuilder == null) {
                 addMethodBuilder(methodBuilder);
                 return methodBuilder;
@@ -451,7 +451,7 @@ public class ClassMeta {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Builder builder = (Builder) o;
+            var builder = (Builder) o;
             return Objects.equals(this._pkgName, builder._pkgName) &&
                     Objects.equals(this._className, builder._className);
         }

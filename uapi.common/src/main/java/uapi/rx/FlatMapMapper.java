@@ -27,7 +27,7 @@ class FlatMapMapper<I, T> extends Mapper<T> {
 
     @Override
     public boolean hasItem() {
-        boolean hasItem = false;
+        var hasItem = false;
         if (this._currently != null) {
             hasItem = this._currently.hasItem();
         }
@@ -38,6 +38,7 @@ class FlatMapMapper<I, T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         if (! hasItem()) {
             throw new NoItemException();
@@ -46,7 +47,7 @@ class FlatMapMapper<I, T> extends Mapper<T> {
             return this._currently.getItem();
         }
         while (super.hasItem()) {
-            I item = (I) getPreviously().getItem();
+            var item = (I) getPreviously().getItem();
             this._currently = (Mapper<T>) this._converter.accept(item);
             if (this._currently.hasItem()) {
                 return this._currently.getItem();

@@ -28,10 +28,11 @@ class SingleReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
-        boolean hasItem = hasItem();
+        var hasItem = hasItem();
         T item = null;
-        boolean itemSet = false;
+        var itemSet = false;
         while (hasItem) {
             if (itemSet) {
                 throw new MoreItemException();
@@ -40,9 +41,6 @@ class SingleReducer<T> extends Reducer<T> {
                 item = (T) getPreviously().getItem();
                 itemSet = true;
             } catch (NoItemException ex) {
-                if (itemSet) {
-                    return item;
-                }
                 if (this._useDefault) {
                     return this._default;
                 } else {

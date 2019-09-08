@@ -38,7 +38,7 @@ public class Pair<L, R> {
     public static Pair<String, String> splitTo(String combined, String separator) {
         ArgumentChecker.notEmpty(combined, "combined");
         ArgumentChecker.notEmpty(separator, "separator");
-        String[] split = combined.split(separator);
+        var split = combined.split(separator);
         if (split.length == 1) {
             return new Pair<>(split[0], StringHelper.EMPTY);
         } else if (split.length == 2) {
@@ -79,7 +79,7 @@ public class Pair<L, R> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pair<?, ?> pair = (Pair<?, ?>) o;
+        var pair = (Pair<?, ?>) o;
 
         if (!_lValue.equals(pair._lValue)) return false;
         return _rValue.equals(pair._rValue);
@@ -87,7 +87,7 @@ public class Pair<L, R> {
 
     @Override
     public int hashCode() {
-        int result = _lValue.hashCode();
+        var result = _lValue.hashCode();
         result = 31 * result + _rValue.hashCode();
         return result;
     }

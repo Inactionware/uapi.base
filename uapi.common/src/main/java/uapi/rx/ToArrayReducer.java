@@ -11,6 +11,7 @@ public class ToArrayReducer<T> extends Reducer<T[]> {
     private List<T> _list;
     private final T[] _temp;
 
+    @SuppressWarnings("unchecked")
     ToArrayReducer(Mapper<T> previously, T[] t) {
         super(previously);
         if (t == null) {
@@ -20,6 +21,7 @@ public class ToArrayReducer<T> extends Reducer<T[]> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T[] getItem() {
         if (this._list == null) {
             this._list = new LinkedList<>();
@@ -32,7 +34,7 @@ public class ToArrayReducer<T> extends Reducer<T[]> {
                 // do nothing
             }
         }
-        List<T> result = this._list;
+        var result = this._list;
         this._list = null;
         return result.toArray(this._temp);
     }

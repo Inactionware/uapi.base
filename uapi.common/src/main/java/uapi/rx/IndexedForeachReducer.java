@@ -25,11 +25,12 @@ public class IndexedForeachReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
-        boolean hasItem = hasItem();
-        int index = 0;
+        var hasItem = hasItem();
+        var index = 0;
         while (hasItem) {
-            T item = (T) getPreviously().getItem();
+            var item = (T) getPreviously().getItem();
             this._action.accept(index, item);
             hasItem = hasItem();
             index++;

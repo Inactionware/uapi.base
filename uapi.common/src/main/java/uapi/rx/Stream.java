@@ -36,9 +36,6 @@ abstract class Stream<T> implements IStream<T> {
         return this._previously != null && this._previously.hasItem();
     }
 
-//    @Override
-//    abstract T getItem() throws NoItemException;
-
     public void end() {
         getPreviously().end();
     }

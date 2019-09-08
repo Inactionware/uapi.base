@@ -25,6 +25,7 @@ public class LastReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         if (! hasItem()) {
             if (this._useDefault) {
@@ -33,7 +34,7 @@ public class LastReducer<T> extends Reducer<T> {
                 throw new NoItemException();
             }
         }
-        boolean hasItem = hasItem();
+        var hasItem = hasItem();
         T item = null;
         try {
             while (hasItem) {

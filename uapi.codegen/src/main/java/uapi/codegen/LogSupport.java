@@ -118,8 +118,8 @@ public class LogSupport {
         } else {
             this._msger.printMessage(Diagnostic.Kind.ERROR, t.getClass().getCanonicalName());
         }
-        StackTraceElement[] sts = t.getStackTrace();
-        StringBuilder buffer = new StringBuilder();
+        var sts = t.getStackTrace();
+        var buffer = new StringBuilder();
         Looper.on(sts)
                 .map(st -> StringHelper.makeString("\t{}\n", st.toString()))
                 .foreach(buffer::append);

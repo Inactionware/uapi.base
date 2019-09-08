@@ -123,11 +123,11 @@ public class WordHelper {
      */
     private static String replaceWithFirstRule(String word, List<RuleAndReplacement> ruleAndReplacements) {
         for (RuleAndReplacement rar : ruleAndReplacements) {
-            String rule = rar.getRule();
-            String replacement = rar.getReplacement();
+            var rule = rar.getRule();
+            var replacement = rar.getReplacement();
 
             // Return if we find a match.
-            Matcher matcher = Pattern.compile(rule, Pattern.CASE_INSENSITIVE).matcher(word);
+            var matcher = Pattern.compile(rule, Pattern.CASE_INSENSITIVE).matcher(word);
             if (matcher.find()) {
                 return matcher.replaceAll(replacement);
             }

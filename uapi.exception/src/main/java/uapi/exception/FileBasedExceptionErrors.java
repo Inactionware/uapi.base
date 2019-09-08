@@ -43,25 +43,25 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
             return TEMP_UNKNOWN;
         }
 
-        String propKey = getKey(exception);
+        var propKey = getKey(exception);
         if (Strings.isNullOrEmpty(propKey)) {
             return null;
         }
-        String propFile = getFile(exception);
+        var propFile = getFile(exception);
         if (propFile == null) {
             throw new GeneralException("No properties file is mapped to category - {}", exception.category());
         }
         String msgTemp = null;
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(this.getClass().getResourceAsStream(propFile)))) {
-            String line = reader.readLine();
+            var line = reader.readLine();
             while (line != null) {
                 line = line.trim();
                 if (line.indexOf("#") == 0 || line.indexOf(propKey) != 0) {
                     line = reader.readLine();
                     continue;
                 }
-                int idx = line.indexOf("=");
+                var idx = line.indexOf("=");
                 if (idx <= 0 || (idx + 1) >= line.length()) {
                     throw new GeneralException("Incorrect property line in commonErrors.properties - {}", line);
                 }

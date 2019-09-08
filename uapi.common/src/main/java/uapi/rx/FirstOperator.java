@@ -37,6 +37,7 @@ class FirstOperator<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
         if (! hasItem()) {
             if (this._useDefault) {

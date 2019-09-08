@@ -47,10 +47,10 @@ public class IntervalTime {
 
     public static IntervalTime parse(String intervalString) {
         ArgumentChecker.required(intervalString, "intervalString");
-        StringBuilder numberBuffer = new StringBuilder();
-        StringBuilder unitBuffer = new StringBuilder();
-        IntervalTime intervalTime = new IntervalTime();
-        boolean lastNumber = false;
+        var numberBuffer = new StringBuilder();
+        var unitBuffer = new StringBuilder();
+        var intervalTime = new IntervalTime();
+        var lastNumber = false;
         for (int i = 0; i < intervalString.length(); i++) {
             char c = intervalString.charAt(i);
             if (c >= '0' && c <='9') {
@@ -79,10 +79,10 @@ public class IntervalTime {
     }
 
     private static void checkBuffer(IntervalTime iTime, StringBuilder numBuf, StringBuilder unitBuf) {
-        String unitStr = unitBuf.toString();
-        String numStr = numBuf.toString();
+        var unitStr = unitBuf.toString();
+        var numStr = numBuf.toString();
         if (numStr.length() > 0 && unitStr.length() > 0) {
-            long interval = Long.parseLong(numStr);
+            var interval = Long.parseLong(numStr);
             if (UNIT_MS.equalsIgnoreCase(unitStr)) {
                 iTime.add(interval, TimeUnit.MILLISECONDS);
             } else if (UNIT_SECOND.equalsIgnoreCase(unitStr)) {
@@ -240,39 +240,39 @@ public class IntervalTime {
         if (! (obj instanceof IntervalTime)) {
             return false;
         }
-        IntervalTime other = (IntervalTime) obj;
+        var other = (IntervalTime) obj;
         return this._interval == other._interval && this._unit == other._unit;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (_interval ^ (_interval >>> 32));
+        var result = (int) (_interval ^ (_interval >>> 32));
         result = 31 * result + _unit.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder buffer = new StringBuilder();
-        long interval = this._interval;
+        var buffer = new StringBuilder();
+        var interval = this._interval;
         if (this._unit == TimeUnit.MILLISECONDS) {
             if (interval >= MS_OF_DAY) {
-                long days = interval / MS_OF_DAY;
+                var days = interval / MS_OF_DAY;
                 interval %= MS_OF_DAY;
                 buffer.append(days).append(UNIT_DAY);
             }
             if (interval >= MS_OF_HOUR) {
-                long hours = interval / MS_OF_HOUR;
+                var hours = interval / MS_OF_HOUR;
                 interval %= MS_OF_HOUR;
                 buffer.append(hours).append(UNIT_HOUR);
             }
             if (interval >= MS_OF_MINUTE) {
-                long minutes = interval / MS_OF_MINUTE;
+                var minutes = interval / MS_OF_MINUTE;
                 interval %= MS_OF_MINUTE;
                 buffer.append(minutes).append(UNIT_MINUTE);
             }
             if (interval >= MS_OF_SECOND) {
-                long seconds = interval / MS_OF_SECOND;
+                var seconds = interval / MS_OF_SECOND;
                 interval %= MS_OF_SECOND;
                 buffer.append(seconds).append(UNIT_SECOND);
             }
@@ -281,17 +281,17 @@ public class IntervalTime {
             }
         } else if (this._unit == TimeUnit.SECONDS) {
             if (interval >= SECOND_OF_DAY) {
-                long days = interval / SECOND_OF_DAY;
+                var days = interval / SECOND_OF_DAY;
                 interval %= SECOND_OF_DAY;
                 buffer.append(days).append(UNIT_DAY);
             }
             if (interval >= SECOND_OF_HOUR) {
-                long hours = interval / SECOND_OF_HOUR;
+                var hours = interval / SECOND_OF_HOUR;
                 interval %= SECOND_OF_HOUR;
                 buffer.append(hours).append(UNIT_HOUR);
             }
             if (interval >= SECOND_OF_MINUTE) {
-                long minutes = interval / SECOND_OF_MINUTE;
+                var minutes = interval / SECOND_OF_MINUTE;
                 interval %= SECOND_OF_MINUTE;
                 buffer.append(minutes).append(UNIT_MINUTE);
             }
@@ -300,12 +300,12 @@ public class IntervalTime {
             }
         } else if (this._unit == TimeUnit.MINUTES) {
             if (interval >= MINUTE_OF_DAY) {
-                long days = interval / MINUTE_OF_DAY;
+                var days = interval / MINUTE_OF_DAY;
                 interval %= MINUTE_OF_DAY;
                 buffer.append(days).append(UNIT_DAY);
             }
             if (interval >= MINUTE_OF_HOUR) {
-                long hours = interval / MINUTE_OF_HOUR;
+                var hours = interval / MINUTE_OF_HOUR;
                 interval %= MINUTE_OF_HOUR;
                 buffer.append(hours).append(UNIT_HOUR);
             }
@@ -314,7 +314,7 @@ public class IntervalTime {
             }
         } else if (this._unit == TimeUnit.HOURS) {
             if (interval >= HOUR_OF_DAY) {
-                long days = interval / HOUR_OF_DAY;
+                var days = interval / HOUR_OF_DAY;
                 interval %= HOUR_OF_DAY;
                 buffer.append(days).append(UNIT_DAY);
             }

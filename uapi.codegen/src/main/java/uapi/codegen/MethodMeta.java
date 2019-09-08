@@ -224,7 +224,7 @@ public class MethodMeta {
                 final String templateSourceName
         ) throws InvalidArgumentException {
             ArgumentChecker.notNull(templateSourceName, "templateSourceName");
-            List<CodeMeta.Builder> matchedBuilders = this._codeBuilders.parallelStream()
+            var matchedBuilders = this._codeBuilders.parallelStream()
                     .filter(existing -> templateSourceName.equals(existing.getTemplateSourceName()))
                     .collect(Collectors.toList());
             if (matchedBuilders.size() == 0) {
@@ -242,9 +242,9 @@ public class MethodMeta {
         ) throws GeneralException {
             ArgumentChecker.notNull(parameterElement, "parameterElement");
             ArgumentChecker.notNull(builderContext, "builderContext");
-            ParameterMeta.Builder paramBuilder =
+            var paramBuilder =
                     ParameterMeta.builder(parameterElement, builderContext);
-            List<ParameterMeta.Builder> matchedBuilders = this._paramBuilders.parallelStream()
+            var matchedBuilders = this._paramBuilders.parallelStream()
                     .filter(existing -> existing.equals(paramBuilder))
                     .collect(Collectors.toList());
             if (matchedBuilders.size() != 1) {
@@ -259,7 +259,7 @@ public class MethodMeta {
                 final String name
         ) throws GeneralException {
             ArgumentChecker.notEmpty(name, "name");
-            List<ParameterMeta.Builder> params = this._paramBuilders.stream()
+            var params = this._paramBuilders.stream()
                     .filter(paramBuilder -> name.equals(paramBuilder.getName()))
                     .collect(Collectors.toList());
             if (params.size() == 0) {
@@ -334,7 +334,7 @@ public class MethodMeta {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Builder builder = (Builder) o;
+            var builder = (Builder) o;
             return Objects.equals(this._name, builder._name) &&
 //                    CollectionHelper.equals(this._modifiers, builder._modifiers) &&
                     this._modifiers.equals(builder._modifiers) &&

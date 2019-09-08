@@ -15,6 +15,7 @@ public class SelectReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
         T item = null;
         T selected = null;

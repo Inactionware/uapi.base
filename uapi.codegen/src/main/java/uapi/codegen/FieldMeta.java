@@ -180,7 +180,7 @@ public class FieldMeta {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            Builder builder = (Builder) o;
+            var builder = (Builder) o;
 
             if (_isList != builder._isList) return false;
             if (_isMap != builder._isMap) return false;
@@ -196,7 +196,7 @@ public class FieldMeta {
 
         @Override
         public int hashCode() {
-            int result = _name.hashCode();
+            var result = _name.hashCode();
             if (_value != null) {
                 result = 31 * result + _value.hashCode();
             }

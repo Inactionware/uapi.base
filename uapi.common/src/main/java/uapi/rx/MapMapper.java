@@ -26,8 +26,9 @@ class MapMapper<I, T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() {
-        I item = ((Mapper<I>) getPreviously()).getItem();
+        var item = ((Mapper<I>) getPreviously()).getItem();
         if (item == null) {
             return null;
         }

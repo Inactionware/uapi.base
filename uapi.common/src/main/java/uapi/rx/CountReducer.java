@@ -12,6 +12,7 @@ public class CountReducer<T> extends Reducer<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
         while (hasItem()) {
             try {
@@ -21,6 +22,6 @@ public class CountReducer<T> extends Reducer<T> {
                 break;
             }
         }
-        return (T) new Integer(this._counter);
+        return (T) Integer.valueOf(this._counter);
     }
 }

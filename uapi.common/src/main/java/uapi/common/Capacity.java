@@ -44,11 +44,11 @@ public class Capacity {
 
     public static Capacity parse(String capacityString) {
         ArgumentChecker.required(capacityString, "capacityString");
-        StringBuilder numberBuffer = new StringBuilder();
-        StringBuilder unitBuffer = new StringBuilder();
-        boolean lastNumber = true;
-        for (int i = 0; i < capacityString.length(); i++) {
-            char c = capacityString.charAt(i);
+        var numberBuffer = new StringBuilder();
+        var unitBuffer = new StringBuilder();
+        var lastNumber = true;
+        for (var i = 0; i < capacityString.length(); i++) {
+            var c = capacityString.charAt(i);
             if (c >= '0' && c <='9') {
                 if (! lastNumber) {
                     throw new InvalidArgumentException(capacityString, InvalidArgumentException.InvalidArgumentType.FORMAT);
@@ -64,8 +64,8 @@ public class Capacity {
                 lastNumber = false;
             }
         }
-        CapacityUnit unit = CapacityUnit.parse(unitBuffer.toString());
-        long value = Long.parseLong(numberBuffer.toString());
+        var unit = CapacityUnit.parse(unitBuffer.toString());
+        var value = Long.parseLong(numberBuffer.toString());
         return new Capacity(value, unit);
     }
 

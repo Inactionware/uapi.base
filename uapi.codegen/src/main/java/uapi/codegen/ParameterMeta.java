@@ -139,7 +139,7 @@ public class ParameterMeta {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Builder builder = (Builder) o;
+            var builder = (Builder) o;
             return Objects.equals(_name, builder._name) &&
                     Objects.equals(_type, builder._type) &&
                     this._modifiers.equals(builder._modifiers);

@@ -65,6 +65,7 @@ public final class Type {
 
     public static final Class<String>   T_STRING    = String.class;
 
+    @SuppressWarnings("unchecked")
     public static final Pair<Class<?>, Class<?>>[] nativeClassPairs = new Pair[] {
             new Pair(NT_BOOLEAN, T_BOOLEAN),
             new Pair(NT_INTEGER, T_INTEGER),

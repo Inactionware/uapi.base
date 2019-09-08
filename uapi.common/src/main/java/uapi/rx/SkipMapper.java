@@ -19,6 +19,7 @@ public class SkipMapper<T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
         while (this._skipCount < this._count) {
             if (! hasItem()) {

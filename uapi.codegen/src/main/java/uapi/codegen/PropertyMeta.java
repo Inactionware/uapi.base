@@ -173,7 +173,7 @@ public class PropertyMeta {
         public boolean equals(Object other) {
             if (this == other) return true;
             if (other == null || getClass() != other.getClass()) return false;
-            Builder builder = (Builder) other;
+            var builder = (Builder) other;
             return Objects.equals(this._fieldName, builder._fieldName) &&
                     this._fieldType.equals(builder._fieldType) &&
                     this._isCollection == builder._isCollection &&

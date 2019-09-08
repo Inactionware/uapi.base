@@ -176,6 +176,7 @@ abstract class Mapper<T> extends Stream<T> implements IMapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <KT, VT> Map<KT, VT> toMap() {
         ToMapReducer<KT, VT> operator = new ToMapReducer<>((Mapper<Pair<KT, VT>>) this);
         Map<KT, VT> result = operator.getItem();

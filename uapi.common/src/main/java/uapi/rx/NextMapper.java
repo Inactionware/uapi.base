@@ -26,6 +26,7 @@ class NextMapper<T> extends Mapper<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T getItem() throws NoItemException {
         T item = ((Mapper<T>) getPreviously()).getItem();
         this._action.accept(item);

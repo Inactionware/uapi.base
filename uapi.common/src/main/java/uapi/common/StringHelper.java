@@ -57,12 +57,12 @@ public final class StringHelper {
         if (args == null) {
             args = CollectionHelper.EMPTY_ARRAY;
         }
-        StringBuilder buffer = new StringBuilder();
-        boolean foundVarStart = false;
-        int idxVar = 0;
-        int tmpIdx = -1;
+        var buffer = new StringBuilder();
+        var foundVarStart = false;
+        var idxVar = 0;
+        var tmpIdx = -1;
         for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
+            var c = str.charAt(i);
             if (c == VAR_START) {
                 foundVarStart = true;
             } else if (c == VAR_END) {
@@ -128,11 +128,11 @@ public final class StringHelper {
         if (arguments == null) {
             arguments = MapHelper.EMPTY;
         }
-        StringBuilder buffer = new StringBuilder();
-        boolean foundVarStart = false;
-        String varName = "";
+        var buffer = new StringBuilder();
+        var foundVarStart = false;
+        var varName = "";
         for (int i = 0; i < stringTemplate.length(); i++) {
-            char c = stringTemplate.charAt(i);
+            var c = stringTemplate.charAt(i);
             if (c == VAR_START) {
                 if (foundVarStart) {
                     buffer.append(VAR_START).append(varName);
@@ -141,7 +141,7 @@ public final class StringHelper {
                 foundVarStart = true;
             } else if (c == VAR_END) {
                 if (foundVarStart) {
-                    Object argument = arguments.get(varName.trim());
+                    var argument = arguments.get(varName.trim());
                     if (argument != null) {
                         buffer.append(argument);
                     } else {
@@ -191,18 +191,18 @@ public final class StringHelper {
         if (indexedVariables == null) {
             indexedVariables = CollectionHelper.EMPTY_ARRAY;
         }
-        StringBuilder buffer = new StringBuilder();
-        boolean foundVarStart = false;
-        int idxVar = 0;
-        String namedVar = "";
-        int tmpIdx = -1;
+        var buffer = new StringBuilder();
+        var foundVarStart = false;
+        var idxVar = 0;
+        var namedVar = "";
+        var tmpIdx = -1;
         for (int i = 0; i < stringTemplate.length(); i++) {
-            char c = stringTemplate.charAt(i);
+            var c = stringTemplate.charAt(i);
             if (c == VAR_START) {
                 foundVarStart = true;
             } else if (c == VAR_END) {
                 if (foundVarStart) {
-                    boolean proceed = false;
+                    var proceed = false;
                     if (! Strings.isNullOrEmpty(namedVar)) {
                         // try using named variable
                         if (namedVariables.get(namedVar) != null) {
@@ -262,6 +262,7 @@ public final class StringHelper {
 
     /**
      * Duplicate specific string by specific count
+     * Using String::repeat(int) instead of this method
      *
      * @param   str
      *          The string
@@ -269,18 +270,19 @@ public final class StringHelper {
      *          Duplicated count
      * @return  The result string
      */
-    public static String duplicate(final String str, final int count) {
-        ArgumentChecker.notNull(str, "str");
-        ArgumentChecker.checkInt(count, "count", 0, Integer.MAX_VALUE);
-        if (str.length() == 0) {
-            return StringHelper.EMPTY;
-        }
-        StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            buffer.append(str);
-        }
-        return buffer.toString();
-    }
+//    @Deprecated
+//    public static String duplicate(final String str, final int count) {
+//        ArgumentChecker.notNull(str, "str");
+//        ArgumentChecker.checkInt(count, "count", 0, Integer.MAX_VALUE);
+//        if (str.length() == 0) {
+//            return StringHelper.EMPTY;
+//        }
+//        var buffer = new StringBuilder();
+//        for (int i = 0; i < count; i++) {
+//            buffer.append(str);
+//        }
+//        return buffer.toString();
+//    }
 
     /**
      * Make MD5 string based string array items
@@ -306,10 +308,10 @@ public final class StringHelper {
             }
             md.update(str.getBytes());
         }
-        byte source[] = md.digest();
-        char target[] = new char[SIXTEEN * 2];
-        int k = 0;
-        for (int i = 0; i < SIXTEEN; i++) {
+        var source = md.digest();
+        var target = new char[SIXTEEN * 2];
+        var k = 0;
+        for (var i = 0; i < SIXTEEN; i++) {
             byte sbyte = source[i];
             target[k++] = HEX_DIGITS[sbyte >>> FOUR & MASK_F];
             target[k++] = HEX_DIGITS[sbyte & MASK_F];
@@ -319,8 +321,8 @@ public final class StringHelper {
 
     public static String firstLine(String str) {
         ArgumentChecker.notNull(str, "str");
-        BufferedReader br = new BufferedReader(new StringReader(str));
-        String line = "";
+        var br = new BufferedReader(new StringReader(str));
+        var line = "";
         try {
             line = br.readLine();
         } catch (IOException ex) {

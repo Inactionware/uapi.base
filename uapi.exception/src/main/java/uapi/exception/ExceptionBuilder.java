@@ -74,7 +74,7 @@ public abstract class ExceptionBuilder<E extends ParameterizedException, B exten
     }
 
     public B variables(IParameters vars) {
-        Object v = vars.get();
+        var v = vars.get();
         if (v instanceof Object[]) {
             this._indexedParams = (Object[]) v;
         } else if (v instanceof Map) {

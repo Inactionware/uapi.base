@@ -46,7 +46,7 @@ class BreakOnMapper<T> extends Mapper<T> {
 
     @Override
     public T getItem() throws NoItemException {
-        T item = ((Mapper<T>) getPreviously()).getItem();
+        var item = ((Mapper<T>) getPreviously()).getItem();
         if (this._validator.accept(item)) {
             this._terminated = true;
             if (this._returnFailedItem) {

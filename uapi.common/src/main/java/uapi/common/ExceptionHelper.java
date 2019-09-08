@@ -19,7 +19,7 @@ public final class ExceptionHelper {
 
     public static String getStackString(Throwable t) {
         ArgumentChecker.required(t, "t");
-        StringWriter strWriter = new StringWriter();
+        var strWriter = new StringWriter();
         t.printStackTrace(new PrintWriter(strWriter));
         return strWriter.toString();
     }

@@ -144,17 +144,17 @@ class StringHelperTest extends Specification{
         ' a '   | false
     }
 
-    def 'Test duplicate string'() {
-        when:
-        def result = StringHelper.duplicate(str, count)
-
-        then:
-        result == expected
-
-        where:
-        str     | count     | expected
-        " "     | 2         | "  "
-        ""      | 3         | ""
-        "12"    | 2         | "1212"
-    }
+//    def 'Test duplicate string'() {
+//        when:
+//        def result = StringHelper.duplicate(str, count)
+//
+//        then:
+//        result == expected
+//
+//        where:
+//        str     | count     | expected
+//        " "     | 2         | "  "
+//        ""      | 3         | ""
+//        "12"    | 2         | "1212"
+//    }
 }

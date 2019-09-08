@@ -24,6 +24,7 @@ class ToListReducer<T> extends Reducer<List<T>> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getItem() {
         if (this._list == null) {
             this._list = new LinkedList<>();
@@ -36,7 +37,7 @@ class ToListReducer<T> extends Reducer<List<T>> {
                 // do nothing
             }
         }
-        List<T> result = this._list;
+        var result = this._list;
         this._list = null;
         return result;
     }

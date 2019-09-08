@@ -41,8 +41,8 @@ public class CodeMeta {
                 throw new GeneralException(ex);
             }
         } else {
-            StringBuilder sb = new StringBuilder();
-            this._builder._rawCodes.forEach(rawCode -> sb.append(rawCode));
+            var sb = new StringBuilder();
+            this._builder._rawCodes.forEach(sb::append);
             return sb.toString();
         }
     }
@@ -99,7 +99,7 @@ public class CodeMeta {
         ) {
             checkStatus();
             ArgumentChecker.notEmpty(codeTemplate, "codeTemplate");
-            String code = StringHelper.makeString(codeTemplate, params);
+            var code = StringHelper.makeString(codeTemplate, params);
             addRawCode(code);
             return this;
         }
@@ -133,7 +133,7 @@ public class CodeMeta {
             if (obj == null) {
                 return false;
             }
-            Builder other = (Builder) obj;
+            var other = (Builder) obj;
             if (this._temp != null) {
                 if (other._temp == null) {
                     return false;
@@ -152,7 +152,7 @@ public class CodeMeta {
 
         @Override
         public int hashCode() {
-            int result = _model != null ? _model.hashCode() : 0;
+            var result = _model != null ? _model.hashCode() : 0;
             result = 31 * result + (_temp != null ? _temp.hashCode() : 0);
             result = 31 * result + (_rawCodes != null ? _rawCodes.hashCode() : 0);
             return result;
