@@ -306,15 +306,15 @@ class ClassMetaTest extends Specification {
         clsBudr.addMethodBuilderIfAbsent(methodBudr2) == methodBudr
     }
 
-    def 'Test add property builder'() {
-        when:
-        def propBudr = Mock(PropertyMeta.Builder)
-        ClassMeta.Builder clsBudr = ClassMeta.builder()
-        clsBudr.addPropertyBuilder(propBudr)
-
-        then:
-        noExceptionThrown()
-    }
+//    def 'Test add property builder'() {
+//        when:
+//        def propBudr = Mock(PropertyMeta.Builder)
+//        ClassMeta.Builder clsBudr = ClassMeta.builder()
+//        clsBudr.addPropertyBuilder(propBudr)
+//
+//        then:
+//        noExceptionThrown()
+//    }
 
     def 'Test override method builder'() {
         given:

@@ -122,18 +122,18 @@ class ClassHelperTest extends Specification {
 
     private final class FakeService implements IFakeInterface<TestAnno> { }
 
-    @SuppressWarnings("unused")
-    private final class CollectionService {
+    // @SuppressWarnings("unused")
+    // private final class CollectionService {
 
-        private List<String> listField;
-        private Map<String, Integer> mapField;
-        private Map<String, List<Float>> mixField;
-        private List<Map<String, Double>> mixField2;
-        private Map<String, FakeClass<String>> test;
-        private FakeClass<String> none;
-    }
+    //     private List<String> listField;
+    //     private Map<String, Integer> mapField;
+    //     private Map<String, List<Float>> mixField;
+    //     private List<Map<String, Double>> mixField2;
+    //     private Map<String, FakeClass<String>> test;
+    //     private FakeClass<String> none;
+    // }
 
-    private final class FakeClass<T> {}
+    // private final class FakeClass<T> {}
 }
 
 public @interface TestAnno {}

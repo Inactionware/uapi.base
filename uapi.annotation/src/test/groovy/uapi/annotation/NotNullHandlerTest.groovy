@@ -136,46 +136,46 @@ class NotNullHandlerTest extends Specification {
 //        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
 //    }
 
-    def 'Test handler annotated elements'() {
-        given:
-        def paramElem = Mock(Element) {
-            getKind() >> kind
-            getSimpleName() >> Mock(Name) {
-                toString() >> paramName
-            }
-            getEnclosingElement() >> Mock(Element) {
-                getModifiers() >> ([Modifier.PUBLIC] as Set)
-                getEnclosingElement() >> Mock(Element) {
-                    getModifiers() >> ([Modifier.PUBLIC] as Set)
-                }
-            }
-        }
-        def paramBuilder = Mock(ParameterMeta.Builder) {
-            getName() >> paramName
-        }
-        def methodBuilder = Mock(MethodMeta.Builder)
-        methodBuilder.findParameterBuilder(_, _) >> paramBuilder
-        methodBuilder.addThrowTypeName(_) >> methodBuilder
-        methodBuilder.setInvokeSuper(_) >> methodBuilder
-        methodBuilder.addCodeBuilder(_) >> methodBuilder
-        def clsBuilder = Mock(ClassMeta.Builder) {
-            findMethodBuilder(_, _) >> methodBuilder
-        }
-        def budrCtx = Mock(IBuilderContext) {
-            findClassBuilder(_) >> clsBuilder
-        }
-
-        when:
-        def handler = new NotNullHandler()
-        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
-
-        then:
-        noExceptionThrown()
-
-        where:
-        kind                        | paramName     | incorrectModifer
-        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
-        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
-        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
-    }
+//    def 'Test handler annotated elements'() {
+//        given:
+//        def paramElem = Mock(Element) {
+//            getKind() >> kind
+//            getSimpleName() >> Mock(Name) {
+//                toString() >> paramName
+//            }
+//            getEnclosingElement() >> Mock(Element) {
+//                getModifiers() >> ([Modifier.PUBLIC] as Set)
+//                getEnclosingElement() >> Mock(Element) {
+//                    getModifiers() >> ([Modifier.PUBLIC] as Set)
+//                }
+//            }
+//        }
+//        def paramBuilder = Mock(ParameterMeta.Builder) {
+//            getName() >> paramName
+//        }
+//        def methodBuilder = Mock(MethodMeta.Builder)
+//        methodBuilder.findParameterBuilder(_, _) >> paramBuilder
+//        methodBuilder.addThrowTypeName(_) >> methodBuilder
+//        methodBuilder.setInvokeSuper(_) >> methodBuilder
+//        methodBuilder.addCodeBuilder(_) >> methodBuilder
+//        def clsBuilder = Mock(ClassMeta.Builder) {
+//            findMethodBuilder(_, _) >> methodBuilder
+//        }
+//        def budrCtx = Mock(IBuilderContext) {
+//            findClassBuilder(_) >> clsBuilder
+//        }
+//
+//        when:
+//        def handler = new NotNullHandler()
+//        handler.handleAnnotatedElements(budrCtx, NotNull.class, [paramElem] as Set)
+//
+//        then:
+//        noExceptionThrown()
+//
+//        where:
+//        kind                        | paramName     | incorrectModifer
+//        ElementKind.PARAMETER       | 'param'       | Modifier.PRIVATE
+//        ElementKind.PARAMETER       | 'param'       | Modifier.FINAL
+//        ElementKind.PARAMETER       | 'param'       | Modifier.STATIC
+//    }
 }

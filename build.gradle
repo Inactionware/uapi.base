@@ -7,11 +7,11 @@
  * use the project into a commercial product
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
+// buildscript {
+//     repositories {
+//         jcenter()
+//     }
+// }
 
 ext {
     thisRepo = 'base'
@@ -23,21 +23,22 @@ apply from: '.config/uapi/functions.gradle'
 
 apply plugin: 'jacoco'
 
-allprojects {
-    buildscript {
-        repositories {
-            mavenLocal()
-            mavenCentral()
-            jcenter()
-        }
-    }
+// allprojects {
+//     buildscript {
+//         repositories {
+//             mavenLocal()
+//             mavenCentral()
+//             jcenter()
+//         }
+//     }
 
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url "http://dl.bintray.com/typesafe/maven-releases" }
-    }
-}
+//     repositories {
+//         mavenCentral()
+//         jcenter()
+//         maven { url "http://dl.bintray.com/typesafe/maven-releases" }
+//         // maven { url 'https://jitpack.io' }  // for Spock
+//     }
+// }
 
 subprojects {
     apply plugin: 'java'
@@ -48,8 +49,8 @@ subprojects {
 
     group = "${allCfg.group}"
     version = getBuildVersion(project.name)
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
     configurations {
         codacy
