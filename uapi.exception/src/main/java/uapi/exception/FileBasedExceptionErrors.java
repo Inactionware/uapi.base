@@ -9,14 +9,11 @@
 
 package uapi.exception;
 
-import com.google.common.base.Strings;
 import uapi.*;
+import uapi.common.StringHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The exception messages are defined in one or more files (properties file)
@@ -44,7 +41,7 @@ public abstract class FileBasedExceptionErrors<E extends ParameterizedException>
         }
 
         var propKey = getKey(exception);
-        if (Strings.isNullOrEmpty(propKey)) {
+        if (StringHelper.isNullOrEmpty(propKey)) {
             return null;
         }
         var propFile = getFile(exception);

@@ -9,7 +9,6 @@
 
 package uapi.common;
 
-import com.google.common.base.Strings;
 import uapi.InvalidArgumentException;
 import uapi.GeneralException;
 import uapi.rx.Looper;
@@ -23,7 +22,7 @@ import java.util.Map;
 
 public final class StringHelper {
 
-    private static final char HEX_DIGITS[] = {
+    private static final char[] HEX_DIGITS = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',  'e', 'f'};
 
     public static final String EMPTY    = "";
@@ -41,7 +40,7 @@ public final class StringHelper {
         if (str == null) {
             return true;
         }
-        if (str.length() == 0 || str.trim().length() == 0) {
+        if (str.isBlank()) {
             return true;
         }
         return false;
@@ -51,7 +50,7 @@ public final class StringHelper {
             final String str,
             Object... args
     ) {
-        if (Strings.isNullOrEmpty(str)) {
+        if (isNullOrEmpty(str)) {
             return str;
         }
         if (args == null) {
@@ -122,7 +121,7 @@ public final class StringHelper {
             final String stringTemplate,
             Map<Object, Object> arguments
     ) {
-        if (Strings.isNullOrEmpty(stringTemplate)) {
+        if (isNullOrEmpty(stringTemplate)) {
             return stringTemplate;
         }
         if (arguments == null) {
@@ -182,7 +181,7 @@ public final class StringHelper {
             Map namedVariables,
             Object... indexedVariables
     ) {
-        if (Strings.isNullOrEmpty(stringTemplate)) {
+        if (isNullOrEmpty(stringTemplate)) {
             return stringTemplate;
         }
         if (namedVariables == null) {
@@ -203,7 +202,7 @@ public final class StringHelper {
             } else if (c == VAR_END) {
                 if (foundVarStart) {
                     var proceed = false;
-                    if (! Strings.isNullOrEmpty(namedVar)) {
+                    if (! isNullOrEmpty(namedVar)) {
                         // try using named variable
                         if (namedVariables.get(namedVar) != null) {
                             buffer.append(namedVariables.get(namedVar));

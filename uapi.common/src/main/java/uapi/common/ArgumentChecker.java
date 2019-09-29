@@ -9,8 +9,6 @@
 
 package uapi.common;
 
-import com.google.common.base.Strings;
-import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.InvalidArgumentException.InvalidArgumentType;
 
@@ -153,7 +151,7 @@ public class ArgumentChecker {
     public static boolean isEmpty(
             final String argument
     ) {
-        return Strings.isNullOrEmpty(argument) || argument.trim().length() == 0;
+        return StringHelper.isNullOrEmpty(argument) || argument.trim().length() == 0;
     }
 
     /**

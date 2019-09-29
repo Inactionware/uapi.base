@@ -17,6 +17,18 @@ dependencies {
     compile coordinate(libs.guava)
 }
 
+//ext.moduleName = 'uapi.exception'
+//
+//compileJava {
+//    inputs.property("moduleName", moduleName)
+//    doFirst {
+//        options.compilerArgs = [
+//                '--module-path', classpath.asPath,
+//        ]
+//        classpath = files()
+//    }
+//}
+
 publishing {
     publications {
         mavenPublication(MavenPublication) {

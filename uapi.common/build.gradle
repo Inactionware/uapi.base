@@ -17,6 +17,18 @@ dependencies {
     )
 }
 
+//ext.moduleName = 'uapi.common'
+
+//compileJava {
+//    inputs.property("moduleName", moduleName)
+//    doFirst {
+//        options.compilerArgs = [
+//                '--module-path', classpath.asPath,
+//        ]
+//        classpath = files()
+//    }
+//}
+
 publishing {
     publications {
         mavenPublication(MavenPublication) {
