@@ -65,7 +65,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                     String handlerClassName = scanner.nextLine();
                     this._logger.info("Initial external annotation handler - " + handlerClassName);
                     Class handlerClass = Class.forName(handlerClassName);
-                    Object handler = handlerClass.newInstance();
+                    Object handler = handlerClass.getDeclaredConstructor().newInstance();
                     if (!(handler instanceof IAnnotationsHandler)) {
                         this._logger.error(
                                 "The handler [{}] is not an instance of AnnotationsHandler",
@@ -121,7 +121,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         // Init for builder context
         Looper.on(this._handlers)
                 .map(IAnnotationsHandler::getHelper)
-                .filter(helper -> helper != null)
+                .filter(Objects::nonNull)
                 .foreach(buildCtx::putHelper);
         Looper.on(this._handlers)
                 .next(handler -> _logger.info("Invoke annotation handler -> {}", handler))

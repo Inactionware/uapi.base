@@ -34,40 +34,6 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
         return getOrderedAnnotations();
     }
 
-//    protected void checkModifiers(
-//            final Element element,
-//            final Class<? extends Annotation> annotation,
-//            final Modifier... unexpectedModifiers
-//    ) throws GeneralException {
-//        Set<Modifier> existingModifiers = element.getModifiers();
-//        Modifier unsupportedModifier = CollectionHelper.contains(existingModifiers, unexpectedModifiers);
-//        if (unsupportedModifier != null) {
-//            throw new GeneralException(
-//                    "The {} element [{}.{}] with {} annotation must not be {}",
-//                    element.getKind(),
-//                    element.getEnclosingElement().getSimpleName().toString(),
-//                    element.getSimpleName().toString(),
-//                    annotation.getName(),
-//                    unsupportedModifier);
-//        }
-//    }
-
-//    protected void checkAnnotations(
-//            final Element element,
-//            final Class<? extends Annotation>... annotationTypes
-//    ) throws GeneralException {
-//        ArgumentChecker.notNull(element, "element");
-//        List<Class<? extends Annotation>> unAnnotateds = Looper.on(annotationTypes)
-//                .filter(annotationType -> element.getAnnotation(annotationType) == null)
-//                .toList();
-//        if (unAnnotateds == null || unAnnotateds.size() > 0) {
-//            throw new GeneralException("The {} element [{}] does not annotated with {}.",
-//                    element.getKind(),
-//                    element.getSimpleName().toString(),
-//                    CollectionHelper.asString(annotationTypes));
-//        }
-//    }
-
     protected String getTypeInAnnotation(
             final AnnotationMirror annotation,
             final String fieldName
