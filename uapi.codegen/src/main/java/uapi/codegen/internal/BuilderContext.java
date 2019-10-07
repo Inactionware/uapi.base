@@ -41,6 +41,7 @@ public class BuilderContext implements IBuilderContext {
     private final LogSupport _logger;
     private final ProcessingEnvironment _procEnv;
     private final RoundEnvironment _roundEnv;
+    private final Module _module = new Module();
     private final List<ClassMeta.Builder> _clsBuilders = new ArrayList<>();
     private final Configuration _tempConf;
     private final Map<String, IHandlerHelper> _helpers = new HashMap<>();
@@ -122,24 +123,6 @@ public class BuilderContext implements IBuilderContext {
 
     @Override
     public ClassMeta.Builder findClassBuilder(Element classElement) {
-//        ArgumentChecker.notNull(classElement, "classElement");
-//        final ClassMeta.Builder expectedBuilder = ClassMeta.builder(classElement, this);
-//        List<ClassMeta.Builder> matchedClassBuilders = this._clsBuilders.parallelStream()
-//                .filter(existing -> existing.equals(expectedBuilder))
-//                .collect(Collectors.toList());
-//        ClassMeta.Builder clsBuilder;
-//        if (matchedClassBuilders.size() == 0) {
-//            this._clsBuilders.add(expectedBuilder);
-//            clsBuilder = expectedBuilder;
-//        } else if (matchedClassBuilders.size() == 1) {
-//            clsBuilder = matchedClassBuilders.get(0);
-//        } else {
-//            throw new GeneralException(
-//                    "Expect found only 1 class builder for {}, but found {}",
-//                    expectedBuilder.getPackageName() + "." + expectedBuilder.getClassName(),
-//                    matchedClassBuilders.size());
-//        }
-//        return clsBuilder;
         return findClassBuilder(classElement, true);
     }
 
@@ -324,5 +307,9 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.required(element, "element");
         DeclaredType declaredType = (DeclaredType) element.asType();
         return declaredType.getTypeArguments();
+    }
+
+    public Module getModule() {
+        return this._module;
     }
 }

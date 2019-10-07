@@ -35,7 +35,8 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private static final String PATH_ANNOTATION_HANDLER =
             "META-INF/services/" + IAnnotationsHandler.class.getCanonicalName();
-    private static final String TEMP_FILE = "template/generated_source.ftl";
+    private static final String TEMP_SOURCE_FILE = "template/generated_source.ftl";
+    private static final String TEMP_MODULE_FILE = "template/generated_module.ftl";
 
     protected LogSupport _logger;
     private ProcessingEnvironment _procEnv;
@@ -139,12 +140,16 @@ public class AnnotationProcessor extends AbstractProcessor {
         return this._handlers.size();
     }
 
+    private void generateModule(BuilderContext builderContext) {
+        return;
+    }
+
     private void generateSource(BuilderContext builderContext) {
         List<ClassMeta.Builder> classBuilders = builderContext.getBuilders();
 
         Template temp;
         try {
-            temp = builderContext.loadTemplate(TEMP_FILE);
+            temp = builderContext.loadTemplate(TEMP_SOURCE_FILE);
         } catch (Exception ex) {
             this._logger.error(ex);
             return;

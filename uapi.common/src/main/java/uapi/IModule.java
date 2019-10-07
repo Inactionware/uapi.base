@@ -9,13 +9,13 @@ public interface IModule {
      */
     String name();
 
-    /**
-     * Set this module name
-     *
-     * @param   name
-     *          The new name of this module
-     */
-    void setName(String name);
+//    /**
+//     * Set this module name
+//     *
+//     * @param   name
+//     *          The new name of this module
+//     */
+//    void setName(String name);
 
     /**
      * Get exported package list of this module.
@@ -24,13 +24,13 @@ public interface IModule {
      */
     String[] exports();
 
-    /**
-     * Add exported package of this module.
-     *
-     * @param   export
-     *          The exported package name
-     */
-    void addExport(String export);
+//    /**
+//     * Add exported package of this module.
+//     *
+//     * @param   export
+//     *          The exported package name
+//     */
+//    void addExport(String export);
 
     /**
      * Get required modules which are used in this module.
@@ -39,13 +39,13 @@ public interface IModule {
      */
     String[] requires();
 
-    /**
-     * Add required module which is used in this module.
-     *
-     * @param   require
-     *          The required module name
-     */
-    void addRequire(String require);
+//    /**
+//     * Add required module which is used in this module.
+//     *
+//     * @param   require
+//     *          The required module name
+//     */
+//    void addRequire(String require);
 
     /**
      * Get used services of this module.
@@ -54,13 +54,13 @@ public interface IModule {
      */
     String[] uses();
 
-    /**
-     * Add used service for this module.
-     *
-     * @param   use
-     *          The service name
-     */
-    void addUse(String use);
+//    /**
+//     * Add used service for this module.
+//     *
+//     * @param   use
+//     *          The service name
+//     */
+//    void addUse(String use);
 
     /**
      * Get provides
@@ -69,11 +69,11 @@ public interface IModule {
      */
     Provide[] provides();
 
-    /**
-     * Add provide to this module.
-     *
-     * @param   provide
-     *          The provide which will be added
-     */
-    void addProvide(Provide provide);
+//    /**
+//     * Add provide to this module.
+//     *
+//     * @param   provide
+//     *          The provide which will be added
+//     */
+//    void addProvide(Provide provide);
 }
