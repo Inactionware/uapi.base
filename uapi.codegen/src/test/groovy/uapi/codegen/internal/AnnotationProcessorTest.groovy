@@ -15,6 +15,7 @@ import spock.lang.Specification
 import javax.annotation.processing.Messager
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
+import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
 /**
@@ -32,7 +33,7 @@ class AnnotationProcessorTest extends Specification {
 
         then:
         noExceptionThrown()
-        annoProc.getHandlerCount() == 1
+        annoProc.getHandlerCount() == 2
         annoProc.getSupportedAnnotationTypes() != null
         annoProc.getSupportedSourceVersion() != null
     }
@@ -45,7 +46,9 @@ class AnnotationProcessorTest extends Specification {
             getMessager() >> Mock(Messager)
         }
         def roundEnv = Mock(RoundEnvironment) {
-
+            getElementsAnnotatedWith(_) >> {
+                return new HashSet<>()
+            }
         }
         def annoProc = new AnnotationProcessor()
 
