@@ -130,6 +130,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         // Generate source
         generateSource(buildCtx);
+        generateModule(buildCtx);
         buildCtx.clearBuilders();
 
         this._logger.info("End processing");
