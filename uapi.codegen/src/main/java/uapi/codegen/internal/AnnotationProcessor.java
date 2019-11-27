@@ -13,6 +13,7 @@ import com.google.auto.service.AutoService;
 import freemarker.template.Template;
 import uapi.Type;
 import uapi.codegen.*;
+import uapi.codegen.Module;
 import uapi.common.StringHelper;
 import uapi.rx.Looper;
 
@@ -37,6 +38,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             "META-INF/services/" + IAnnotationsHandler.class.getCanonicalName();
     private static final String TEMP_SOURCE_FILE = "template/generated_source.ftl";
     private static final String TEMP_MODULE_FILE = "template/generated_module.ftl";
+    private static final String MODULE_FILE_NAME = "module-info.java";
 
     protected LogSupport _logger;
     private ProcessingEnvironment _procEnv;
@@ -120,17 +122,23 @@ public class AnnotationProcessor extends AbstractProcessor {
         this._logger.info("Start processing annotation for {} " + roundEnv.getRootElements());
         BuilderContext buildCtx = new BuilderContext(this._procEnv, roundEnv);
         // Init for builder context
-        Looper.on(this._handlers)
+        IModuleProvider moduleProvider = Looper.on(this._handlers)
                 .map(IAnnotationsHandler::getHelper)
                 .filter(Objects::nonNull)
-                .foreach(buildCtx::putHelper);
+                .next(buildCtx::putHelper)
+                .filter(helper -> helper instanceof IModuleProvider)
+                .map(helper -> (IModuleProvider) helper)
+                .single(null);
         Looper.on(this._handlers)
                 .next(handler -> _logger.info("Invoke annotation handler -> {}", handler))
                 .foreach(handler -> handler.handle(buildCtx));
 
         // Generate source
         generateSource(buildCtx);
-        generateModule(buildCtx);
+
+        if (moduleProvider != null && moduleProvider.hasModule()) {
+            generateModule(buildCtx, moduleProvider.getModule());
+        }
         buildCtx.clearBuilders();
 
         this._logger.info("End processing");
@@ -141,8 +149,31 @@ public class AnnotationProcessor extends AbstractProcessor {
         return this._handlers.size();
     }
 
-    private void generateModule(BuilderContext builderContext) {
-        return;
+    private void generateModule(BuilderContext builderContext, Module module) {
+        // Write to module-info file
+        var model = new HashMap<String, Object>();
+        model.put("module", module);
+        var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
+
+        Writer srcWriter = null;
+        try {
+            this._logger.info("Generate module file for -> {}", module.name());
+            JavaFileObject fileObj = builderContext.getFiler().createSourceFile(MODULE_FILE_NAME);
+            srcWriter = fileObj.openWriter();
+            temp.process(model, srcWriter);
+        } catch (Exception ex) {
+            this._logger.error("An error was risen when generate module for - {}", module.name());
+            this._logger.error(ex);
+            return;
+        } finally {
+            if (srcWriter != null) {
+                try {
+                    srcWriter.close();
+                } catch (Exception ex) {
+                    this._logger.error(ex);
+                }
+            }
+        }
     }
 
     private void generateSource(BuilderContext builderContext) {

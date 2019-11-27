@@ -41,7 +41,6 @@ public class BuilderContext implements IBuilderContext {
     private final LogSupport _logger;
     private final ProcessingEnvironment _procEnv;
     private final RoundEnvironment _roundEnv;
-    private final Module _module = new Module();
     private final List<ClassMeta.Builder> _clsBuilders = new ArrayList<>();
     private final Configuration _tempConf;
     private final Map<String, IHandlerHelper> _helpers = new HashMap<>();
@@ -307,9 +306,5 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.required(element, "element");
         DeclaredType declaredType = (DeclaredType) element.asType();
         return declaredType.getTypeArguments();
-    }
-
-    public Module getModule() {
-        return this._module;
     }
 }

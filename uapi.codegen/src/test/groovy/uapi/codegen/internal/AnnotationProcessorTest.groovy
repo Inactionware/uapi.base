@@ -33,7 +33,7 @@ class AnnotationProcessorTest extends Specification {
 
         then:
         noExceptionThrown()
-        annoProc.getHandlerCount() == 2
+        annoProc.getHandlerCount() == 1
         annoProc.getSupportedAnnotationTypes() != null
         annoProc.getSupportedSourceVersion() != null
     }

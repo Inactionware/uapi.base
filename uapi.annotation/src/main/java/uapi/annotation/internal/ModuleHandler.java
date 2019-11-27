@@ -1,27 +1,35 @@
-package uapi.codegen.internal;
+/*
+ * Copyright (c) 2019. The UAPI Authors
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at the LICENSE file.
+ *
+ * You must gained the permission from the authors if you want to
+ * use the project into a commercial product.
+ */
+
+package uapi.annotation.internal;
 
 import com.google.auto.service.AutoService;
 import uapi.GeneralException;
-import uapi.IModule;
-import uapi.Provide;
+import uapi.annotation.IModule;
+import uapi.annotation.IModuleHandlerHelper;
 import uapi.codegen.*;
+import uapi.codegen.Module;
 import uapi.common.ArgumentChecker;
 import uapi.rx.Looper;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Set;
 
 @AutoService(IAnnotationsHandler.class)
 public class ModuleHandler extends AnnotationsHandler {
 
     @SuppressWarnings("unchecked")
-    private static final Class<? extends Annotation>[] orderedAnnotations = new Class[] { uapi.Module.class };
+    private static final Class<? extends Annotation>[] orderedAnnotations = new Class[] { uapi.annotation.Module.class };
 
-    private static final String TEMP_MODULE_INFO = "template/generated_module.ftl";
-
-    private final Module _module = new Module();
     private final ModuleHelper _helper = new ModuleHelper();
 
     @Override
@@ -37,7 +45,7 @@ public class ModuleHandler extends AnnotationsHandler {
     ) throws GeneralException {
         ArgumentChecker.required(annotationType, "annotationType");
 
-        if (annotationType.equals(uapi.Module.class)) {
+        if (annotationType.equals(Module.class)) {
             parseModule(builderContext, elements);
         } else {
             throw new GeneralException("Unsupported annotation - {}", annotationType.getName());
@@ -83,50 +91,55 @@ public class ModuleHandler extends AnnotationsHandler {
             throw new GeneralException(ex, "The class {} can't be instanced, be ensure the constructor is public", classNameBuilder.toString());
         }
 
-        this._module.setName(module.name());
-        Looper.on(module.exports()).foreach(this._module::addExport);
-        Looper.on(module.requires()).foreach(this._module::addRequire);
-        Looper.on(module.uses()).foreach(this._module::addUse);
-        Looper.on(module.provides()).foreach(this._module::addProvide);
-
-        // Write to module-info file
-        var model = new HashMap<String, Object>();
-        model.put("module", this._module);
-        var temp = builderContext.loadTemplate(TEMP_MODULE_INFO);
-
+        this._helper._module.setName(module.name());
+        Looper.on(module.exports()).foreach(this._helper._module::addExport);
+        Looper.on(module.requires()).foreach(this._helper._module::addRequire);
+        Looper.on(module.uses()).foreach(this._helper._module::addUse);
+        Looper.on(module.provides()).foreach(this._helper._module::addProvide);
     }
 
     public IHandlerHelper getHelper() {
         return this._helper;
     }
 
-    private final class ModuleHelper implements IModuleHandlerHelper {
+    private final class ModuleHelper implements IModuleHandlerHelper, IModuleProvider {
 
-        @Override
-        public void setModuleName(String name) {
-            ModuleHandler.this._module.setName(name);
-        }
+//        @Override
+//        public void setModuleName(String name) {
+//            ModuleHandler.this._module.setName(name);
+//        }
+        private final Module _module = new Module();
 
         @Override
         public void addRequire(String require) {
-            ModuleHandler.this._module.addRequire(require);
+            this._module.addRequire(require);
         }
 
         @Override
         public void addUse(String use) {
-            ModuleHandler.this._module.addUse(use);
+            this._module.addUse(use);
         }
 
         @Override
         public void addExport(String export) {
-            ModuleHandler.this._module.addExport(export);
+            this._module.addExport(export);
         }
 
         @Override
         public void addProvide(String service, String implementation) {
             ArgumentChecker.required(service, "service");
             ArgumentChecker.required(implementation, "implementation");
-            ModuleHandler.this._module.addProvide(new Provide(service, implementation));
+            this._module.addProvide(new Provide(service, implementation));
+        }
+
+        @Override
+        public boolean hasModule() {
+            return false;
+        }
+
+        @Override
+        public Module getModule() {
+            return this._module;
         }
     }
 }
