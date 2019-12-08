@@ -16,6 +16,8 @@ dependencies {
 
     compile coordinate(libs.auto_service)
     compile coordinate(libs.freemarker)
+
+    annotationProcessor coordinate(libs.auto_service)
 }
 
 publishing {

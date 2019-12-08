@@ -9,18 +9,23 @@
 
 package uapi.codegen;
 
+import uapi.GeneralException;
 import uapi.common.ArgumentChecker;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Module {
 
+    private boolean _enabled = false;
     private String _name;
     private List<String> _exports = new ArrayList<>();
     private List<String> _requires = new ArrayList<>();
     private List<String> _uses = new ArrayList<>();
-    private List<Provide> _provides = new ArrayList<>();
+    private Map<String /* service */, Set<String> /* implementations */> _provides = new HashMap<>();
+
+    public boolean enabled() {
+        return this._enabled;
+    }
 
     /**
      * Return the name of this module.
@@ -33,7 +38,11 @@ public class Module {
 
     public void setName(final String name) {
         ArgumentChecker.required(name, "name");
+        if (this._enabled) {
+            throw new GeneralException("The module has been initialized more then one time - {}", this._name);
+        }
         this._name = name;
+        this._enabled = true;
     }
 
     /**
@@ -83,12 +92,21 @@ public class Module {
      *
      * @return The provide list
      */
-    public Provide[] provides() {
-        return this._provides.toArray(new Provide[0]);
+    public Map<String, Set<String>> provides() {
+        return this._provides;
     }
 
-    public void addProvide(final Provide provide) {
-        ArgumentChecker.required(provide, "provide");
-        this._provides.add(provide);
+    public void addProvide(
+            final String service,
+            final String implementation
+    ) {
+        ArgumentChecker.required(service, "service");
+        ArgumentChecker.required(implementation, "implementation");
+        var impls = this._provides.get(service);
+        if (impls == null) {
+            impls = new HashSet<>();
+            this._provides.put(service, impls);
+        }
+        impls.add(implementation);
     }
 }

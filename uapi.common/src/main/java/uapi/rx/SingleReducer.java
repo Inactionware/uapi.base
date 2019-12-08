@@ -34,11 +34,11 @@ class SingleReducer<T> extends Reducer<T> {
         T item = null;
         var itemSet = false;
         while (hasItem) {
-            if (itemSet) {
-                throw new MoreItemException();
-            }
             try {
                 item = (T) getPreviously().getItem();
+                if (itemSet) {
+                    throw new MoreItemException();
+                }
                 itemSet = true;
             } catch (NoItemException ex) {
                 if (this._useDefault) {

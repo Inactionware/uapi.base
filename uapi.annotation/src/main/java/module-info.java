@@ -3,5 +3,4 @@ module uapi.annotation {
     requires auto.service.annotations;
     requires uapi.common;
     requires uapi.codegen;
-
 }

@@ -55,6 +55,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void loadExternalHandler() {
+        this._logger.info("Loading external handlers...");
         InputStream is = null;
         Scanner scanner = null;
 
@@ -66,7 +67,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 scanner = new Scanner(is);
                 while (scanner.hasNext()) {
                     String handlerClassName = scanner.nextLine();
-                    this._logger.info("Initial external annotation handler - " + handlerClassName);
+                    this._logger.info("\t" + handlerClassName);
                     Class handlerClass = Class.forName(handlerClassName);
                     Object handler = handlerClass.getDeclaredConstructor().newInstance();
                     if (!(handler instanceof IAnnotationsHandler)) {
@@ -80,7 +81,6 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         } catch (Exception ex) {
             this._logger.error(ex);
-            return;
         } finally {
             if (is != null) {
                 try {

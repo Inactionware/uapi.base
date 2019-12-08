@@ -11,7 +11,7 @@ module ${module.name} {
     exports ${export};
     </#list>
 
-    <#list module.provides as provide>
-    provides ${provide.service} as ${provide.implementation};
+    <#list module.provides?service as service>
+    provides ${service} as <#list module.provides.get(service) as implementation>${implementation}<#sep>, </#sep></#list>;
     </#list>
 }

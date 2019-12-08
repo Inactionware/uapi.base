@@ -21,33 +21,43 @@ public interface IModule {
      *
      * @return  The module name
      */
-    String name();
+    default String name() {
+        return null;
+    }
 
     /**
      * Get exported package list of this module.
      *
      * @return  Exported package list of this module
      */
-    String[] exports();
+    default String[] exports() {
+        return new String[0];
+    }
 
     /**
      * Get required modules which are used in this module.
      *
      * @return  The required modules
      */
-    String[] requires();
+    default String[] requires() {
+        return new String[0];
+    }
 
     /**
      * Get used services of this module.
      *
      * @return  Used services of this module
      */
-    String[] uses();
+    default String[] uses() {
+        return new String[0];
+    }
 
     /**
      * Get provides
      *
      * @return The provide list
      */
-    Provide[] provides();
+    default Provide[] provides() {
+        return new Provide[0];
+    }
 }

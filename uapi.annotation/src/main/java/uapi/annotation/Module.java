@@ -9,8 +9,24 @@
 
 package uapi.annotation;
 
+import uapi.common.StringHelper;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * This annotation indicate the annotated class is a module description class.
- * The module description class must implements <code>IModule</code> interface.
+ * This annotation indicate the annotated packet is a module description class.
+ * Normal the annotation should be defined in top level package-info file when you want to enable the project is module
+ * ready.
+ * An exception will be thrown if you define more then one time Module annotation.
  */
-public @interface Module { }
+@Target(ElementType.PACKAGE)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Module {
+
+    String name() default StringHelper.EMPTY;
+
+    String[] requires() default {};
+}
