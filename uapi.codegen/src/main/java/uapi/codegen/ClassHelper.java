@@ -9,16 +9,14 @@
 
 package uapi.codegen;
 
-import com.google.common.base.Strings;
 import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
+import uapi.common.StringHelper;
 import uapi.common.WordHelper;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
 
 public final class ClassHelper {
 
@@ -33,7 +31,7 @@ public final class ClassHelper {
             final boolean isCollection,
             final boolean isMap
     ) {
-        if (Strings.isNullOrEmpty(fieldName)) {
+        if (StringHelper.isNullOrEmpty(fieldName)) {
             throw new InvalidArgumentException("The field name can't be empty or null");
         }
         String propName;

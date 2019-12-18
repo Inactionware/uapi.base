@@ -1,6 +1,5 @@
 package uapi.codegen;
 
-import com.google.common.base.Strings;
 import uapi.GeneralException;
 import uapi.InvalidArgumentException;
 import uapi.common.ArgumentChecker;
@@ -137,14 +136,14 @@ public class PropertyMeta {
         }
 
         public String setterName() {
-            if (Strings.isNullOrEmpty(this._fieldName)) {
+            if (StringHelper.isNullOrEmpty(this._fieldName)) {
                 return null;
             }
             return ClassHelper.makeSetterName(this._fieldName, this._isCollection, this._isMap);
         }
 
         public String getterName() {
-            if (Strings.isNullOrEmpty(this._fieldName)) {
+            if (StringHelper.isNullOrEmpty(this._fieldName)) {
                 return null;
             }
             return ClassHelper.makeGetterName(this._fieldName);

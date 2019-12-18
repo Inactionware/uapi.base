@@ -13,7 +13,7 @@ final class ModuleHelper implements IModuleHandlerHelper, IModuleProvider {
     void createModule(final String name) {
         if (this._module != null) {
             throw new GeneralException("An module [{}] exists, can't add another module [{}]",
-                    this._module.name(),
+                    this._module.getName(),
                     name);
         }
         ArgumentChecker.required(name, "name");
@@ -43,7 +43,7 @@ final class ModuleHelper implements IModuleHandlerHelper, IModuleProvider {
 
     @Override
     public boolean hasModule() {
-        return false;
+        return this._module != null;
     }
 
     @Override

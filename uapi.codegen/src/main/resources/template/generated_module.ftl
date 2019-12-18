@@ -5,13 +5,13 @@ module ${module.name} {
 
     <#list module.uses as use>
     uses ${use};
-    </list>
+    </#list>
 
     <#list module.exports as export>
     exports ${export};
     </#list>
 
-    <#list module.provides?service as service>
-    provides ${service} as <#list module.provides.get(service) as implementation>${implementation}<#sep>, </#sep></#list>;
+    <#list module.provides?keys as service>
+    provides ${service} as <#list module.provides[service] as implementation>${implementation}<#sep>, </#sep></#list>;
     </#list>
 }

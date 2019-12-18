@@ -41,7 +41,9 @@ class SingleReducer<T> extends Reducer<T> {
                 }
                 itemSet = true;
             } catch (NoItemException ex) {
-                if (this._useDefault) {
+                if (itemSet) {
+                    return item;
+                } else if (this._useDefault) {
                     return this._default;
                 } else {
                     throw ex;

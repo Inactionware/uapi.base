@@ -92,6 +92,7 @@ public abstract class AnnotationsHandler implements IAnnotationsHandler {
         Looper.on(getOrderedAnnotations())
                 .map(annotation -> new Pair<>(annotation, builderContext.getElementsAnnotatedWith(annotation)))
                 .filter(pair -> pair.getRightValue().size() > 0)
+                .next(pair -> builderContext.getLogger().info("\tAnnotation {} on {}", pair.getLeftValue().getSimpleName(), pair.getRightValue()))
                 .foreach(pair -> handleAnnotatedElements(builderContext, pair.getLeftValue(), pair.getRightValue()));
     }
 

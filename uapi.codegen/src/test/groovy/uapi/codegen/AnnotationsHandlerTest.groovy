@@ -233,6 +233,7 @@ class AnnotationsHandlerTest extends Specification {
             getElementsAnnotatedWith(_) >> Mock(Set) {
                 size() >> 1
             }
+            getLogger() >> Mock(LogSupport)
         }
 
         when:

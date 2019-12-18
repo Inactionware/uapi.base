@@ -24,7 +24,9 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -119,7 +121,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         if (roundEnv.processingOver() || annotations.size() == 0) {
             return false;
         }
-        this._logger.info("Start processing annotation for {} " + roundEnv.getRootElements());
+        this._logger.info("Start processing annotations... ");
         BuilderContext buildCtx = new BuilderContext(this._procEnv, roundEnv);
         // Init for builder context
         IModuleProvider moduleProvider = Looper.on(this._handlers)
@@ -130,12 +132,12 @@ public class AnnotationProcessor extends AbstractProcessor {
                 .map(helper -> (IModuleProvider) helper)
                 .single(null);
         Looper.on(this._handlers)
-                .next(handler -> _logger.info("Invoke annotation handler -> {}", handler))
                 .foreach(handler -> handler.handle(buildCtx));
 
         // Generate source
         generateSource(buildCtx);
 
+        // Generate module
         if (moduleProvider != null && moduleProvider.hasModule()) {
             generateModule(buildCtx, moduleProvider.getModule());
         }
@@ -151,18 +153,22 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private void generateModule(BuilderContext builderContext, Module module) {
         // Write to module-info file
+        // There is no way to generate module-info.java to let javac to compile
+        // We have to generate byte code for module-info
         var model = new HashMap<String, Object>();
         model.put("module", module);
         var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
 
+        final String MODULE_FILE_NAME = "module-info";
         Writer srcWriter = null;
         try {
-            this._logger.info("Generate module file for -> {}", module.name());
-            JavaFileObject fileObj = builderContext.getFiler().createSourceFile(MODULE_FILE_NAME);
+            this._logger.info("Generate module file for -> {}", module.getName());
+//            JavaFileObject fileObj = builderContext.getFiler().createSourceFile(MODULE_FILE_NAME);
+            FileObject fileObj = builderContext.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, "", MODULE_FILE_NAME);
             srcWriter = fileObj.openWriter();
             temp.process(model, srcWriter);
         } catch (Exception ex) {
-            this._logger.error("An error was risen when generate module for - {}", module.name());
+            this._logger.error("An error was risen when generate module for - {}", module.getName());
             this._logger.error(ex);
             return;
         } finally {
@@ -187,12 +193,13 @@ public class AnnotationProcessor extends AbstractProcessor {
             return;
         }
 
+        this._logger.info("Generating sources...");
         for (ClassMeta.Builder classBuilder : classBuilders) {
             Writer srcWriter = null;
             try {
                 // All generated class must be implemented IGenerated interface
                 implementGenerated(classBuilder);
-                this._logger.info("Generate source for -> {}.{}",
+                this._logger.info("\t{}.{}",
                         classBuilder.getPackageName(),
                         classBuilder.getGeneratedClassName());
                 ClassMeta classMeta = classBuilder.build();
@@ -201,7 +208,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 );
                 srcWriter = fileObj.openWriter();
                 temp.process(classMeta, srcWriter);
-                this._logger.info("Done generate source for " + classMeta.getGeneratedClassName());
             } catch (Exception ex) {
                 this._logger.error("An error was risen when generate source for - {}.{}",
                         classBuilder.getPackageName(),

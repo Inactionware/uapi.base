@@ -32,7 +32,7 @@ public class Module {
      *
      * @return  The module name
      */
-    public String name() {
+    public String getName() {
         return this._name;
     }
 
@@ -50,7 +50,7 @@ public class Module {
      *
      * @return  Exported package list of this module
      */
-    public String[] exports() {
+    public String[] getExports() {
         return this._exports.toArray(new String[0]);
     }
 
@@ -64,7 +64,7 @@ public class Module {
      *
      * @return  The required modules
      */
-    public String[] requires() {
+    public String[] getRequires() {
         return this._requires.toArray(new String[0]);
     }
 
@@ -78,7 +78,7 @@ public class Module {
      *
      * @return  Used services of this module
      */
-    public String[] uses() {
+    public String[] getUses() {
         return this._uses.toArray(new String[0]);
     }
 
@@ -92,7 +92,7 @@ public class Module {
      *
      * @return The provide list
      */
-    public Map<String, Set<String>> provides() {
+    public Map<String, Set<String>> getProvides() {
         return this._provides;
     }
 
