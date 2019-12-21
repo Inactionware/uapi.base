@@ -11,6 +11,9 @@ package uapi.codegen.internal;
 
 import com.google.auto.service.AutoService;
 import freemarker.template.Template;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.ModuleVisitor;
+import org.objectweb.asm.Opcodes;
 import uapi.Type;
 import uapi.codegen.*;
 import uapi.codegen.Module;
@@ -29,6 +32,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
 import java.util.*;
@@ -159,22 +163,33 @@ public class AnnotationProcessor extends AbstractProcessor {
         model.put("module", module);
         var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
 
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        ModuleVisitor mv = cw.visitModule(module.getName(), Opcodes.ACC_OPEN, null);
+        Looper.on(module.getUses())
+                .foreach(mv::visitUse);
+        Looper.on(module.getExports())
+                .foreach(export -> mv.visitExport(export, Opcodes.ACC_MANDATED));
+        Looper.on(module.getRequires())
+                .foreach(require -> mv.visitRequire(require, Opcodes.ACC_MANDATED, null));
+        Looper.on(module.getProvides().keySet())
+                .foreach(service -> mv.visitProvide(service, module.getProvides().get(service).toArray(new String[0])));
+        byte[] moduleBytes = cw.toByteArray();
+
         final String MODULE_FILE_NAME = "module-info";
-        Writer srcWriter = null;
+        OutputStream os = null;
         try {
             this._logger.info("Generate module file for -> {}", module.getName());
-//            JavaFileObject fileObj = builderContext.getFiler().createSourceFile(MODULE_FILE_NAME);
-            FileObject fileObj = builderContext.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, "", MODULE_FILE_NAME);
-            srcWriter = fileObj.openWriter();
-            temp.process(model, srcWriter);
+            FileObject fileObj = builderContext.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "", MODULE_FILE_NAME);
+            os = fileObj.openOutputStream();
+            os.write(moduleBytes);
         } catch (Exception ex) {
             this._logger.error("An error was risen when generate module for - {}", module.getName());
             this._logger.error(ex);
-            return;
         } finally {
-            if (srcWriter != null) {
+            if (os != null) {
                 try {
-                    srcWriter.close();
+                    os.flush();
+                    os.close();
                 } catch (Exception ex) {
                     this._logger.error(ex);
                 }

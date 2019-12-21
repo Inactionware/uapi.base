@@ -16,6 +16,7 @@ dependencies {
 
     compile coordinate(libs.auto_service)
     compile coordinate(libs.freemarker)
+    compile coordinate(libs.asm)
 
     annotationProcessor coordinate(libs.auto_service)
 }
