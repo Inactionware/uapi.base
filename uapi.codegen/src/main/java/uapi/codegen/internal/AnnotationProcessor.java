@@ -44,7 +44,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             "META-INF/services/" + IAnnotationsHandler.class.getCanonicalName();
     private static final String TEMP_SOURCE_FILE = "template/generated_source.ftl";
     private static final String TEMP_MODULE_FILE = "template/generated_module.ftl";
-    private static final String MODULE_FILE_NAME = "module-info.java";
+    private static final String MODULE_FILE_NAME = "module-info.class";
 
     protected LogSupport _logger;
     private ProcessingEnvironment _procEnv;
@@ -159,9 +159,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         // Write to module-info file
         // There is no way to generate module-info.java to let javac to compile
         // We have to generate byte code for module-info
-        var model = new HashMap<String, Object>();
-        model.put("module", module);
-        var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
+//        var model = new HashMap<String, Object>();
+//        model.put("module", module);
+//        var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
 
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         ModuleVisitor mv = cw.visitModule(module.getName(), Opcodes.ACC_OPEN, null);
@@ -173,9 +173,10 @@ public class AnnotationProcessor extends AbstractProcessor {
                 .foreach(require -> mv.visitRequire(require, Opcodes.ACC_MANDATED, null));
         Looper.on(module.getProvides().keySet())
                 .foreach(service -> mv.visitProvide(service, module.getProvides().get(service).toArray(new String[0])));
+        mv.visitEnd();
+        cw.visitEnd();
         byte[] moduleBytes = cw.toByteArray();
 
-        final String MODULE_FILE_NAME = "module-info";
         OutputStream os = null;
         try {
             this._logger.info("Generate module file for -> {}", module.getName());
