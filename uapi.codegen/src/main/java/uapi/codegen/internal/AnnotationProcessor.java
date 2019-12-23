@@ -142,9 +142,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         generateSource(buildCtx);
 
         // Generate module
-        if (moduleProvider != null && moduleProvider.hasModule()) {
-            generateModule(buildCtx, moduleProvider.getModule());
-        }
+        // Do not generate module, using service factory instead of it.
+//        if (moduleProvider != null && moduleProvider.hasModule()) {
+//            generateModule(buildCtx, moduleProvider.getModule());
+//        }
         buildCtx.clearBuilders();
 
         this._logger.info("End processing");
@@ -163,24 +164,28 @@ public class AnnotationProcessor extends AbstractProcessor {
 //        model.put("module", module);
 //        var temp = builderContext.loadTemplate(TEMP_MODULE_FILE);
 
-        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        cw.newClass("module-info");
         ModuleVisitor mv = cw.visitModule(module.getName(), Opcodes.ACC_OPEN, null);
-        Looper.on(module.getUses())
-                .foreach(mv::visitUse);
-        Looper.on(module.getExports())
-                .foreach(export -> mv.visitExport(export, Opcodes.ACC_MANDATED));
-        Looper.on(module.getRequires())
-                .foreach(require -> mv.visitRequire(require, Opcodes.ACC_MANDATED, null));
-        Looper.on(module.getProvides().keySet())
-                .foreach(service -> mv.visitProvide(service, module.getProvides().get(service).toArray(new String[0])));
+//        Looper.on(module.getUses())
+//                .foreach(mv::visitUse);
+//        Looper.on(module.getExports())
+//                .foreach(export -> mv.visitExport(export, Opcodes.ACC_MANDATED));
+//        Looper.on(module.getRequires())
+//                .foreach(require -> mv.visitRequire(require, Opcodes.ACC_MANDATED, null));
+//        Looper.on(module.getProvides().keySet())
+//                .foreach(service -> mv.visitProvide(service, module.getProvides().get(service).toArray(new String[0])));
         mv.visitEnd();
         cw.visitEnd();
         byte[] moduleBytes = cw.toByteArray();
 
         OutputStream os = null;
+//        Writer srcWriter = null;
         try {
             this._logger.info("Generate module file for -> {}", module.getName());
             FileObject fileObj = builderContext.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "", MODULE_FILE_NAME);
+//            srcWriter = fileObj.openWriter();
+//            temp.process(model, srcWriter);
             os = fileObj.openOutputStream();
             os.write(moduleBytes);
         } catch (Exception ex) {
