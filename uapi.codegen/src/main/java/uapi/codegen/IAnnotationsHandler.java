@@ -14,7 +14,10 @@ import uapi.GeneralException;
 import java.lang.annotation.Annotation;
 
 /**
- * A handler for handle one or more annotations which has relationship
+ * A handler for handle one or more annotations which has relationship.
+ * When handle annotation the framework will create current builder context and then call <code>init</code> then invoke
+ * <code>getHelper</code> method, and finally call <code>handle</code> method one or more times which based on how many
+ * annotation this handler can handle.
  */
 public interface IAnnotationsHandler {
 
@@ -25,6 +28,15 @@ public interface IAnnotationsHandler {
      */
     Class<? extends Annotation>[] getSupportedAnnotations();
 
+    /**
+     * Init handler by current builder context.
+     *
+     * @param   builderContext
+     *          Current builder context
+     * @throws  GeneralException
+     *          Initialization failed
+     */
+    default void init(final IBuilderContext builderContext) throws GeneralException { }
 
     /**
      * Return the specific helper for this handler

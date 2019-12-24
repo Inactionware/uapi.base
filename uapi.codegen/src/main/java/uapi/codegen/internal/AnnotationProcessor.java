@@ -128,13 +128,14 @@ public class AnnotationProcessor extends AbstractProcessor {
         this._logger.info("Start processing annotations... ");
         BuilderContext buildCtx = new BuilderContext(this._procEnv, roundEnv);
         // Init for builder context
-        IModuleProvider moduleProvider = Looper.on(this._handlers)
+        Looper.on(this._handlers)
+                .next(handler -> handler.init(buildCtx))
                 .map(IAnnotationsHandler::getHelper)
                 .filter(Objects::nonNull)
-                .next(buildCtx::putHelper)
-                .filter(helper -> helper instanceof IModuleProvider)
-                .map(helper -> (IModuleProvider) helper)
-                .single(null);
+                .foreach(buildCtx::putHelper);
+//                .filter(helper -> helper instanceof IModuleProvider)
+//                .map(helper -> (IModuleProvider) helper)
+//                .single(null);
         Looper.on(this._handlers)
                 .foreach(handler -> handler.handle(buildCtx));
 
