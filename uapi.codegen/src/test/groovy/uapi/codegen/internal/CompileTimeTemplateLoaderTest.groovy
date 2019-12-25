@@ -23,7 +23,7 @@ class CompileTimeTemplateLoaderTest extends Specification {
 
     def 'Test create instance'() {
         when:
-        def tempLoader = new CompileTimeTemplateLoader(Mock(BuilderContext), 'pkg')
+        def tempLoader = new CompileTimeTemplateLoader(Mock(BuilderContext))
 
         then:
         noExceptionThrown()
@@ -33,17 +33,17 @@ class CompileTimeTemplateLoaderTest extends Specification {
         when:
         def budrCtx = Mock(BuilderContext) {
             getFiler() >> Mock(Filer) {
-                getResource(StandardLocation.CLASS_PATH, basePkg, name) >> Mock(FileObject)
+                getResource(StandardLocation.MODULE_PATH, module + "/", name) >> Mock(FileObject)
             }
         }
-        def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
+        def tempLoader = new CompileTimeTemplateLoader(budrCtx)
 
         then:
-        tempLoader.findTemplateSource(name) != null
+        tempLoader.findTemplateSource(module + ":" + name) != null
 
         where:
-        basePkg     | pkg   | name
-        'abc'       | 'd'   | 'BB'
+        module  | pkg   | name
+        'A'     | 'd'   | 'BB'
     }
 
     def 'Test get last modified'() {
@@ -56,28 +56,28 @@ class CompileTimeTemplateLoaderTest extends Specification {
         def budrCtx = Mock(BuilderContext) {
             getFiler() >> fileObj
         }
-        def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
-        def tempSrc = tempLoader.findTemplateSource(filePath)
+        def tempLoader = new CompileTimeTemplateLoader(budrCtx)
+        def tempSrc = tempLoader.findTemplateSource(module + ":" + filePath)
 
         then:
         tempLoader.getLastModified(tempSrc) == lastMod
 
         where:
-        basePkg | lastMod   | filePath
+        module  | lastMod   | filePath
         'abc'   | 1L        | 'test'
     }
 
     def 'Test get last modified with exception'() {
         when:
         def budrCtx = Mock(BuilderContext)
-        def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
+        def tempLoader = new CompileTimeTemplateLoader(budrCtx)
         tempLoader.getLastModified(Mock(Object))
 
         then:
         thrown(GeneralException)
 
         where:
-        basePkg | lastMod
+        module  | lastMod
         'abc'   | 1L
     }
 
@@ -92,14 +92,14 @@ class CompileTimeTemplateLoaderTest extends Specification {
         def budrCtx = Mock(BuilderContext) {
             getFiler() >> filer
         }
-        def tempLoader = new CompileTimeTemplateLoader(budrCtx, basePkg)
-        def tempSrc = tempLoader.findTemplateSource(filePath)
+        def tempLoader = new CompileTimeTemplateLoader(budrCtx)
+        def tempSrc = tempLoader.findTemplateSource(module + ":" + filePath)
 
         then:
         tempLoader.getReader(tempSrc, encoding) == reader
 
         where:
-        basePkg | lastMod   | encoding  | filePath
+        module  | lastMod   | encoding  | filePath
         'abc'   | 1L        | 'UTF-8'   | 'Test'
     }
 }

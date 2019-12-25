@@ -58,7 +58,7 @@ public class BuilderContext implements IBuilderContext {
         this._tempConf.setDefaultEncoding("UTF-8");
         this._tempConf.setLocalizedLookup(false);
         this._tempConf.setTemplateLoader(
-                new CompileTimeTemplateLoader(this, StringHelper.EMPTY));
+                new CompileTimeTemplateLoader(this));
     }
 
     @Override
@@ -109,11 +109,15 @@ public class BuilderContext implements IBuilderContext {
     }
 
     @Override
-    public Template loadTemplate(String templatePath) {
-        ArgumentChecker.notEmpty(templatePath, "templatePath");
+    public Template loadTemplate(
+            final String module,
+            final String templatePath) {
+        ArgumentChecker.required(module, "module");
+        ArgumentChecker.required(templatePath, "templatePath");
+        var name = StringHelper.makeString("{}:{}", module, templatePath);
         Template temp;
         try {
-            temp = this._tempConf.getTemplate(templatePath);
+            temp = this._tempConf.getTemplate(name);
         } catch (Exception ex) {
             throw new GeneralException(ex);
         }

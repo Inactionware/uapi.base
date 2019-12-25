@@ -47,7 +47,7 @@ public interface IBuilderContext {
 
     void clearBuilders();
 
-    Template loadTemplate(String templatePath);
+    Template loadTemplate(String module, String templatePath);
 
     /**
      * Find class builder based on specific class element, it will create new class builder if no builder for

@@ -387,7 +387,7 @@ class BuilderContextTest extends Specification {
     def 'Test load template'() {
         given:
         def filer = Mock(Filer) {
-            getResource(StandardLocation.CLASS_PATH, _ as String, tempPath) >> Mock(FileObject) {
+            getResource(StandardLocation.MODULE_PATH, _ as String, tempPath) >> Mock(FileObject) {
                 openReader(_) >> new FileReader('src/main/resources/' + tempPath)
             }
         }
@@ -398,7 +398,7 @@ class BuilderContextTest extends Specification {
         def budrCtx = new BuilderContext(procEnv, roundEnv)
 
         when:
-        def temp = budrCtx.loadTemplate(tempPath)
+        def temp = budrCtx.loadTemplate("uapi.codegen", tempPath)
 
         then:
         noExceptionThrown()

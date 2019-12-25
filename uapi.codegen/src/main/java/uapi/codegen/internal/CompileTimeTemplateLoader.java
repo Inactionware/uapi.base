@@ -24,24 +24,31 @@ import java.io.Reader;
 public class CompileTimeTemplateLoader implements TemplateLoader {
 
     private final BuilderContext _builderCtx;
-    private final String _basePkgPath;
 
-    public CompileTimeTemplateLoader(
-            final BuilderContext builderContext,
-            final String basePackagePath
-    ) {
+    public CompileTimeTemplateLoader(final BuilderContext builderContext) {
         ArgumentChecker.notNull(builderContext, "builderContext");
         this._builderCtx = builderContext;
-        this._basePkgPath = basePackagePath;
     }
 
+    /**
+     * The name should be constructed by below pattern:
+     *  module:name
+     *
+     * @param   name
+     * @return
+     * @throws IOException
+     */
     @Override
     public Object findTemplateSource(
             final String name
     ) throws IOException {
         ArgumentChecker.required(name, "name");
+        var moduleFile = name.split(":");
+        if (moduleFile.length != 2) {
+            throw new GeneralException("The template file name should be constructed by [module name]:[file path]");
+        }
         FileObject fileObj = this._builderCtx.getFiler().getResource(
-                StandardLocation.CLASS_PATH, this._basePkgPath, name);
+                StandardLocation.MODULE_PATH, moduleFile[0] + "/", moduleFile[1]);
         return new TemplateSource(fileObj);
     }
 

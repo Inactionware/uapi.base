@@ -209,7 +209,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Template temp;
         try {
-            temp = builderContext.loadTemplate(TEMP_SOURCE_FILE);
+            temp = builderContext.loadTemplate("uapi.codegen", TEMP_SOURCE_FILE);
         } catch (Exception ex) {
             this._logger.error(ex);
             return;

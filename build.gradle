@@ -40,64 +40,66 @@ apply plugin: 'jacoco'
 //     }
 // }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'groovy'
-    apply plugin: 'jacoco'
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
+apply from: '.config/uapi/sub.config.gradle'
 
-    group = "${allCfg.group}"
-    version = getBuildVersion(project.name)
-    sourceCompatibility = 11
-    targetCompatibility = 11
+// subprojects {
+//     apply plugin: 'java'
+//     apply plugin: 'groovy'
+//     apply plugin: 'jacoco'
+//     apply plugin: 'maven'
+//     apply plugin: 'maven-publish'
 
-    configurations {
-        codacy
-    }
+//     group = "${allCfg.group}"
+//     version = getBuildVersion(project.name)
+//     sourceCompatibility = 11
+//     targetCompatibility = 11
 
-    dependencies {
-        testCompile (
-            coordinate(libs.spock)
-        )
-        testRuntime (
-            coordinate(libs.cglib),     // allows mocking of classes (in addition to interfaces)
-            coordinate(libs.objenesis)  // allows mocking of classes without default constructor (together with CGLIB)
-        )
-    }
+//     configurations {
+//         codacy
+//     }
 
-    ext.moduleName = "${project.name}"
+//     dependencies {
+//         testCompile (
+//             coordinate(libs.spock)
+//         )
+//         testRuntime (
+//             coordinate(libs.cglib),     // allows mocking of classes (in addition to interfaces)
+//             coordinate(libs.objenesis)  // allows mocking of classes without default constructor (together with CGLIB)
+//         )
+//     }
 
-    compileJava {
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-            ]
-            classpath = files()
-        }
-    }
+//     ext.moduleName = "${project.name}"
 
-    jar {
-        manifest.attributes
-        exclude('**/*.java')
-    }
+//     compileJava {
+//         inputs.property("moduleName", moduleName)
+//         doFirst {
+//             options.compilerArgs = [
+//                     '--module-path', classpath.asPath,
+//             ]
+//             classpath = files()
+//         }
+//     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+//     jar {
+//         manifest.attributes
+//         exclude('**/*.java')
+//     }
 
-    artifacts {
-        archives sourcesJar
-    }
+//     task sourcesJar(type: Jar, dependsOn: classes) {
+//         classifier = 'sources'
+//         from sourceSets.main.allSource
+//     }
 
-    jacoco {
-        toolVersion = libs.jacoco.version
-    }
+//     artifacts {
+//         archives sourcesJar
+//     }
 
-    build.dependsOn jacocoTestReport
-}
+//     jacoco {
+//         toolVersion = libs.jacoco.version
+//     }
+
+//     build.dependsOn jacocoTestReport
+// }
 
 def publishedProjects = subprojects.findAll { it.path != ':uapi.sample' }
 
