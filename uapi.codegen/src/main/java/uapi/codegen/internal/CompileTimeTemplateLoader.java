@@ -31,12 +31,16 @@ public class CompileTimeTemplateLoader implements TemplateLoader {
     }
 
     /**
+     * Load Freemarker template resource from specific name
+     *
      * The name should be constructed by below pattern:
      *  module:name
      *
      * @param   name
-     * @return
-     * @throws IOException
+     *          The template resource name with its module name
+     * @return  The Freemarker template object
+     * @throws  IOException
+     *          If the template file does not exist
      */
     @Override
     public Object findTemplateSource(
