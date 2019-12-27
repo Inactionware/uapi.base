@@ -109,7 +109,15 @@ public class LogSupport {
             final Throwable t
     ) {
         printException(t);
-//        this._msger.printMessage(Diagnostic.Kind.ERROR, ExceptionHelper.getStackString(t));
+    }
+
+    public void error(
+            final Throwable t,
+            final String msg,
+            final String... args
+    ) {
+        this._msger.printMessage(Diagnostic.Kind.ERROR, StringHelper.makeString(msg, args));
+        printException(t);
     }
 
     public void printException(final Throwable t) {
