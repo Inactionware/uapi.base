@@ -11,6 +11,7 @@ package uapi.codegen.internal;
 
 import com.google.auto.service.AutoService;
 import freemarker.template.Template;
+import uapi.GeneralException;
 import uapi.Type;
 import uapi.codegen.*;
 import uapi.common.StringHelper;
@@ -24,9 +25,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -131,6 +130,8 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         // Generate source
         generateSource(buildCtx);
+        // Generate resource
+        generateResource(buildCtx);
 
         buildCtx.clearBuilders();
 
@@ -140,6 +141,22 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     int getHandlerCount() {
         return this._handlers.size();
+    }
+
+    private void generateResource(final BuilderContext builderContext) {
+        Looper.on(builderContext.getResourceFiles()).foreach(resFile -> {
+            try (BufferedWriter writer = new BufferedWriter(
+                    builderContext.getFiler().createResource(
+                            resFile.location(),
+                            "",
+                            resFile.fileName()).openWriter())) {
+                for (String str : resFile.content()) {
+                    writer.write(str);
+                }
+            } catch (IOException ex) {
+                throw new GeneralException(ex, "Writer resource file failed - {}", resFile.fileName());
+            }
+        });
     }
 
     private void generateSource(BuilderContext builderContext) {

@@ -20,6 +20,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.JavaFileManager;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
@@ -181,5 +182,9 @@ public interface IBuilderContext {
      * @return  The generic type list
      */
     List<? extends TypeMirror> getGenericTypes(Element element);
+
+    IResourceFile newResourceFile(JavaFileManager.Location location, String fileName);
+
+    IResourceFile newResourceFile(JavaFileManager.Location location, String fileName, String encoder);
 }
 

@@ -29,6 +29,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.JavaFileManager;
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class BuilderContext implements IBuilderContext {
     private final List<ClassMeta.Builder> _clsBuilders = new ArrayList<>();
     private final Configuration _tempConf;
     private final Map<String, IHandlerHelper> _helpers = new HashMap<>();
+    private final List<ResourceFile> _resFiles = new ArrayList<>();
 
     public BuilderContext(
             final ProcessingEnvironment processingEnvironment,
@@ -310,5 +312,36 @@ public class BuilderContext implements IBuilderContext {
         ArgumentChecker.required(element, "element");
         DeclaredType declaredType = (DeclaredType) element.asType();
         return declaredType.getTypeArguments();
+    }
+
+    @Override
+    public IResourceFile newResourceFile(JavaFileManager.Location location, String fileName) {
+        checkDuplicatedFile(location, fileName);
+        ResourceFile resFile = new ResourceFile(location, fileName);
+        this._resFiles.add(resFile);
+        return resFile;
+    }
+
+    @Override
+    public IResourceFile newResourceFile(JavaFileManager.Location location, String fileName, String encoder) {
+        checkDuplicatedFile(location, fileName);
+        ResourceFile resFile = new ResourceFile(location, fileName, encoder);
+        this._resFiles.add(resFile);
+        return resFile;
+    }
+
+    List<ResourceFile> getResourceFiles() {
+        return this._resFiles;
+    }
+
+    private void checkDuplicatedFile(JavaFileManager.Location location, String fileName) {
+        ArgumentChecker.required(location, "location");
+        ArgumentChecker.required(fileName, "fileName");
+        ResourceFile existFile = Looper.on(this._resFiles)
+                .filter(resFile -> resFile.location().equals(location) && resFile.fileName().equals(fileName))
+                .first(null);
+        if (existFile != null) {
+            throw new GeneralException("The resource file exists, location - {}, file name - {}", location, fileName);
+        }
     }
 }
