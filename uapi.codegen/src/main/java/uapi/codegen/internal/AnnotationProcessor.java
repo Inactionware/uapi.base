@@ -35,8 +35,6 @@ public class AnnotationProcessor extends AbstractProcessor {
     private static final String PATH_ANNOTATION_HANDLER =
             "META-INF/services/" + IAnnotationsHandler.class.getCanonicalName();
     private static final String TEMP_SOURCE_FILE = "template/generated_source.ftl";
-    private static final String TEMP_MODULE_FILE = "template/generated_module.ftl";
-    private static final String MODULE_FILE_NAME = "module-info.class";
 
     protected LogSupport _logger;
     private ProcessingEnvironment _procEnv;

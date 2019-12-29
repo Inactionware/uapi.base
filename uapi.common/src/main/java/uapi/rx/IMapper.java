@@ -182,6 +182,20 @@ public interface IMapper<T> {
      */
     List<T> toList();
 
+    /**
+     * Return all element to specific list.
+     *
+     * @param   list
+     *          The specific list which item will be put in it.
+     * @return  The specific list
+     */
+    List<T> toList(List<T> list);
+
+    /**
+     * Return an array which contains all element
+     *
+     * @return  The array which contains all element
+     */
     Object[] toArray();
 
     /**

@@ -20,15 +20,21 @@ class ToListReducer<T> extends Reducer<List<T>> {
     private List<T> _list;
 
     ToListReducer(Mapper<T> previously) {
+        this(previously, null);
+    }
+
+    ToListReducer(Mapper<T> previously, List<T> list) {
         super(previously);
+        if (list != null) {
+            this._list = list;
+        } else {
+            this._list = new LinkedList<>();
+        }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<T> getItem() {
-        if (this._list == null) {
-            this._list = new LinkedList<>();
-        }
         while (hasItem()) {
             try {
                 T item = (T) getPreviously().getItem();
