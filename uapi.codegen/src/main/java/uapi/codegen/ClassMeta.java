@@ -17,13 +17,19 @@ import uapi.rx.Looper;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static javax.lang.model.element.ElementKind.*;
+
 public class ClassMeta {
+
+    public static final String GEN_PKG_NAME = "generated";
+    public static final String GEN_CLS_NAME = "Generated";
 
     private final Builder _builder;
 
@@ -90,25 +96,42 @@ public class ClassMeta {
     ) throws GeneralException {
         ArgumentChecker.notNull(classElement, "classElement");
         ArgumentChecker.notNull(builderContext, "builderContext");
-        if (classElement.getKind() != ElementKind.CLASS) {
+        if (classElement.getKind() != CLASS) {
             throw new GeneralException(
                     "The element is not a class element - {}",
                     classElement);
         }
 
+        String moduleName = null;
         var classNameBuilder = new StringBuilder(classElement.getSimpleName().toString());
         var enclosingElemt = classElement.getEnclosingElement();
-        while (enclosingElemt != null && enclosingElemt.getKind() == ElementKind.CLASS) {
-            classNameBuilder.insert(0, ".").insert(0, enclosingElemt.getSimpleName().toString());
+        while (enclosingElemt != null) {
+            ElementKind kind = enclosingElemt.getKind();
+            switch (kind) {
+                case CLASS:
+                    classNameBuilder.insert(0, ".").insert(0, enclosingElemt.getSimpleName().toString());
+                    break;
+                case PACKAGE:
+                    classNameBuilder.insert(0, ".").insert(0, ((PackageElement) enclosingElemt).getQualifiedName());
+                    break;
+                case MODULE:
+                    moduleName = ((ModuleElement) enclosingElemt).getQualifiedName().toString();
+            }
             enclosingElemt = enclosingElemt.getEnclosingElement();
         }
+        if (moduleName == null) {
+            throw new GeneralException(
+                    "The class element is not defined in a named module - {}", classElement.getSimpleName().toString());
+        }
 
-        var pkgElemt = builderContext.getElementUtils().getPackageOf(classElement);
+//        var pkgElemt = builderContext.getElementUtils().getPackageOf(classElement);
+        var genPkgName = StringHelper.makeString("{}.{}", moduleName, GEN_PKG_NAME);
+        var genClsName = StringHelper.makeString("{}_{}", classElement.getSimpleName().toString(), GEN_CLS_NAME);
         return builder()
-                .setPackageName(pkgElemt.getQualifiedName().toString())
+                .setPackageName(genPkgName)
                 .setClassName(classNameBuilder.toString())
-                .setGeneratedClassName(classElement.getSimpleName().toString() + "_Generated");
-
+                .setParentClassName(classNameBuilder.toString())
+                .setGeneratedClassName(genClsName);
     }
 
     public static class Builder extends CodegenBuilder<ClassMeta> {
@@ -164,10 +187,10 @@ public class ClassMeta {
                 final String className
         ) throws GeneralException {
             checkStatus();
-            if (this._className != null) {
-                throw new GeneralException(
-                        "The class {} is already has super class - {}", this._generatedClassName, this._className);
-            }
+//            if (this._className != null) {
+//                throw new GeneralException(
+//                        "The class {} is already has super class - {}", this._generatedClassName, this._className);
+//            }
             this._parentClassName = className;
             return this;
         }

@@ -12,6 +12,7 @@ package uapi.codegen.internal
 import spock.lang.Ignore
 import spock.lang.Specification
 import uapi.GeneralException
+import uapi.codegen.ClassMeta
 import uapi.codegen.IHandlerHelper
 
 import javax.annotation.processing.Filer
@@ -97,7 +98,7 @@ class BuilderContextTest extends Specification {
         then:
         found != null
         found.className == clsName
-        found.packageName == pkgName
+        found.packageName == ClassMeta.GEN_PKG_NAME
         found2.size() == 1
 
         where:
@@ -166,7 +167,7 @@ class BuilderContextTest extends Specification {
         then:
         found != null
         found.className == clsName
-        found.packageName == pkgName
+        found.packageName == ClassMeta.GEN_PKG_NAME
         budrCtx.getBuilders().size() == 1
 
         where:

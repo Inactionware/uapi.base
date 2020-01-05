@@ -107,7 +107,7 @@ class ClassMetaTest extends Specification {
         ClassMeta.Builder clsBudr = ClassMeta.builder(mockElemt, mockBudrCtx)
 
         then:
-        clsBudr.getPackageName() == pkgName
+        clsBudr.getPackageName() == ClassMeta.GEN_PKG_NAME
         clsBudr.getClassName() == clsName
         clsBudr.getGeneratedClassName() == genClsName
 
@@ -143,7 +143,7 @@ class ClassMetaTest extends Specification {
         ClassMeta.Builder clsBudr = ClassMeta.builder(mockElemt, mockBudrCtx)
 
         then:
-        clsBudr.getPackageName() == pkgName
+        clsBudr.getPackageName() == ClassMeta.GEN_PKG_NAME
         clsBudr.getClassName() == finClsName
         clsBudr.getGeneratedClassName() == genClsName
 

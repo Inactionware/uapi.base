@@ -208,8 +208,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                     "return {}.class;", classBuilder.getParentClassName());
         } else {
             codes = StringHelper.makeString(
-                    "return {}.{}.class;",
-                    classBuilder.getPackageName(),
+                    "return {}.class;",
                     classBuilder.getClassName() == null ? classBuilder.getGeneratedClassName() : classBuilder.getClassName());
         }
 
