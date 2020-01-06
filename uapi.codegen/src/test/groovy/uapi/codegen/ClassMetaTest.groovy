@@ -92,6 +92,12 @@ class ClassMetaTest extends Specification {
             getSimpleName() >> Mock(Name) {
                 toString() >> clsName
             }
+            getEnclosingElement() >> Mock(ModuleElement) {
+                getQualifiedName() >> Mock(Name) {
+                    toString() >> moduleName
+                }
+                getKind() >> ElementKind.MODULE
+            }
         }
         def mockBudrCtx = Mock(IBuilderContext) {
             getElementUtils() >> Mock(Elements) {
@@ -107,13 +113,13 @@ class ClassMetaTest extends Specification {
         ClassMeta.Builder clsBudr = ClassMeta.builder(mockElemt, mockBudrCtx)
 
         then:
-        clsBudr.getPackageName() == ClassMeta.GEN_PKG_NAME
+        clsBudr.getPackageName() == moduleName + '.' + ClassMeta.GEN_PKG_NAME
         clsBudr.getClassName() == clsName
         clsBudr.getGeneratedClassName() == genClsName
 
         where:
-        pkgName     | clsName   | genClsName
-        'pkgName'   | 'clsName' | 'clsName_Generated'
+        pkgName     | clsName   | genClsName            | moduleName
+        'pkgName'   | 'clsName' | 'clsName_Generated'   | 'moduleName'
     }
 
     def 'Test build from innner Element'() {
@@ -127,6 +133,12 @@ class ClassMetaTest extends Specification {
                 getSimpleName() >> Mock(Name) {
                     toString() >> outerClsName
                 }
+                getEnclosingElement() >> Mock(ModuleElement) {
+                    getQualifiedName() >> Mock(Name) {
+                        toString() >> moduleName
+                    }
+                    getKind() >> ElementKind.MODULE
+                }
             }
         }
         def mockBudrCtx = Mock(IBuilderContext) {
@@ -143,13 +155,13 @@ class ClassMetaTest extends Specification {
         ClassMeta.Builder clsBudr = ClassMeta.builder(mockElemt, mockBudrCtx)
 
         then:
-        clsBudr.getPackageName() == ClassMeta.GEN_PKG_NAME
+        clsBudr.getPackageName() == moduleName + '.' + ClassMeta.GEN_PKG_NAME
         clsBudr.getClassName() == finClsName
         clsBudr.getGeneratedClassName() == genClsName
 
         where:
-        pkgName     | clsName   | genClsName            | outerClsName      | finClsName
-        'pkgName'   | 'clsName' | 'clsName_Generated'   | 'outerClsName'    | 'outerClsName.clsName'
+        pkgName     | clsName   | genClsName            | outerClsName      | finClsName                | moduleName
+        'pkgName'   | 'clsName' | 'clsName_Generated'   | 'outerClsName'    | 'outerClsName.clsName'    | 'moduleName'
     }
 
     def mockAnnoMeta = Mock(AnnotationMeta)

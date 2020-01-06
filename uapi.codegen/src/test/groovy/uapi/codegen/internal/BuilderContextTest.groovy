@@ -78,6 +78,12 @@ class BuilderContextTest extends Specification {
             getSimpleName() >> Mock(Name) {
                 toString() >> clsName
             }
+            getEnclosingElement() >> Mock(ModuleElement) {
+                getQualifiedName() >> Mock(Name) {
+                    toString() >> moduleName
+                }
+                getKind() >> ElementKind.MODULE
+            }
         }
         def procEnv = Mock(ProcessingEnvironment) {
             getElementUtils() >> Mock(Elements) {
@@ -98,12 +104,12 @@ class BuilderContextTest extends Specification {
         then:
         found != null
         found.className == clsName
-        found.packageName == ClassMeta.GEN_PKG_NAME
+        found.packageName == moduleName + '.' + ClassMeta.GEN_PKG_NAME
         found2.size() == 1
 
         where:
-        clsName | pkgName
-        'AAA'   | 'com.test'
+        clsName | pkgName       | moduleName
+        'AAA'   | 'com.test'    | 'moduleName'
     }
 
     def 'Test find class builder by element and do not create'() {
@@ -112,6 +118,12 @@ class BuilderContextTest extends Specification {
             getKind() >> ElementKind.CLASS
             getSimpleName() >> Mock(Name) {
                 toString() >> clsName
+            }
+            getEnclosingElement() >> Mock(ModuleElement) {
+                getQualifiedName() >> Mock(Name) {
+                    toString() >> moduleName
+                }
+                getKind() >> ElementKind.MODULE
             }
         }
         def procEnv = Mock(ProcessingEnvironment) {
@@ -135,8 +147,8 @@ class BuilderContextTest extends Specification {
         found2.size() == 0
 
         where:
-        clsName | pkgName
-        'AAA'   | 'com.test'
+        clsName | pkgName       | moduleName
+        'AAA'   | 'com.test'    | 'moduleName'
     }
 
     def 'Test find class builder by duplicated element'() {
@@ -145,6 +157,12 @@ class BuilderContextTest extends Specification {
             getKind() >> ElementKind.CLASS
             getSimpleName() >> Mock(Name) {
                 toString() >> clsName
+            }
+            getEnclosingElement() >> Mock(ModuleElement) {
+                getQualifiedName() >> Mock(Name) {
+                    toString() >> moduleName
+                }
+                getKind() >> ElementKind.MODULE
             }
         }
         def procEnv = Mock(ProcessingEnvironment) {
@@ -167,12 +185,12 @@ class BuilderContextTest extends Specification {
         then:
         found != null
         found.className == clsName
-        found.packageName == ClassMeta.GEN_PKG_NAME
+        found.packageName == moduleName + '.' + ClassMeta.GEN_PKG_NAME
         budrCtx.getBuilders().size() == 1
 
         where:
-        clsName | pkgName
-        'AAA'   | 'com.test'
+        clsName | pkgName       | moduleName
+        'AAA'   | 'com.test'    | 'moduleName'
     }
 
     def 'Test find class build by qualified class name'() {
@@ -416,6 +434,12 @@ class BuilderContextTest extends Specification {
             getKind() >> ElementKind.CLASS
             getSimpleName() >> Mock(Name) {
                 toString() >> 'Class'
+            }
+            getEnclosingElement() >> Mock(ModuleElement) {
+                getQualifiedName() >> Mock(Name) {
+                    toString() >> 'moduleName'
+                }
+                getKind() >> ElementKind.MODULE
             }
         }
         def procEnv = Mock(ProcessingEnvironment) {
